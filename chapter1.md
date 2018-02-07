@@ -8,8 +8,6 @@ When a philosopher decides to eat \(they sit and think most of the time\), she w
 
 You should complete a simple program that implements the behaviour of the philosophers and run some experiments to see when things go wrong. You should also provide a solution to the problem that at least allow some of the philosophers to get some food.
 
----
-
 ## A Chopstick
 
 The location of a chopstick is represented by a process. The state of the process is either:
@@ -53,8 +51,6 @@ end
 ```
 
 Provide similar functions for returning the stick and terminating the process. We will change things later so you will see that it is very nice to only allow the philosophers to use the functional interface.
-
----
 
 ## A Philosopher
 
@@ -125,5 +121,51 @@ end
 
 If things go wrong and a process terminates with an error it will kill all linked processes. If things are stuck in a deadlock we can send an `:abort` message to the controller process that then will exit with an error and kill all other processes.
 
-Now it's time to see if the philosophers will be able to dream and eat. 
+Now it's time to see if the philosophers will be able to dream and eat.
+
+## Experiments
+
+> Experiment with the dinner, will the philosophers always be able to eat? What happens if you decrease the time it dreams? What happens if you introduce an artificial delay between the receiving of the first chopstick and requesting the second?
+
+## Break the Deadlock
+
+To break out of a potential deadlock situation we can change the request function in the chopstick module. Let's pass a second argument to the function that specifies how many millisecond we are willing to wait for a chopstick.
+
+```Elixir
+def request(stick, timeout) do
+  send stick, ...
+  receive do
+    ... -> 
+      :ok
+  after ... -> 
+    :no
+  end
+end
+```
+
+Change your implementation of the philosophers to use the new interface. At this time it is worth understanding a bit about the random module. It will as you have figured out generate a random number each time we can `:rand.uniform/1` but, the sequence is  the same each time we create a new process. A process will use the same sequence every time it is created. This is very nice when we debug programs since we then eliminate one source of indeterminism, but not as fun when we want processes to behave different each time we run it. Do some reading and provide each philosopher with a unique seed value, if you do it right you can have different execution patterns at will.
+
+> So you have broken the dead-lock, or so you think, but what is actually happening? What happens when a philosopher gives up? You have to do some thinking but the solution is quite simple once you trace what is happening.
+
+### Asynchronous Request
+
+The solution that you have now is quite boring in that a philosopher will first request the left chopstick and only when this is delivered will it try to grab the right chopstick. How about sending a request to both chopsticks first and then wait for the replies? Change the request function and then provide a _granted_ function that does the waiting. 
+
+> If a philosopher gives up, how do we keep track of which chopsticks that was actually obtained? Is this a tricky problem or a non-problem?
+
+### A Waiter
+
+> Can you provide a better strategy for the philosophers so that they can eat and dream without ending up in a deadlock? What happens if you provide a waiter that controls how many philosophers that can eat at any given time. How would this help the situation? How many philosophers can try to eat without ending up in a deadlock? How smart does the waiter need to be?
+
+### Avoid the deadlock
+
+> Is there a small change in the system that will avoid ever landing in a dead-lock situation? Can you guarantee that all philosophers will eventually get to eat? Is the system fair?
+
+## Benchmark
+
+Run some benchmarks and try to figure out how long time it takes for a set of philosophers to eat a given number of times. Use the algorithms that do not risk ending up in deadlocks and try to be as aggressive as possible.  
+
+> Can you work with a increasing "back-off" time so that a philosopher will wait for a while before trying to grab the chopsticks if it has failed once? Can the system adapt itself so that it runs smoothly without too many failed attempts? Is there a trade-off between being aggressive and over-all throughput?
+
+
 
