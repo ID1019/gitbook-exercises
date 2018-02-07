@@ -15,7 +15,9 @@ The location of a chopstick is represented by a process. The state of the proces
 * **available**: if a chopstick is present
 * **gone**: if the chopstick is taken
 
-A location will start in the state available, and then wait for a _request message_. When the location process receives this message it should return a _granted_ message and move to the state _gone_. In this state the location process will accept a \_return message \_and can then return to the available state. Messages that are not currently handled remain in the message queue.
+A location will start in the state available, and then wait for a _request message_. When the location process receives this message it should return a _granted_ message and move to the state _gone_. In this state the location process will accept a return message and can then return to the available state. Messages that are not currently handled remain in the message queue.
+
+![](/assets/Screen Shot 2018-02-07 at 23.11.30.png)
 
 Implement this process in a module `Chopstick` with a function `start/0` that spawns the process and returns the process id. When you spawn the process use `spawn_link/1` to make sure that the chopstick process dies if the mother process dies \(and vice verse\). This is some skeleton code to give you the structure of the implementation.
 
@@ -149,7 +151,7 @@ Change your implementation of the philosophers to use the new interface. At this
 
 ### Asynchronous Request
 
-The solution that you have now is quite boring in that a philosopher will first request the left chopstick and only when this is delivered will it try to grab the right chopstick. How about sending a request to both chopsticks first and then wait for the replies? Change the request function and then provide a _granted_ function that does the waiting. 
+The solution that you have now is quite boring in that a philosopher will first request the left chopstick and only when this is delivered will it try to grab the right chopstick. How about sending a request to both chopsticks first and then wait for the replies? Change the request function and then provide a _granted_ function that does the waiting.
 
 > If a philosopher gives up, how do we keep track of which chopsticks that was actually obtained? Is this a tricky problem or a non-problem?
 
@@ -163,7 +165,7 @@ The solution that you have now is quite boring in that a philosopher will first 
 
 ## Benchmark
 
-Run some benchmarks and try to figure out how long time it takes for a set of philosophers to eat a given number of times. Use the algorithms that do not risk ending up in deadlocks and try to be as aggressive as possible.  
+Run some benchmarks and try to figure out how long time it takes for a set of philosophers to eat a given number of times. Use the algorithms that do not risk ending up in deadlocks and try to be as aggressive as possible.
 
 > Can you work with a increasing "back-off" time so that a philosopher will wait for a while before trying to grab the chopsticks if it has failed once? Can the system adapt itself so that it runs smoothly without too many failed attempts? Is there a trade-off between being aggressive and over-all throughput?
 
