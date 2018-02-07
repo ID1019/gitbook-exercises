@@ -39,5 +39,16 @@ def gone() do
 end
 ```
 
+We should try to keep the internals of the location process as hidden as possible from the users of the module. We therefore provide a functional interface so that a user of the module does not need to know the structure of all messages.
 
+```Elixir
+def request(stick) do
+  send stick, ...
+  receive do
+    ... -> :ok
+  end
+end
+```
+
+Provide similar functions for returning the stick and terminating the process. We will change things later so you will see that it is very nice to only allow the philosophers to use the functional interface.
 
