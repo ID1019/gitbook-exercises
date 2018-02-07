@@ -17,7 +17,7 @@ The location of a chopstick is represented by a process. The state of the proces
 
 A location will start in the state available, and then wait for a _request message_. When the location process receives this message it should return a _granted_ message and move to the state _gone_. In this state the location process will accept a return message and can then return to the available state. Messages that are not currently handled remain in the message queue.
 
-<img src="/assets/Screen Shot 2018-02-07 at 23.11.30.png" width="100" />
+<p align="center"><img src="/assets/Screen Shot 2018-02-07 at 23.11.30.png" width="500" /></p>
 
 Implement this process in a module `Chopstick` with a function `start/0` that spawns the process and returns the process id. When you spawn the process use `spawn_link/1` to make sure that the chopstick process dies if the mother process dies \(and vice verse\). This is some skeleton code to give you the structure of the implementation.
 
