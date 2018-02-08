@@ -108,7 +108,3 @@ def request(stick, timeout) do
   end
 end
 ```
-Change your implementation of the philosophers to use the new interface. At this time it is worth understanding a bit about the random module. It will as you have figured out generate a random number each time we can `:rand.uniform/1` but, the sequence is the same each time we create a new process. A process will use the same sequence every time it is created. This is very nice when we debug programs since we then eliminate one source of indeterminism, but not as fun when we want processes to behave different each time we run it. Do some reading and provide each philosopher with a unique seed value, if you do it right you can have different execution patterns at will.
-
-So you have broken the dead-lock, or so you think, but what is actually happening? What happens when a philosopher gives up? You have to do some thinking but the solution is quite simple once you trace what is happening.
-
