@@ -61,7 +61,7 @@ Try some more complex functions, for example the Fibonacci function:
 
 {% math %}
 
-fib\(n\)=
+fib(n)=
 
         \begin{cases}
 
@@ -69,7 +69,7 @@ fib\(n\)=
 
         1 & \text{if } n \text{ is }1\\
 
-        fib\(n-1\)+fib\(n-2\) & \text{otherwise}
+        fib(n-1)+fib(n-2) & \text{otherwise}
 
         \end{cases}  
 {% endmath %}
