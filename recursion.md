@@ -41,5 +41,5 @@ def binary(0), do: []
 def binary(...), do: binary(...) ++ [...]
 ```
 
-
+Pew $\(3+4\)$
 
