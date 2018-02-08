@@ -1,5 +1,4 @@
-#
-Introduction
+#Introduction
 
 In this assignment you should implement the behaviour of five philosophers that are sitting at a round dining table. The [problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem) is to allow each philosopher to get something to eat, a task that does not sound to be very difficult.
 
