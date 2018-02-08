@@ -61,16 +61,11 @@ Try some more complex functions, for example the Fibonacci function:
 
 {% math %}
 fib(n)=
-
-        \begin{cases}
-
-        0 & \text{if } n \text{ is }0\\
-
-        1 & \text{if } n \text{ is }1\\
-
-        fib(n-1)+fib(n-2) & \text{otherwise}
-
-        \end{cases}  
+    \begin{cases}
+    0 & \text{if } n \text{ is }0\\
+    1 & \text{if } n \text{ is }1\\
+    fib(n-1)+fib(n-2) & \text{otherwise}
+    \end{cases}  
 {% endmath %}
 
 ##Ackermann
@@ -78,12 +73,12 @@ fib(n)=
 You can also give the Ackermann function a try:
 
 {% math %}
-    ackerman(m, n)=
-        \begin{cases}
-        n+1 & \text{if } m = 0\\
-        ackerman(m-1,1) & \text{if } m>0 \text{ and } n=0\\
-        ackerman(m-1,ackerman(m,n-1)) & \text{otherwise}
-        \end{cases}
+ackerman(m, n)=
+    \begin{cases}
+    n+1 & \text{if } m = 0\\
+    ackerman(m-1,1) & \text{if } m>0 \text{ and } n=0\\
+    ackerman(m-1,ackerman(m,n-1)) & \text{otherwise}
+    \end{cases}
 {% endmath %}
 
 
