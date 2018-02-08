@@ -60,7 +60,6 @@ We're using the [library function](https://hexdocs.pm/elixir/Enum.html#reverse/1
 Try some more complex functions, for example the Fibonacci function:
 
 {% math %}
-
 fib(n)=
 
         \begin{cases}
@@ -73,4 +72,20 @@ fib(n)=
 
         \end{cases}  
 {% endmath %}
+
+##Ackermann
+
+You can also give the Ackermann function a try:
+
+{% math %}
+    ackerman(m, n)=
+        \begin{cases}
+        n+1 & \text{if } m = 0\\
+        ackerman(m-1,1) & \text{if } m>0 \text{ and } n=0\\
+        ackerman(m-1,ackerman(m,n-1)) & \text{otherwise}
+        \end{cases}
+{% endmath %}
+
+
+This looks like an innocent little function but don't try too high numbers.
 
