@@ -81,6 +81,34 @@ ackerman(m, n)=
     \end{cases}
 {% endmath %}
 
-
 This looks like an innocent little function but don't try too high numbers.
+
+##List Processing
+
+Open up new module and implement the following list processing functions (again we will have to call them something not that obvious in order not to create a conflict with the built-in functions):
+
+* `drp`: drop the first $$n$$ elements of a list
+* `tak`: take the first $$n$$ elements of a list
+* `append`: append two lists
+* `rev`: reverse a list
+* `palindrome`: return `true` if a list is a palindrome
+
+##Sorting
+
+The final assignment will be to implement the *merge sort* algorithm. Open up a new file `sort.ex` and start with a new module.
+
+```elixir
+def request(stick, timeout) do
+  send stick, ...
+  receive do
+    ... -> 
+      :ok
+  after ... -> 
+    :no
+  end
+end
+```
+Change your implementation of the philosophers to use the new interface. At this time it is worth understanding a bit about the random module. It will as you have figured out generate a random number each time we can `:rand.uniform/1` but, the sequence is the same each time we create a new process. A process will use the same sequence every time it is created. This is very nice when we debug programs since we then eliminate one source of indeterminism, but not as fun when we want processes to behave different each time we run it. Do some reading and provide each philosopher with a unique seed value, if you do it right you can have different execution patterns at will.
+
+So you have broken the dead-lock, or so you think, but what is actually happening? What happens when a philosopher gives up? You have to do some thinking but the solution is quite simple once you trace what is happening.
 
