@@ -1,6 +1,6 @@
 # Summary
 
 * [Introduction](README.md)
-* [Philosophers and Concurrency](chapter1.md)
+* [Philosophers and Concurrency](philosophers-and-concurrency.md)
 * [Recursion](recursion.md)
 
