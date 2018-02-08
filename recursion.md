@@ -41,5 +41,36 @@ def binary(0), do: []
 def binary(...), do: binary(...) ++ [...]
 ```
 
-Pew $\(3+4\)$
+What is the deficiency of this implementation. What is the runtime complexity? Hint: check [this page](https://hexdocs.pm/elixir/Kernel.html#++/2) about Elixir kernel. 
+
+Change your implementation so that it has a $$O(n)$$ complexity. The solution will look something like this:
+
+```Elixir
+def binary2(i), do: binary2(i, ...)
+
+def binary2(0, sofar), do: Enum.reverse(sofar)
+
+def binary2(..., ...), do: binary2(..., ...)
+```
+
+We're using the [library function](https://hexdocs.pm/elixir/Enum.html#reverse/1) `Enum.reverse/1` to reverse the accumulated value.
+
+## Fibonacci
+
+Try some more complex functions, for example the Fibonacci function:
+
+{% math %}
+
+fib\(n\)=
+
+        \begin{cases}
+
+        0 & \text{if } n \text{ is }0\\
+
+        1 & \text{if } n \text{ is }1\\
+
+        fib\(n-1\)+fib\(n-2\) & \text{otherwise}
+
+        \end{cases}  
+{% endmath %}
 
