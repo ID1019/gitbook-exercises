@@ -68,7 +68,7 @@ fib(n)=
     \end{cases}  
 {% endmath %}
 
-##Ackermann
+## Ackermann
 
 You can also give the Ackermann function a try:
 
@@ -83,7 +83,7 @@ ackerman(m, n)=
 
 This looks like an innocent little function but don't try too high numbers.
 
-##List Processing
+## List Processing
 
 Open up new module and implement the following list processing functions (again we will have to call them something not that obvious in order not to create a conflict with the built-in functions):
 
@@ -93,7 +93,7 @@ Open up new module and implement the following list processing functions (again 
 * `rev`: reverse a list
 * `palindrome`: return `true` if a list is a palindrome
 
-##Sorting
+## Sorting
 
 The final assignment will be to implement the *merge sort* algorithm. Open up a new file `sort.ex` and start with a new module.
 
