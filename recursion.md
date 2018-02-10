@@ -96,15 +96,3 @@ Open up new module and implement the following list processing functions (again 
 ## Sorting
 
 The final assignment will be to implement the *merge sort* algorithm. Open up a new file `sort.ex` and start with a new module.
-
-```elixir
-def request(stick, timeout) do
-  send stick, ...
-  receive do
-    ... -> 
-      :ok
-  after ... -> 
-    :no
-  end
-end
-```
