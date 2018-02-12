@@ -23,21 +23,21 @@ Implement this process in a module `Chopstick` with a function `start/0` that sp
 
 ```Elixir
 def start do
-stick = spawn_link(fn -> ... end)
+  stick = spawn_link(fn -> ... end)
 end
 
 def available() do
-receive do
-... -> ...
-:quit -> :ok
-end
+  receive do
+    ... -> ...
+    :quit -> :ok
+  end
 end
 
 def gone() do
-receive do
-... -> ...
-:quit -> :ok
-end
+  receive do
+    ... -> ...
+    :quit -> :ok
+  end
 end
 ```
 
@@ -45,10 +45,10 @@ We should try to keep the internals of the location process as hidden as possibl
 
 ```Elixir
 def request(stick) do
-send stick, ...
-receive do
-... -> :ok
-end
+  send(stick, ...)
+  receive do
+    ... -> :ok
+  end
 end
 ```
 
@@ -62,7 +62,7 @@ You can implement the dreaming and eating time by using the library function `:t
 
 ```Elixir
 def sleep(t) do
-:timer.sleep(:rand.uniform(t))
+  :timer.sleep(:rand.uniform(t))
 end
 ```
 
@@ -89,18 +89,18 @@ If you have the two modules working we can seat the philosophers around the tabl
 def start(), do: spawn(fn -> init() end)
 
 def init() do
-c1 = Chopstick.start()
-c2 = Chopstick.start()
-c3 = Chopstick.start()
-c4 = Chopstick.start()
-c5 = Chopstick.start()
-ctrl = self()
-Philosopher.start(n, 5, c1, c2, "Arendt", ctrl, seed + 1)
-Philosopher.start(n, 5, c2, c3, "Hypatia", ctrl, seed + 2)
-Philosopher.start(n, 5, c3, c4, "Simone", ctrl, seed + 3)
-Philosopher.start(n, 5, c4, c5, "Elisabeth", ctrl, seed + 4)
-Philosopher.start(n, 5, c1, c5, "Ayn", ctrl, seed + 5)
-wait(5, [c1, c2, c3, c4, c5])
+  c1 = Chopstick.start()
+  c2 = Chopstick.start()
+  c3 = Chopstick.start()
+  c4 = Chopstick.start()
+  c5 = Chopstick.start()
+  ctrl = self()
+  Philosopher.start(n, 5, c1, c2, "Arendt", ctrl, seed + 1)
+  Philosopher.start(n, 5, c2, c3, "Hypatia", ctrl, seed + 2)
+  Philosopher.start(n, 5, c3, c4, "Simone", ctrl, seed + 3)
+  Philosopher.start(n, 5, c4, c5, "Elisabeth", ctrl, seed + 4)
+  Philosopher.start(n, 5, c1, c5, "Ayn", ctrl, seed + 5)
+  wait(5, [c1, c2, c3, c4, c5])
 end
 ```
 
@@ -108,16 +108,16 @@ We're starting all processes under a controlling process that will keep track of
 
 ```Elixir
 def wait(0, chopsticks) do
-Enum.each(chopsticks, fn(c) -> Chopstick.quit(c) end)
+  Enum.each(chopsticks, fn(c) -> Chopstick.quit(c) end)
 end
 
 def wait(n, chopsticks) do
-receive do
-:done ->
-wait(n - 1, chopsticks)
-:abort ->
-Process.exit(self(), :kill)
-end
+  receive do
+    :done ->
+      wait(n - 1, chopsticks)
+    :abort ->
+      Process.exit(self(), :kill)
+  end
 end
 ```
 
@@ -135,13 +135,13 @@ To break out of a potential deadlock situation we can change the request functio
 
 ```Elixir
 def request(stick, timeout) do
-send stick, ...
-receive do
-... ->
-:ok
-after ... ->
-:no
-end
+  send(stick, ...)
+  receive do
+    ... ->
+      :ok
+    after ... ->
+      :no
+  end
 end
 ```
 
