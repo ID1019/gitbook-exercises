@@ -73,11 +73,11 @@ fib(n)=
 You can also give the Ackermann function a try:
 
 {% math %}
-ackerman(m, n)=
+ackermann(m, n)=
     \begin{cases}
     n+1 & \text{if } m = 0\\
-    ackerman(m-1,1) & \text{if } m>0 \text{ and } n=0\\
-    ackerman(m-1,ackerman(m,n-1)) & \text{otherwise}
+    ackermann(m-1,1) & \text{if } m>0 \text{ and } n=0\\
+    ackermann(m-1,ackermann(m,n-1)) & \text{otherwise}
     \end{cases}
 {% endmath %}
 
