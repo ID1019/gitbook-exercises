@@ -208,7 +208,7 @@ Once you have `insert/2` working, implement the sorting function `isort(list, so
 
 Now all you have to do is provide a function `isort(list)`, that calls the function `insert/2` using the right arguments.
 
-```Elixir
+```elixir
 def isort(l) do 
   isort(l, ...)
 end
