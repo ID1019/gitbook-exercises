@@ -73,7 +73,7 @@ You can also compile and run the program from within the Elixir shell:
 
 Now in the same module define the following functions:
 
-* a function that converts from Fahrenheit to Celsius (the function is as follows: $$C = (F-32)/1.8$$)
+* a function that converts from Fahrenheit to Celsius \(the function is as follows: $$C = (F-32)/1.8$$\)
 * a function that calculates the area of a rectangle give the length of the two sides
 * a function that calculates the area of a square, using the previous function
 * a function that calculates the area of a circle given the radius
@@ -84,8 +84,8 @@ Sooner or later you will have to think about which programming environment that 
 
 Assume that all we have is addition and subtraction but need to define multiplications. How would you do? You will have to use recursion and you solve it by first describing the multiplication functions by words.
 
-_The product of m and n is: $$0$$ if $$m$$ is equal to $$0$$, otherwise the  
-product is $$n$$ plus the product of $$m-1$$ and $$n$$._
+_The product of m and n is: _$$0$$_ if _$$m$$_ is equal to _$$0$$_, otherwise the  
+product is _$$n$$_ plus the product of _$$m-1$$_ and _$$n$$_._
 
 Once you have written down the definition, the coding is simple.
 
@@ -144,7 +144,7 @@ def exp(x, n) do
 end
 ```
 
-Use the built-in arithmetic functions _rem_, _div_ and multiplication _$$*$$_ to implement a much faster exponentiation using the following  
+Use the built-in arithmetic functions _rem_, _div_ and multiplication $$*$$ to implement a much faster exponentiation using the following  
 definition:
 
 * $$x$$ raised to 1 is $$x$$
@@ -180,7 +180,7 @@ In the above examples, what is the value of the variables after the pattern matc
 These are some simple functions that you should implement. They will all use recursion so first try to formulate in words what the definition should look like, then implement it.
 
 * `len(l)`: return the number of elements in the list _l_
-* `sum(l)`: return the sum of all elements in the list _l_, assume that  
+* `sum(l)`: return the sum of all elements in the list _l_, assume that  
   all elements are integers
 
 These functions take some more thinking. You should return a list as a result of evaluating the function.
@@ -196,19 +196,19 @@ _Things to ponder: what are the runtime complexity of these operations._
 
 ## Sorting
 
-There are several ways to sort a list and you should know them all. We will start with the most basic algorithm and then try some other (more or less good).
+There are several ways to sort a list and you should know them all. We will start with the most basic algorithm and then try some other \(more or less good\).
 
 ### Insertion sort
 
 In _insertion sort_, you sort a list of elements by taking them one at a time and _insert_ them into an already sorted list. The already sorted list will of course be empty when we start but will when we are done contain all the elements.
 
-Start by defining a function insert(element, list), that inserts the element at the right place in the list. Think of the two mayor cases, what to do if the list is empty and what to do if the list contains at least one element. Assume that the elements are integers and can be compared using the regular $$<$$ operator.
+Start by defining a function `insert(element, list)`, that inserts the element at the right place in the list. Think of the two mayor cases, what to do if the list is empty and what to do if the list contains at least one element. Assume that the elements are integers and can be compared using the regular $$<$$ operator.
 
 Once you have `insert/2` working, implement the sorting function `isort(list, sorted)`; again what should you do if the list is empty, what should you do if it contains at least one element?
 
 Now all you have to do is provide a function `isort(list)`, that calls the function `insert/2` using the right arguments.
 
-```elixir
+```Elixir
 def isort(l) do 
   isort(l, ...)
 end
@@ -229,7 +229,7 @@ Try also to rewrite the isort function using the clause syntax; same-same but di
 
 ### Merge sort
 
-In _merge sort_, you divide the list into two (as equal as possible) list. Then you merge sort each of these lists to obtain two sorted sub-lists. These sorted sub-lists are then _merged_ into one final sorted list.
+In _merge sort_, you divide the list into two \(as equal as possible\) list. Then you merge sort each of these lists to obtain two sorted sub-lists. These sorted sub-lists are then _merged_ into one final sorted list.
 
 The two lists are merged by picking the smallest of the elements from each of the lists. Since each list is sorted, one need only to look at the first element of each list to determine which element is the smallest.
 
@@ -440,3 +440,4 @@ end
 Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run until the seminar? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
 
 Calculate a Fibonacci number as high as you possibly can.
+
