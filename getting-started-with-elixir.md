@@ -225,7 +225,7 @@ def isort(x, l) do
 end
 ```
 
-Try also to rewrite the isort function using the clause syntax; same-same but different.
+Try also to rewrite the `isort` function using the clause syntax; same-same but different.
 
 ### Merge sort
 
