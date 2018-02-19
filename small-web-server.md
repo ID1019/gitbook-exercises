@@ -85,9 +85,6 @@ The URI is returned as a string. There is of course a whole lot of structure to 
 ### Version Information
 Parsing the version is simple, it's either version "1.0" or "1.1". We represent this by the atoms `v11` and `v10`. This means that we later can switch on the atom rather than again parsing a string. It does of course mean that our program will stop working when 1.2 is release but that will probably not be this week.
 
-```elixir
-pew
-```
 ``` elixir
 def http_version([?H, ?T, ?T, ?P, ?/, ?1, ?., ?1 | r0]) do
   {:v11, r0}
@@ -209,4 +206,31 @@ defmodule Rudy do
 end
 ```
 
+### Socket API
+In order to implement the above procedures you will need the functions defined in the Erlang `:gen_tcp` library. Look up the library in the Kernel Reference Manual found under "Application/kernel" in the documentation. The following will get you starting:
 
+- `:gen_tcp.listen(port, option)`: this is how a listening socket is opened by the server. We will pass the port number as an argument and use the following option: `:list`, `active: false`, `reuseaddr: true`. Using these option we will see the bytes as a list of integers instead of a binary structure. We will need to read the input using `recv/2` rather than having it sent to us as messages. The port address should be used again and again. 
+- `:gen_tcp.accept(listen)`: this is how we accept an incoming request. If it succeeds we will have a communication channel open to the client.
+- `:gen_tcp.recv(client, 0)`: once we have the connection to the *client* we will read the input and return it as a string. The augment `0`, tells the system to read as much as possible.
+- `:gen_tcp.send(client, reply)`: this is how we send back a reply, in the form of a string, to the client.
+- `:gen_tcp.close(socket)`: once we are done we need to close the connection. Note that we also have to close the listening socket that we opened in the beginning.
+
+Fill in the missing pieces, compile and start the program. Use your browser to retrieve the "page" by accessing [http://localhost:8080/foo](http://localhost:8080/foo). Any luck?
+
+### A Server
+Now a server should of course not terminate after one request. The server should run and provide a service until it is manually terminated. To achieve this we need to listen to a new connection once the first has been handled. This is easily achieved by modifying `handler/1` procedure so that it calls itself recursively once the first request has been handled.
+
+A problem is of course how to terminate the server. If it is suspended waiting for an incoming connection the only way to terminate it is to kill the process. You don't want to kill the Elixir shell so one solution is to let the server run as a separate Elixir process and then register this process under a name in order to kill it.
+ 
+``` elixir
+def start(port) do
+  Process.register(spawn(fn -> init(port) end), :rudy)
+end
+
+def stop() do
+  Process.exit(Process.whereis(:rudy), "Time to die!")
+end
+```
+
+This is quite brutal and one should of course do things in a more
+controlled manner but it works for now.
