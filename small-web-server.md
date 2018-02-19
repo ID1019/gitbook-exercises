@@ -114,3 +114,35 @@ def header([c | r0]) do
   {[c | rest], r1}
 end
 ```
+
+### The body
+The last thing we need is parsing of the body and we will make things very easy (even cheating). We assume that the body is everything that is left but the truth is not that simple. If we call our function with a string as input argument, there is little discussion of how large the body is -  but this is not easy if we want to parse an incoming stream of bytes. When do we reach the end, when should we stop waiting for more? The length of the body is therefore encoded in the headers of the request. Or rather in the specification of HTTP 1.0 and 1.1 there are several alternative ways of determining the length of thebody. If you dig deeper into the specs you will find that it is quite messy. In our little world we will however treat the rest of the string as the body.
+
+``` elixir
+def message_body(r), do: {r, []}
+```
+
+### A Small Test
+
+You now have all the pieces to parse a request; try the string below. Note how we encode the special characters in a string, `\r` is carriage-return and `\n` is line-feed.
+
+``` elixir
+'GET /index.html HTTP/1.1\r\nfoo 34\r\n\r\nHello'
+```
+
+### What About Replies
+We will not deliver very interesting replies from our server but here is a function that generates a HTTP reply with a 200 status code (200 is all OK). Another function can be convenient to have when we want to generate a request. Also export these from the http module, we are going to use them later.
+
+Note the double `\r\n`, one to end the status line and one to end the header section. A proper reply should containing headers that describe the content and the size of the body but a normal browser will understand what we mean.
+
+``` elixir
+def ok(body) do
+  "HTTP/1.1 200 OK\r\n\r\n #{body}"
+end
+
+def get(uri) do
+  "GET #{uri} HTTP/1.1\r\n\r\n"
+end
+```
+
+Note the double `\r\n`, one to end the status line and one to end the header section. A proper reply should contain headers that describe the content and the size of the body but a normal browser will understand what we mean.
