@@ -232,5 +232,81 @@ def stop() do
 end
 ```
 
-This is quite brutal and one should of course do things in a more
-controlled manner but it works for now.
+This is quite brutal and one should of course do things in a more controlled manner but it works for now.
+
+## The assignment
+
+You should complete the rudimentary server described above and do some experiments. Set up the server on one machine and access it from another machine. A small benchmark program can generate requests and measure the time it takes to receive the answers.
+
+``` elixir
+defmodule Test do
+
+  @number_requests 100
+
+  def bench(host, port) do
+    start = Time.utc_now()
+    run(@number_requests, host, port)
+    finish = Time.utc_now()
+    diff = Time.diff(finish, start, :millisecond)
+    IO.puts("Benchmark: #{@number_requests} requests in #{diff} ms")
+  end
+
+  defp run(0, _host, _port), do: :ok
+  defp run(n, host, port) do
+    request(host, port)
+    run(n - 1, host, port)
+  end
+
+  defp request(host, port) do
+    opt = [:list, active: false, reuseaddr: true]
+    {:ok, server} = :gen_tcp.connect(host, port, opt)
+    :gen_tcp.send(server, HTTP.get("foo"))
+    {:ok, _reply} = :gen_tcp.recv(server, 0)
+    :gen_tcp.close(server)
+  end
+
+end
+```
+
+You might want to change the procedure `request/2` during debugging to see if the socket communication actually works.
+
+Remove the print-out calls so that we're measuring the performance of the server and not the performance of the output function. Insert a small delay (10ms) in the handling of the request to simulate file handling, server side scripting etc.
+
+``` elixir
+def reply({{:get, uri, _}, _, _}) do
+  :timer.sleep(10)
+  HTTP.ok("Hello!")
+end
+```
+
+> Now, how many request per second can we serve? Is our artificial delay significant or does it disappear in the parsing overhead? What happens if you run the benchmarks on several machines at the same time? Run some tests and report your findings.
+
+## Increasing Throughput
+
+Our web server as it looks right now will wait for a request, serve the request and wait for the next. If the serving of a request depends on other processes, such as the file system or some database, we will be idle waiting while a new request might already be available for parsing. 
+
+Your task is to increase the throughput of our server by letting each request be handled concurrently. This means that the server should handle each request in its own Elixir process.
+
+> Should we create a new process for each incoming reply? Does it not take time to create a process (not really)? What will happen if we have thousand of requests a minute? A better approach might be to create a pool of handlers and assign request to them; if there are now available handlers the request will be put on hold or ignored.
+
+Elixir even allows several processes to listen to a socket. One could create a fixed number of sequential servers that are all listening to the same socket. This is probably the easiest solution but you have to do some reading to understand the TCP module.
+
+The Elixir system has support for multicore architectures. If you have dual-core handy you can do some performance testing. Read more on how to start Elixir with multiprocessor support. Things might even improve a single core processor since the system will be better in hiding latency. Do some performance measurements to see if your concurrent solution outperforms the sequential solution. You will have to change the benchmark program so that it is also concurrent.
+
+## Optional Extensions
+
+If you want to have some more challenges you can try to do the following improvements.
+
+### HTTP Parsing
+
+If you have done things the easy way you might have taken for granted that the whole HTTP request is complete in the first string that you read from the socket. This might not be that case, the request might be divided into several blocks and you will have to concatenated these before you can read a complete request. 
+
+One simple solution is as follows: do a first scan of the string and look for a double CR, LF. This will be the end of the header section; if you don't find it you will have to wait for more. How do you know how long the body is?
+
+### Deliver Files
+It's not much of an web server if it can only deliver canned answers. Let's extend the server so that it can deliver files. In order to do this we need to parse the URI request and separate the path and file form a possible query or index. Once we have the file in our hand we need to make up a proper reply header containing the proper size, type and coding descriptors.
+
+### Robustness
+The way the server is terminated is of course not very elegant. One could do a much better job by having the sockets being active and deliver the connections as messages. The server could then be free to receive either control messages from a controlling process or a message from the socket. 
+
+Another problem with the current implementation is that it will leave sockets open if things go wrong. A more robust way is to trap exceptions and close sockets, open files etc before terminating. 
