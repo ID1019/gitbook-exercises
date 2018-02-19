@@ -196,7 +196,7 @@ _Things to ponder: what are the runtime complexity of these operations._
 
 ## Sorting
 
-There are several ways to sort a list and you should know them all. We will start with the most basic algorithm and then try some other \(more or less good\).
+There are several ways to sort a list and you should know them all. We will start with the most basic algorithm and then try some other (more or less good).
 
 ### Insertion sort
 
@@ -234,8 +234,6 @@ In _merge sort_, you divide the list into two \(as equal as possible\) list. The
 The two lists are merged by picking the smallest of the elements from each of the lists. Since each list is sorted, one need only to look at the first element of each list to determine which element is the smallest.
 
 The skeleton code below will give you an idea of what the solution will look like. Here we do use the clause syntax when defining merge, you can try to define it using _case expressions_ but it becomes a bit messy.
-
-\pagebreak
 
 ```elixir
 def msort(l) do
