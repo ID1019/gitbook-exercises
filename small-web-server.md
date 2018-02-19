@@ -85,6 +85,9 @@ The URI is returned as a string. There is of course a whole lot of structure to 
 ### Version Information
 Parsing the version is simple, it's either version "1.0" or "1.1". We represent this by the atoms `v11` and `v10`. This means that we later can switch on the atom rather than again parsing a string. It does of course mean that our program will stop working when 1.2 is release but that will probably not be this week.
 
+```elixir
+pew
+```
 ``` elixir
 def http_version([?H, ?T, ?T, ?P, ?/, ?1, ?., ?1 | r0]) do
   {:v11, r0}
@@ -146,3 +149,64 @@ end
 ```
 
 Note the double `\r\n`, one to end the status line and one to end the header section. A proper reply should contain headers that describe the content and the size of the body but a normal browser will understand what we mean.
+
+## The First Reply
+
+Your task now is to start a program that waits for an incoming request, delivers a reply and then terminates. This is not much of a web server but it will show you how to work with sockets. The important lesson here is that a socket that a server listen to is not the same thing as the socket later used for communication. 
+
+Call the first test rudy (since it is a rudimentary server), open a new file and add a module declaration. You should define four procedures:
+
+- `init(port)`: the procedure that will initialize the server, takes a port number (for example 8080), opens a listening socket and passes the socket to `handler/1`. Once the request has been handled the socket will be closed.
+- `handler(listen)`: will listen to the socket for an incoming connection. Once a client has connect it will pass the connection to `request/1`. When the request is handled the connection is closed.
+- `request(client)`: will read the request from the client connection and parse it. It will then parse the request using your
+http parser and pass the request to `reply/1`. The reply is then sent back to the client.
+- `reply(request)`: this is where we decide what to reply, how to turn the reply into a well formed HTTP reply.
+
+The program could have the following structure:
+
+``` elixir
+defmodule Rudy do
+
+  def init(port) do
+    opt = [:list, active: false, reuseaddr: true]
+
+    case :gen_tcp.listen(port, opt) do
+      {:ok, listen} ->
+        ...
+        :gen_tcp.close(listen)
+        :ok
+      {:error, error} ->
+        error
+    end
+  end
+
+  def handler(listen) do
+    case :gen_tcp.accept(listen) do
+      {:ok, client} ->
+        ...
+      {:error, error} ->
+        error
+    end
+  end
+
+  def request(client) do
+    recv = :gen_tcp.recv(client, 0)
+    case recv do
+      {:ok, str} ->
+        ...
+        ...
+        :gen_tcp.send(client, response)
+      {:error, error} ->
+        IO.puts("RUDY ERROR: #{error}")
+    end
+    :gen_tcp.close(client)
+  end
+
+  def reply({{:get, uri, _}, _, _}) do
+    HTTP.ok("Hello!")
+  end
+
+end
+```
+
+
