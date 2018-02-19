@@ -6,4 +6,5 @@
 * [Recursion](recursion.md)
 * [Huffman Encoding](huffman-encoding.md)
 * [Philosophers and Concurrency](philosophers-and-concurrency.md)
+* [Small Web Server](small-web-server.md)
 * [Network Transport Layer](network-transport-layer.md)
