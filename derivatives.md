@@ -78,3 +78,43 @@ These are two rules that we will use:
 The third rule is quite straight-forward; the derivative of an sum is the sum of the derivatives of the terms. The derivative of $$4x^{2} + 2x + 5$$ is $$8x + 2$$ since since the derivative of $$4x^{2}$$ is $$8x$$ etc.
 
 The last rule, you might not even have learned as a rule but simply it's consequences in the most common cases. It is the rule that says that $$4x^{2}$$ is $$8x$$ and $$2x$$ is $$2$$. When learning using examples like these the general rule is quite simple: multiply the constant with the power and reduce the power by one. The general rule gives us the definition for any product, be it $$2x$$ or $$2x^{2}$$.
+
+## The Rules of the Game
+
+So if we know how expressions are represented and how to take the derivative of sums and products, we are ready to implement the rules. This is a skeleton on what a function `deriv/2` would look like:
+
+``` elixir
+def deriv({:const, _}, _), do: ...
+
+def deriv({:var, v}, v), do: ...
+
+def deriv({:var, y}, _), do: ...
+
+def deriv({:mul, e1, e2}, v), do: ...
+
+def deriv({:add, e1, e2}, v), do: ...
+```
+
+What is the derivative of $$2x^{2} + 3x + 5$$ with respect to $$x$$? How do we represent the expression in our system? Can you calculate the derivative using the `deriv/2` function?
+
+The answer that you get might not look like the answer you would have hoped for but it might be that what you see is an expression that can be simplified. The derivative of $$2x$$ is of course $$2$$ but our function will return something that looks like $$0 \cdot x + 2 \cdot 1$$, which of course is equal to $$2$$.
+
+## Carrying On
+
+Add more rules to the `deriv/2` function. We should of course be able to take the derivative of the following expressions:
+
+- $$x^n$$
+- $${\rm ln}(x)$$
+- $$\frac{1}{x}$$
+- $$\sqrt{x}$$
+- $$sin(x)$$
+
+To be able to handle these expressions you of course need to find a suitable representation. You then have to find the general rule for finding the derivative.
+
+## Simplification
+
+The results of our derivation might be correct but they are very hard to read. They contain multiplications with zero, addition with constant values etc. All of those could be removed if we simplified the results.
+
+Simplification could be tricky, You could start by transforming an expression so that all functions with constant arguments were actually evaluated. You could then remove expressions that are multiplied with zero etc. The problem is to know if there are any more things that could be done; how do we know that will not be able to do more.
+
+There will also be a discussion of what the simplest form would look like. Should we write $$x \cdot (y + 2)$$ or should we write $$xy + 2x$$.
