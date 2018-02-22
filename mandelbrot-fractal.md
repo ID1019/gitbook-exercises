@@ -104,3 +104,59 @@ The two values $$x$$ and $$y$$ will now be used to give you an RGB value. You ca
 5) $$\lbrace 0, 255-y, 255 \rbrace$$
 
 What colors does this correspond to? Does it look anything like a rainbow? Close to a rainbow? The mapping from depth to colors is one thing that one can play with, its not at all given that the colors should be chosen base only on the depth, one might even want to know the distribution of depths in the whole image or reuse colors at different depths.
+
+### Computing the Set
+
+So we know how to find the depth of a complex number so why not try to compute the depth at all points in a rectangular plane. We create a module `Mandel` that should calculate an image. The function that will be our interface to the module looks like this:
+
+``` elixir
+def mandelbrot(width, height, x, y, k, depth) do
+  trans = fn(w, h) ->
+    Cmplx.new(x + k * (w - 1), y - k * (h - 1))
+  end
+
+  rows(width, height, trans, depth, [])
+end
+```
+
+What is happening here? We want to generate an image of the size *Width by Height*. The upper left corner of this image is the point $$x + xi$$ and the offset between two points is $$k$$. This means that the first pixels of the upper row should correspond to the "depth" of $$x+yi$$, $$(x+k) + yi$$, $$(x+2k) + yi$$ etc and that the second row starts with $$x + (y-k)i$$. 
+
+To help the Mandelbrot generator from keeping track of this we simply provide a function that does the work. The *trans* function will take a pixel position ($$w$$, $$h$$) and return a complex number that is the one we should compute the depth of. It is better to do this here and then we could more easily change the function rather than passing all the necessary information in arguments.
+
+Now the *rows* function should return a list of rows, where each row is a list of colors. Each item in a row corresponds to a pixel at ($$w$$, $$h$$) and the color is computed by:
+
+- generating the complex number that corresponds to the pixel
+- calculate the depth of this value
+- convert the depth to a color
+
+The only tricky issue is to generate the rows in "correct" order, it is easy to generate the image up side down or mirrored. In the end it does not mean very much but try to get it right.
+
+When you can generate an image, write it to a file using the `PPM` module. This code would hopefully give you a first look at the Mandelbrot set.
+
+``` elixir
+def demo() do
+  small(-2.6, 1.2, 1.2)
+end
+
+def small(x0, y0, xn) do
+  width = 960
+  height = 540
+  depth = 64
+  k = (xn - x0) / width
+  image = Mandel.mandelbrot(width, height, x0, y0, k, depth)
+  PPM.write("small.ppm", image)
+end
+```
+
+### Carrying On
+
+Generate a nice looking image, you will find the most interesting things close to the edge of the black set. This is where the fractals start to spin out of control and the beauty of the Mandelbrot set is found. It's amazing that so much information could be hidden in a function this simple.
+
+$$
+\begin{eqnarray*}
+    z_0 &= &0 \\ 
+    z_{n+1} & = &z_n^2 + c
+\end{eqnarray*}
+$$
+
+Could we speed up the calculations? Are there any operations that are of unnecessary complexity? Can you include an image in your report (you would probably have to convert it to png)?
