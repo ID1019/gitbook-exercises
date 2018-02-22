@@ -87,3 +87,20 @@ The API to the module is:
 `write(name, image)`: where the name is the name (possibly full path name) of the file and the image is a list of rows where each row is a list of tuples `{:rgb, r, g, b}` (each value being in the range 0..255).
 
 So once we know that it is working we can carry on to produce some images.
+
+### Colors
+We create one module (that in the end will be the one that you want to play with the most), the `Color` module. This module should export a function `convert(depth, max)` that given a depth on a scale from zero to max gives us a color.
+
+The conversion of depth information to *RGB values* can of course be done in many different ways and the one presented here is only for inspiration.
+
+Let's assume that we have a depth of a point $$d$$, with the maximum possible depth being $m$. We could create five sections that divides the range 0 to $$m$$. Divide $$d$$ by $$m$$ and so that you have a fraction $$f$$. Then multiply this fraction by four to generate a floating point $$a$$ from $$0$$ to $$4$$. Now truncate the value to give you an integer $$x$$ from 0 to 4 (this is the section) and generate an offset $$y$$ that is the truncated value of $$255 * (a - x)$$.
+
+The two values $$x$$ and $$y$$ will now be used to give you an RGB value. You can use the following transformation:
+
+1) $$\lbrace y, 0, 0 \rbrace$$
+2) $$\lbrace 255, y, 0 \rbrace$$
+3) $$\lbrace 255-y, 255, 0 \rbrace$$
+4) $$\lbrace 0, 255, y \rbrace$$
+5) $$\lbrace 0, 255-y, 255 \rbrace$$
+
+What colors does this correspond to? Does it look anything like a rainbow? Close to a rainbow? The mapping from depth to colors is one thing that one can play with, its not at all given that the colors should be chosen base only on the depth, one might even want to know the distribution of depths in the whole image or reuse colors at different depths.
