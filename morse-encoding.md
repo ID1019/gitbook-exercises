@@ -71,4 +71,14 @@ def encode([char | message], table) do
   code = lookup(char, table),
   append(code, encode(message, table))
 end
-\end{minted}
+```
+
+Every time we need the code of a character we will have to look it up in a list which of course is unnecessarily expensive.  We could of course store the codes in an ordered tree and that would improve thing but we could do better.
+
+We note that once we have the encoding table we will only do look-up operations. We could then choose a representation that will do look-up quickly even if adding or removing elements is dreadfully expensive.
+
+We also note that the keys, i.e. the characters, are integers in the range 32 to 122. It could therefore be quite possible to store the codes in a tuple that was indexed by the keys. The tuple would not be fully populated (there are no characters with codes less than 32 nor any characters between 64 and 97, but this does not matter.) If we could create a tuple with 122 elements we would have direct access to any code given the character as key.
+
+Instead of trying to write this tuple explicitly we will create it during run-time using the list of codes. There is a built-in function called `List.to_tuple/1` that will take a list and return a tuple of all the elements in the list.
+
+If we could only create a list of 122 elements where the i'th element is the code for the character with code $i$. Implement a function `fill/1` that takes an ordered list of key-value pairs, where the key is an integer, and returns a list of values. The returned list of values should be such that if the key *k* is mapped to the value *v* then the value *v* is the *i'th* element in the lists. If the *j'th* element in the list does not have a mapping, the element should be `:na`.
