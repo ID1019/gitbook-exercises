@@ -34,3 +34,19 @@ $$
 We still do not want to compute forever; if the number actually does belong to the Mandelbrot set we will of course never hit the threshold. Therefore, we set an upper limit $$n$$ that will be the maximum *depth* of our computation.
 
 So given a maximum value of $$n$$, we can for any complex number $$c$$ say if it *definitely does not belong to* or if it *could possibly belong to* the Mandelbrot set. In the case where we know for sure that the number does not belong to the set we also have a value $$i$$ which was the point where $$|z_i| > 2$$. This value $$i$$ is the color we need to generate a beautiful Mandelbrot image.
+
+### Complex Numbers
+Since we are going to work with complex numbers we might as well start by implementing a module to handle these. Let's make it simple and represent a complex number as a tuple with its real and imaginary values. Create a module `Cmplx` that exports the following functions:
+
+- `new(r, i)`: returns the complex number with real value $$r$$ and imaginary $$i$$
+- `add(a, b)`: adds two complex numbers
+- `sqr(a)`: squares a complex number
+- `abs(a)`: the absolute value of $$a$$
+
+You might want to use the `sqrt/1` function exported from the Erlang `:math` module when calculating the absolute value. You call Erlang modules like any module but the Erlang modules all have atoms as names.
+
+``` elixir
+> :math.sqrt(42)
+```
+
+The Complex module implements an abstract data type; the internals of how complex numbers are represented should not be visible outside of the module. We of course know, but we should not make use of this knowledge.
