@@ -97,11 +97,11 @@ Let's assume that we have a depth of a point $$d$$, with the maximum possible de
 
 The two values $$x$$ and $$y$$ will now be used to give you an RGB value. You can use the following transformation:
 
-1) $$\lbrace y, 0, 0 \rbrace$$
-2) $$\lbrace 255, y, 0 \rbrace$$
-3) $$\lbrace 255-y, 255, 0 \rbrace$$
-4) $$\lbrace 0, 255, y \rbrace$$
-5) $$\lbrace 0, 255-y, 255 \rbrace$$
+1. $$\lbrace y, 0, 0 \rbrace$$
+2. $$\lbrace 255, y, 0 \rbrace$$
+3. $$\lbrace 255-y, 255, 0 \rbrace$$
+4. $$\lbrace 0, 255, y \rbrace$$
+5. $$\lbrace 0, 255-y, 255 \rbrace$$
 
 What colors does this correspond to? Does it look anything like a rainbow? Close to a rainbow? The mapping from depth to colors is one thing that one can play with, its not at all given that the colors should be chosen base only on the depth, one might even want to know the distribution of depths in the whole image or reuse colors at different depths.
 
