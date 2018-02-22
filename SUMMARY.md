@@ -8,5 +8,6 @@
 * [Morse Encoding](morse-encoding.md)
 * [LZW Encoding](lzw-encoding.md)
 * [Philosophers and Concurrency](philosophers-and-concurrency.md)
+* [Mutual Exclusion](mutual-exclusion.md)
 * [Small Web Server](small-web-server.md)
 * [Network Transport Layer](network-transport-layer.md)
