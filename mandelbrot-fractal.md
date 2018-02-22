@@ -50,3 +50,40 @@ You might want to use the `sqrt/1` function exported from the Erlang `:math` mod
 ```
 
 The Complex module implements an abstract data type; the internals of how complex numbers are represented should not be visible outside of the module. We of course know, but we should not make use of this knowledge.
+
+### The Brot Module
+
+For no reason at all we will call our first module `Brot`, it will implement the computation of the $$i$$ value given a complex value $$c$$. We must of course give it a maximum iteration *depth* or we risk getting stuck in an infinite computation.
+
+Implement a function `mandelbrot/2` that, given the complex number $$c$$ and the maximum number of iterations $$m$$, return the value $$i$$ at which $$|z_i| > 2$$ or 0 if it does not for any $$i < m$$ i.e. it should always return a value in the range $$0..(m-1)$$.
+
+``` elixir
+def mandelbrot(c, m) do
+  z0 = Cmplx.new(..., ...)
+  i = 0
+  test(i, z0, c, m)
+end
+```
+
+The `test/4` function should of course test if we have reached the maximum iteration, in which case it returns zero, or if the absolute value of `z` is greater than 2, in which case it returns `i`. Make sure that you use the functions exported from the `Cmplx` module.
+
+Do some test to see that the function works (here I'm writing the complex numbers directly knowing that we represent them as tuples, this is of course cheating but very convenient).
+
+- `Brot.mandelbrot(Cmplx.new(0.8, 0), 30)`
+- `Brot.mandelbrot(Cmplx.new(0.5, 0), 30)`
+- `Brot.mandelbrot(Cmplx.new(0.3, 0), 30)`
+- `Brot.mandelbrot(Cmplx.new(0.27, 0), 30)`
+- `Brot.mandelbrot(Cmplx.new(0.26, 0), 30)`
+- `Brot.mandelbrot(Cmplx.new(0.255, 0), 30)`
+
+What is happening? Which values could possibly belong to the Mandelbrot set - how sure are you? Do some more testing, why stop at thirty iterations? Try fifty!
+
+### The Printer
+
+Before carrying on we should make sure that we can generate an image. You should have the file `PPM` module that will write the final image to a file. Make sure that you can use this module and that you know where files are located when created.
+
+The API to the module is:
+
+`write(name, image)`: where the name is the name (possibly full path name) of the file and the image is a list of rows where each row is a list of tuples `{:rgb, r, g, b}` (each value being in the range 0..255).
+
+So once we know that it is working we can carry on to produce some images.
