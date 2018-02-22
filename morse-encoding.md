@@ -82,3 +82,31 @@ We also note that the keys, i.e. the characters, are integers in the range 32 to
 Instead of trying to write this tuple explicitly we will create it during run-time using the list of codes. There is a built-in function called `List.to_tuple/1` that will take a list and return a tuple of all the elements in the list.
 
 If we could only create a list of 122 elements where the i'th element is the code for the character with code $i$. Implement a function `fill/1` that takes an ordered list of key-value pairs, where the key is an integer, and returns a list of values. The returned list of values should be such that if the key *k* is mapped to the value *v* then the value *v* is the *i'th* element in the lists. If the *j'th* element in the list does not have a mapping, the element should be `:na`.
+
+``` elixir
+fill([{1, a}, {2, b}, {6, c}])
+```
+
+should return:
+
+``` elixir
+[:na, a, b, :na, :na, :na, c]
+```
+
+If you do it right you can now create a tuple that will give you the right encoding.
+
+``` elixir
+defp encode_table() do
+  codes()
+  |> fill(0)
+  |> List.to_tuple
+end
+```
+
+Doing the look-up operation in now simply doing a call to `elem/2`.
+  
+``` elixir
+def lookup(char, table), do: elem(table, char)
+```
+
+If you do some benchmarks, you will see that you have managed to speed things up considerably. One thing to ponder is if you have changed the run-time complexity of the encoder.
