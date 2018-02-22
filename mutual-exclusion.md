@@ -6,7 +6,7 @@ The main idea with mutual exclusion is that we want to limit theconcurrency to a
 
 ## Let's Implement a Lock
 
-We will start by implementing a *lock process* (or rather try to implement it). A lock is something that can only be held by one process, the process that {\em takes the lock} knows that it is the sole owner of the lock and can proceed to a critical section.
+We will start by implementing a *lock process* (or rather try to implement it). A lock is something that can only be held by one process, the process that *takes the lock* knows that it is the sole owner of the lock and can proceed to a critical section.
 
 Our first attempt to implement a lock process is quite straight forward - we will implement the lock as a process that only holds one value and accepts two messages: **set** and **get**.
 
