@@ -7,8 +7,10 @@ In this exercise you will implement a Mandelbrot set generator, or rather an ima
 The Mandelbrot set is defined as the set of complex numbers $$c$$ for which the sequence $$z_n$$ does not approach infinity. The value $$z_n$$ is defined as follows:
 
 $$
+\begin{eqnarray*}
     z_0 &= &0 \\ 
     z_{n+1} & = &z_n^2 + c
+\end{eqnarray*}
 $$
 
 If you remember how to do the square of a complex numbers you know everything there is to know to start:
