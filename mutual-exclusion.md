@@ -97,3 +97,57 @@ end
 ```
 
 In this version it does not matter if two processes calls the procedure at the same time; both of them will swap in the value `:taken` but only one of them would receive the `:open` value in return. The process that loses the race will have to retry to take the lock and will succeed once the holding process sets the lock to `:open`.
+
+## Peterson's algorithm
+
+You might wonder if there is a way to implement a lock without an atomic swap operation. If not, we are sure lucky that the hardware people have implemented it. It turns out that there is and the algorithm is fairly simple once you understand why it works.
+
+### The Algorithm
+
+Assume we have our original cell with only the `:get` and `:set` operations. We also assume that there are only two processes that will compete for the lock. We will now use three cells: `p1`, `p2` and `q`. In the cell `p1` the first process will declare its interest in moving into the critical section. The second process will declare its interest using `p2`. The `q` cell will be used to determine the winner if we have a draw.
+
+The two processes will execute slightly different code when trying to enter the critical section; or rather, the code is the same but the parameters are shifted. The first process will call the procedure `lock(0, p1, p2, q)` where as the second process will call `lock(1, p2, p1, q)`.
+
+``` elixir
+def lock(id, m, p, q) do
+  Cell.set(m, true)
+  other = rem(id + 1, 2)
+  Cell.set(q, other)
+
+  case Cell.get(p) do
+    false ->
+      :locked
+    true ->
+      case Cell.get(q) do
+        ^id ->
+          :locked
+        ^other ->
+          lock(id, m, p, q)
+      end
+  end
+end
+
+def unlock(_id, m, _p, _q) do
+  Cell.set(m, false)
+end
+```
+
+The intuition is that each process begins to declare that they are interested in taking the lock. They then set the common cell `q` to the second process's identifier as a signal to the second process to go ahead if they are both interested of the lock. If a process however sees that the second process is not interested it holds the lock and proceed into the critical section.
+
+### Prove It
+
+To understand how Peterson's algorithm works is not easy; to prove that it ensures that the two processes do not believe to hold the lock at the same time is more difficult. 
+  
+If you want to prove that Peterson's algorithm works, you can draw a finite state machine diagram with the state of the variables: *p1*, *p2*, *q* and two variable *l1* and *l2* that describes if a process is in the critical section. One alternative method is to use so-called *temporal logic* where the rules can prove that it is never so that *l1* and *l2* are both true.
+
+An interesting question is whether one can make use of Peterson's algorithm in a computer that has as much as possible in the cache, or in a distributed system where clients have local copies. A prerequisite for the algorithm to work is that if a process sets *p1* to *true* and then reads that *p2* is *false* then it can not be that the second process manages to set *p2* to *true* and then read that *p1* is *false*. Describe a scenario using cached local copies that will violate this prerequisite.
+
+### The Bakery Algorithm
+
+When I lived in Barcelona I learned a wonderful algorithm for keeping track of who is next to be served in a bakery. When you entered a bakery (or butchery) you simply greeted every one with the phrase "¿Buenos dias, ultimo?". The person who was the last person in line would reply "Si" and then you would know who was the person just in front of you. If someone else entered the store you would be the one to reply "Si" and that was it. The system works perfectly and you avoid the hassle of finding a machine to give you a ticket. If Leslie Lamport had lived in Barcelona he would probably never have named his algorithm *the bakery algorithm* since it is based on a numbering system where entering processes picks a number that is higher than any other number in the queue.
+
+The algorithms uses a shared array with one index per process. If the index of a process is set to 0 it means that the process is not interested in entering the critical section. When a process wishes to enter the critical section it will scan the array and find the highest ticket number and then set its own index to the number plus one. The intuition is that all processes that entered the store before it should have precedence. It could of course happen that two processes enters at the same time and chooses an identical ticket but this is solved by giving precedence to the process with the lowest id.
+
+When a process has selected a ticket number it will again scan the array from the beginning and wait until all indexes before its own, are either set to 0 or have a ticket number that is higher than its own and, all indexes after its own are set to 0 or have ticket numbers higher or equal to its own. When the process has scanned the array it is allowed into the critical section and will, when it is done, set its own index to 0.
+
+The scanning of the array can proceed one step at a time, if a index has the value 0 it could of course be set by the owner of the index but then it will be set to a value equal or higher to the ticket of the scanning process. An index that holds a value that is lower than then ticket of the scanner will eventually be set to 0 once the processed has completed its critical section.
