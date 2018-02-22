@@ -25,10 +25,43 @@ defmodule LZW do
 end
 ```
 
-The only sequences we know of in the beginning are the sequences consisting of single characters. We have $28$ characters in total so our table will look like follows:
+The only sequences we know of in the beginning are the sequences consisting of single characters. We have 28 characters in total so our table will look like follows:
 
 ``` elixir
 {28, [{97, 1}, {98, 2}, {99, 3}, ...]}
 ```
 
 The number of sequences in the table is important to keep track of since we will add new codes as we encode our text. Have in mind that the encoder and decoder will both know the state of the initial table.
+
+## The encoder
+
+So let's start the encoding of a sequence of characters. If the sequence is empty we're done but the common case is of course if we have at east one character. We use the first character to initiate the encoder. We pick up the encoding table, that of course holds a code for the single character word. We then call the `encode/4` function that is given: the text, the word, the code of this word and the coding table.
+ 
+``` elixir
+def encode([]), do: []
+
+def encode([word | rest]) do
+  table = table()
+  {:found, code} = encode_word(word, table)
+  encode(rest, word, code, table)
+end
+```
+
+The function `encode/4` is where all the action takes place. The base case is simple, if there is not more characters in the text then we're done. If we have another character in the text we add this to the word we have read so far and check if this extended word can be found in the table. If we find a coding of the extended word we're happy but we might be even happier if we find an even longer world. This is where we continue with the extended word and its code.
+
+``` elixir
+def encode([], _sofar, code, _table), do: [code]
+
+def encode([word | rest], sofar, code, table) do
+  extended = [word | sofar]
+  case encode_word(extended, table) do
+    {:found, ext} ->
+      encode(rest, extended, ext, table);
+    {:notfound, updated} ->
+      {:found, cd} = encode_word(word, table)
+      [code | encode(rest, [word], cd, updated)]
+  end
+end
+```
+
+If a code is not found for our extended word we will return a list starting with the code of the word we had found so far. We will then continue the encoding.
