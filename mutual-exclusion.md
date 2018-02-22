@@ -309,7 +309,7 @@ def wait(semaphore, ref) do
 end
 ```
 
-We should of course also change the implementation of the semaphore so that it accepts requests on the form `{:request, ref, from}` and reply with a `:granted, ref}` but then we are on the safe side.
+We should of course also change the implementation of the semaphore so that it accepts requests on the form `{:request, ref, from}` and reply with a `{:granted, ref}` but then we are on the safe side.
 
 The reason we can send a `:release` before we actually have been granted the request is that we know that our request is in the message queue. We also make sure, by using the unique references, that we will not mistake an old granted message as a reply to a new request. 
 
