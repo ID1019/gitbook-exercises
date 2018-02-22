@@ -6,7 +6,7 @@ The encoder that we will implement will not use binary encoding i.e. codes are f
 
 Before you start to implement this encoder and decoder you should do some reading on the LZW algorithm so that you have a basic understanding of the process. The devil is as always in the detail and we will see how these are handled as we implement the encoder.
 
-## The table
+## The Table
 
 The encoder and decoder have to agree on an initial alphabet (and in the general case, the code size). We will here use a very small alphabet that consists of the smaller cap letters and the space character. Given this we construct an initial encoder/decoder table that is represented as a list of character sequences and codes.
 
@@ -33,7 +33,7 @@ The only sequences we know of in the beginning are the sequences consisting of s
 
 The number of sequences in the table is important to keep track of since we will add new codes as we encode our text. Have in mind that the encoder and decoder will both know the state of the initial table.
 
-## The encoder
+## The Encoder
 
 So let's start the encoding of a sequence of characters. If the sequence is empty we're done but the common case is of course if we have at east one character. We use the first character to initiate the encoder. We pick up the encoding table, that of course holds a code for the single character word. We then call the `encode/4` function that is given: the text, the word, the code of this word and the coding table.
  
