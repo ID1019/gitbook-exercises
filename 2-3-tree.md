@@ -73,3 +73,99 @@ end
 You might not have seen the construct `=l` in the head but it is a very convenient syntax. We do want the second argument to match the pattern but at the same time we would like to use the data structure. We could have written this without using this syntax but it would be more to write and it would not be as efficient.
 
 So the two first rules was easy, now for the rules were we are looking at a two-node that holds only leafs. I leave this with some holes for you to fill in, you should do more than just copy and paste. Look at the rules, you should return a three-node that holds two keys and three leafs.
+
+``` elixir
+def insertf(k, v, {:two, k1, {:leaf, k1, _} = l1, {:leaf, k2, _} = l2}) do
+  cond do
+    k <= k1 ->
+      ...
+    k <= k2 ->
+      ...
+    true ->
+      ...
+  end
+end
+```
+
+The keys should of course be `k1`, `k2` and `k`, but in the right order and the corresponding leafs should follow. When you think you have it, take it for a spin, terminate the clause with a dot, compile and do some experiments. You should be able to handle a empty tree, a tree of only a leaf and a two-node with two leafs. If you got it proceed to the three-node.
+
+``` elixir
+def insertf(k, v, {:three, k1, k2, {:leaf, k1, _} = l1, {:leaf, k2, _} = l2, {:leaf, k3, _} = l3}) do
+  cond do
+    k <= k1 ->
+      ...
+    k <= k2 ->
+      ...
+    k <= k3 ->
+      ...
+    true ->
+      ...
+  end
+end
+```
+
+What is the result of inserting a key-value pair in a three-node holding three leafs? Look at the rule, complete the code, compile and test. Ok - then the recursive cases.
+
+``` elixir
+def insertf(k, v, {:two, k1, left, right}) do
+  cond do
+    k <= k1 ->
+      case insertf(k, v, left) do
+        {:four, q1, q2, q3, t1, t2, t3, t4} ->
+          ...
+        updated ->
+          {:two, k1, updated, right}
+      end
+
+    true ->
+      case insertf(k, v, right) do
+        {:four, q1, q2, q3, t1, t2, t3, t4} ->
+          ...
+        updated ->
+          {:two, k1, left, updated}
+      end
+  end
+end
+```
+
+Look at the first case, we have tried to insert the new key-value in the left branch but ended up with a four-node. The four-node should be divided into two two-nodes, one holding `q1` and one holding `q3`. The key `q2` should be used to create a new three-node, holding the two newly created two-nodes and the original right node. The three-node should thus have the keys: `q2` and `k1` but you need to put this together in the right order.
+
+If you manage to solve the first puzzle then the second case is easy. Again, compile and test - can you handle the test below?
+
+``` elixir
+def test do
+  insertf(14, :grk, {:two, 7, {:three, 2, 5, {:leaf, 2, :foo},
+      {:leaf, 5, :bar}, {:leaf, 7, :zot}}, {:three, 13, 16,
+      {:leaf, 13, :foo}, {:leaf, 16, :bar}, {:leaf, 18, :zot}}})
+end
+```
+
+The case where we have a three-node is of course very similar, it's a lot of code but it should not be to difficult. You will probably make mistakes but these are more mistakes of typos. It could be easier to write the tree on a paper that clearly shows what `q1`, `q2` etc are referring to.
+
+``` elixir
+def insertf(k, v, {:three, k1, k2, left, middle, right}) do
+  cond do
+    k <= k1 ->
+      case insertf(k, v, left) do
+        {:four, q1, q2, q3, t1, t2, t3, t4} ->
+          {:four, q2, k1, k2, ..., ..., ..., ...}
+        updated ->
+          {:three, k1, k2, ..., ..., ...}
+      end
+    k <= k2 ->
+      case insertf(k, v, middle) do
+        {:four, q1, q2, q3, t1, t2, t3, t4} ->
+          ...
+        updated ->
+          {:three, k1, k2, ..., ..., ...}
+      end
+    true ->
+      case insertf(k, v, right) do
+        {:four, q1, q2, q3, t1, t2, t3, t4} ->
+          ...
+        updated ->
+          {:three, k1, k2, ..., ..., ...}
+      end
+  end
+end
+```
