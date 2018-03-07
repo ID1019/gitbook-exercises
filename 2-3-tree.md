@@ -43,3 +43,33 @@ So let's see what the rules are if we encounter a two- or three-node that holds 
 Now this was simple but we have of course possibly returned a four-node. We will see how this will be removed when we do the recursive step.
 
 When we encounter an internal two-node or three-node will proceed and insert the new key-value pair in the right branch. If we do this we could end up with a four-node and then we have to think twice before we return an new tree.
+
+- *two-node general case*: If the insert operation of the right branch returns a four-node, construct a valid three-node, where the middle key of the returned four-node is the new key in the three-node. Otherwise, return an updated two-node.
+- *three-node general case*: If the insert operation of the right branch returns a four-node, construct a valid four-node, where the middle key of the returned four-node is the new key in the four-node. Otherwise, return an updated three-node.
+
+The only thing that is left is the rule to handle the root of the tree. Everything works fine with the rules that we have but it could of course be that we will return a four-node and we don't want to have four-nodes in our tree.
+
+- *the root*: If, by updating the root, we return a four-node then split the four-node into two two-nodes that are branches of a new two-node root.
+
+That is it, now let's see how hard this is to implement.
+
+## The Implementation
+
+Let's implement a function `insertf(key, value, tree)` that takes a key, a value and a 2-3 tree and returns a 2-3 tree or possibly a four-node containing 2-3 trees of equal depth (we will deal with the root case last). Look at the rules and star with the base cases.
+
+``` elixir
+def insertf(key, value, nil), do: {:leaf, key, value}
+
+def insertf(k, v, {:leaf, k1, _} = l) do
+  cond do
+    k <= k1 ->
+      {:two, k, {:leaf, k, v}, l}
+    true ->
+      {:two, k1, l, {:leaf, k, v}}
+  end
+end
+```
+
+You might not have seen the construct `=l` in the head but it is a very convenient syntax. We do want the second argument to match the pattern but at the same time we would like to use the data structure. We could have written this without using this syntax but it would be more to write and it would not be as efficient.
+
+So the two first rules was easy, now for the rules were we are looking at a two-node that holds only leafs. I leave this with some holes for you to fill in, you should do more than just copy and paste. Look at the rules, you should return a three-node that holds two keys and three leafs.
