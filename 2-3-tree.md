@@ -25,3 +25,21 @@ We will in our implementation also work with a third type of node, a node with f
 - *a four-node*: `{:four, k1, k2, k3, left, m1, m2, right}`
 
 Doing search in this tree is of course trivial but doing insert or delete requires some more thinking.
+
+## The Rules of Insertion
+
+Remember the rules of the insert operation; we have some simple cases in the bottom of the tree and then some tricky cases where we end up with a four-node. Let's start with a description of the simple cases:
+
+- *empty tree*: To insert a key-value pair in an empty tree return a leaf containing the key and value.
+- *a leaf*: To insert a key-value pair in a leaf return a two-node containing the existing leaf and a new leaf. The smaller of the keys should be the key of the two-node.
+
+So far, so good - now to the case were we have a two-node or a three-node. We should do quite different thing depending on if the node holds leafs or if it is an internal node that holds two-nodes or three-nodes. Note that a two-node or three-node either holds only leafs or only two- and three-nodes, it can not hold only one leaf node since all leafs are on the same level in the tree.
+
+So let's see what the rules are if we encounter a two- or three-node that holds only leafs.
+
+- *two-node holding leafs*: Create a new leaf and return a three-node containing all three leafs. Make sure that the leafs are ordered and that the three-node hold the two smallest keys.
+- *three-node holding leafs*: Create a new leaf and return a four-node containing all four leafs. Make sure that the leafs are ordered and that the four-node hold the three smallest keys.     
+
+Now this was simple but we have of course possibly returned a four-node. We will see how this will be removed when we do the recursive step.
+
+When we encounter an internal two-node or three-node will proceed and insert the new key-value pair in the right branch. If we do this we could end up with a four-node and then we have to think twice before we return an new tree.
