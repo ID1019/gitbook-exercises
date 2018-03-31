@@ -181,3 +181,31 @@ def eval_match({:atm, id}, ..., ...) do
 end
 ```
 
+Matching a variable is only slightly more complicated, we check if it has a value and if not we add it to the environment. This skeleton code uses a special construct that you might not have seen before, the `^{}str`variable. This is to indicate that we do not want a new variable `str` but rather use the existing variable.
+
+```elixir
+def eval_match({:var, id}, str, env) do
+  case ... do
+    nil ->
+      {:ok, ...}
+    {_, ^str} ->
+      {:ok, ...}
+    {_, _} ->
+      :fail
+  end
+end
+```
+
+Now the complicated \(not so complicated\) case where we match a cons pattern with a cons structure. This is where we must make sure that a variable binding in one branch is transferred to the pattern matching of the other branch.
+
+```elixir
+def eval_match({:cons, hp, tp}, ..., env) do
+  case eval_match(..., ..., ...) do
+    :fail ->
+      ...
+    ... ->
+      eval_match(..., ..., ...)
+  end
+end
+```
+
