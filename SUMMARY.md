@@ -14,6 +14,7 @@
   * [Network Transport Layer](concurrency/network-transport-layer.md)
 * Seminars
   * [Huffman Encoding](seminars/huffman-encoding.md)
+  * Meta-Interpreter
   * [Mandelbrot Fractal](seminars/mandelbrot-fractal.md)
   * [Philosophers and Concurrency](seminars/philosophers-and-concurrency.md)
   * [Small Web Server](seminars/small-web-server.md)
