@@ -47,3 +47,26 @@ For now, terms are restricted to atoms, variables and the binary compound **cons
 
 The patterns in the sequence are: `x`, `y` and `{z, _}`. The syntax we use for patterns, is the same as the one that we use for terms but we are also allowed to use an underscore \(`_`\) to represent a **don't-care** variable. This variable acts as a placeholder for a data structure that we have no interest in.
 
+```text
+<pattern> ::= <atom>
+              <variable>
+              '_'  
+              '{' <pattern> ',' <pattern> '}'
+```
+
+The reason why we can use the same syntax for terms and patterns without confusion is that it is clear from the grammatical rules of the language if we refer to a pattern or a term. 
+
+### Evaluation
+
+Our interpreter will take a sequence and evaluate the pattern matching expressions one after the other; the result of the last expression is the result of the whole sequence. When the evaluation starts the interpreter will have en empty **environment** i.e. it knows of no variable bindings. Each pattern matching expression will add variable binding to the environment and the following expressions are then evaluated in the new environment.
+
+If we evaluate the sequence above we gradually build an environment, first we add the binding _x/foo_, then _y/nil_ and then _z/bar_. The final expression is thus evaluated in the following environment: _{x/foo, y/nil, z/bar}_. In this environment the term `{x, {z, y}}` is evaluated to the data structure _{foo, {bar, nil}}_.
+
+### The Architecture
+
+In order to implement our interpreter we need to solve the following problems: we need to represent expressions and we need to implement an environment. Once we have these pieces in place we can start to define the rules for the interpreter.
+
+Before you proceed, you should think this problem through. What do sequences look like; assume that we will only handle sequences as the one shown above? What are the elements of a pattern matching expression, what is on the right side and what is on the left side? How should we represent a term and does it have to be different from the representation of a pattern? How should data structures be represented?
+
+Read this section through one more time, then start to sketch on your representation. Write it down and then later compare it to the representation proposed in this exercise. 
+
