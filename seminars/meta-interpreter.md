@@ -146,3 +146,38 @@ def eval_expr({:cons, ..., ...}, ...) do
 end
 ```
 
+Here are some examples that you should be able to handle.
+
+* `eval_expr({:atm, :a}, [])}` returns `{:ok, :a}`
+* `eval_expr({:var, :x},  [{:x, :a}])}` returns `{:ok, :a}`
+* `eval_expr({:var, :x},  [])}` returns `:error`
+* `eval_expr({:cons, {:var, :x}, {:atm, :b}},  [{:x, :a}])}` returns `{:a, :b}`
+
+Note that `eval`_expr/2 returns a data structure if successful i.e. :a, :foo_ or _{:a, :b}_.  The last test is an effect of representing the binary tuples in our source program `{a, b}`, with the internal representation `{:cons, {:atm, :a}, {:atm, :b}}` that when evaluated will return the data structure _{:a, :b}_.
+
+### Pattern Matching
+
+A pattern matching will take a pattern, a data structure and an environment and return either `{:ok, env}`, where `env` is an extended environment or the atom `:fail`. 
+
+Implement a function `eval_match/3` that implements the pattern matching. Some examples will give you an idea of what we're looking for.
+
+* `eval_match({:atm, :a}, :a, [])}` returns `{:ok, []}`
+* `eval_match({:var, :x}, :a, [])}` returns `{:ok, [{:x, :a}]}`
+* `eval_match({:var, :x}, :a, [{:x, :a}])}` returns `{:ok, [{:x, :a}]}`
+* `eval_match({:var, :x}, :a, [{:x, :b}])}` returns `:fail`
+* `eval_match({:cons, {:var, :x} {:var, :x}}, {:cons, {:atm, :a} {:atm, :b}}, [])}` returns `:fail`
+
+Solving the cases where the pattern is an atom or variable is quite straight forward, especially since we already have the environment module. The slightly more problematic case is when the pattern is a cons structure. Note that we first would add a binding for `:x` to `:a` and then try to match `:x` with `:b`. This will of course fail, the variable _x_ can not have two values.
+
+The following skeleton code should lead you in the right direction. We start with the simple cases, we can ignore the case where the atoms do not match for now.
+
+```elixir
+def eval_match(:ignore, ..., ...) do
+  {:ok, ...}
+end
+
+def eval_match({:atm, id}, ..., ...) do
+  {:ok, ...}
+end
+```
+
