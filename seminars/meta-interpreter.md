@@ -35,7 +35,7 @@ A **sequence** consist of a, possibly empty, sequence of pattern matching expres
                  '{' <expression> ',' <expression> '}'
 ```
 
-### Terms, data structures and patterns
+### Terms, Data Structures and Patterns
 
 Expressions of the form that we have just described are also referred to as **terms**. We will later see examples of expression that are more complicated and we will talk about expressions in general and **term expressions** but for now we will simply call them **terms**.
 
@@ -102,4 +102,47 @@ One solution is to represent atoms with the tuple `{:atm, a}` and variables with
 A cons cell could be represented by a tuple `{:cons, head, tail}`. We could of course have chosen to represent cons cells as Elixir cons cells but we want to make a distinction between the representation of terms in our target language and terms in Elixir \(our target language now happens to be Elixir look-alike but that is of course not always the situation\).
 
 As an exercise you can write down the representation of the term:
+
+```elixir
+{:a, {x, :b}}
+```
+
+You will have to choose identifiers for the atoms `:a`, `:b` \(why not `:a`, `:b`\) and the variable `x` \(why not `:x`\).
+
+The representation of patterns will be exactly the same as for terms with the only difference that we need to represent the special **don't-care** pattern. We choose the atom `:ignore` which will be exactly what we will do when we encounter the symbol.
+
+### Expressions
+
+In our simple language an expression is simply a term expression. Expressions should be evaluated to data structures and the question is of course how these data structures should be represented.
+
+The nice thing with a meta-interpreter is that the data structures of the interpreted language could be mapped directly to the data structures of the implementation language. An atom will thus be represented by an Elixir atom, and a cons structure of the Elixir tuple i.e. `{:a, :b}`. 
+
+Create a module called `Eager` \(for reasons that will be given later\) and implement a function `eval_expr/2` that takes an expression and an environment and returns either `{:ok, str}`, where `str` is a data structure, or `:error`. An error is returned if the expression can not be evaluated. This should be a quite simple task. The following skeleton code will get you started:
+
+```elixir
+def eval_expr({:atm, id}, ...) do ... end
+
+def eval_expr({:var, id}, env) do
+  case ... do
+    nil ->
+      ...
+    {_, str} ->
+      ...
+  end
+end
+
+def eval_expr({:cons, ..., ...}, ...) do
+  case eval_expr(..., ...) do
+    :error ->
+      ...
+    {:ok, ...} ->
+      case eval_expr(..., ...) do
+        :error ->
+          ...
+        {:ok, ts} ->
+          ...
+      end
+  end
+end
+```
 
