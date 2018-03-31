@@ -91,5 +91,15 @@ These are all operations we need from the environment module. Test the environme
 Env.lookup(:foo, Env.add(:foo, 42, Env.new()))
 ```
 
+Note that Elixir will write a list of binary tuples in a special way. It is so common that we work with key-value where the "key'' is an atom that Elixir uses a special syntax. The list `[{:x, 12}, {:y, 13}]` will be written `[x: 12, y: 13]`. You also use this for when you enter key-value list, it will save you some typing.
 
+### Terms and Patterns
+
+If we only needed to represent terms consisting of atoms and cons-cells, things would be trivial. The term `{:a, :b}` could simply be represented by the Elixir term `{:a, :b}`. The problem is that we also need to represent variables. We will of course not be able to represent a variable in our target language with a variable in Elixir; we have to find a way to represent variables and make sure that we can separate them from atoms.
+
+One solution is to represent atoms with the tuple `{:atm, a}` and variables with the tuple `{:var, v}`. The good things is then that we only have to make sure that the identifiers of variables are all different and that the identifiers of atoms are all different. An atom could of course have the same identifier as a variable with out causing any problems; the atom `{:atm, 123}` is different from the variable `{:var, 123}`.
+
+A cons cell could be represented by a tuple `{:cons, head, tail}`. We could of course have chosen to represent cons cells as Elixir cons cells but we want to make a distinction between the representation of terms in our target language and terms in Elixir \(our target language now happens to be Elixir look-alike but that is of course not always the situation\).
+
+As an exercise you can write down the representation of the term:
 
