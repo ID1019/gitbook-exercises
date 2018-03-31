@@ -283,3 +283,163 @@ A case expression consists of an expression and a list of clauses where each cla
 
 Now we extend the evaluation with a clause that can handle the case expressions.
 
+```elixir
+def eval_expr({:case, expr, cls}, ...) do
+  case eval_expr(..., ...) do
+    ... ->
+      ...
+    ... ->
+      eval_cls(..., ..., ...)
+  end
+end
+```
+
+The function `eval_cls/1` will take a list of clauses, a data structure and an environment. It will select the right clause and continue the execution.
+
+```elixir
+def eval_cls([], _, _, _) do
+  :error
+end
+
+def eval_cls([{:clause, ptr, seq} | cls], ..., ...) do
+  ...
+  ...
+  case ... do
+    :fail ->
+      eval_cls(..., ..., ...)
+
+    {:ok, env} ->
+      eval_seq(..., ...)
+  end
+end
+```
+
+That's it, you should now be able to evaluate something like this:
+
+```elixir
+seq = [{:match, {:var, :x}, {:atm, :a}},
+       {:case, {:var, :x},
+          [{:clause, {:atm, :b}, [{:atm, :ops}]},
+           {:clause, {:atm, :a}, [{:atm, :yes}]}
+          ]}
+       ]
+
+Eager.eval_seq(seq, [])
+```
+
+### Lambda Expressions
+
+Adding lambda expressions might look very complicated but it turns out to be quite simple. We first have to find a representation but this is by now not a problem. We know that a lambda expression \(unnamed function\) consists of a sequence of parameter variables, a sequence of free variables and a sequence expression. If we agree to represent the parameters as well as the free variables as lists of identifiers we are done.
+
+```elixir
+{:lambda, parameters, free, sequence}
+```
+
+Now when we evaluate a lambda expression we need to represent a closure but this is equally simple. A closure simply consists of a sequence of parameter variables, a sequence expression together with an environment.
+
+```elixir
+{:closure, parameters, sequence, environment}
+```
+
+To evaluate a lambda expression we need to add a function to the `Env` module that creates a new environment from a list of variable identifiers and an existing environment. If we can do this the rest is simple.
+
+```elixir
+def eval_expr({:lambda, par, free, seq}, ...) do
+  case Env.closure(free, ...) do
+    :error ->
+      :error
+    closure ->
+      {:ok, {:closure, ..., ..., ...}}
+  end
+end
+```
+
+The only thing we now have left is to function application i.e. when we apply a closure to a sequence of argument expressions. We need a way to represent this and the most natural way is the best. Note that we have an expression in the structure. The closure is something we will hopefully have as a result of evaluating the expression.
+
+```elixir
+{:apply, expression, arguments}
+```
+
+The evaluation should first evaluate the expression. If this is indeed a closure we can evaluate the arguments and apply the closure to the resulting list of data structures.
+
+```elixir
+def eval_expr({:apply, expr, args}, ...) do
+  case ... do
+    :error ->
+      :error
+    {:ok, {:closure, par, seq, closure}} ->
+      case ... do
+        :error ->
+          :foo
+        strs ->
+          env = Env.args(par, strs, closure)
+          eval_seq(seq, env)
+      end
+  end
+end
+```
+
+You have to extend the `Env` module to include a function `args/3` that is given a list of variable identifiers \(`par`\) , a list of data structures \(`strs`\) and an environment \(that includes the values of all free variables\). The environment that is returned should now include bindings for all the variables in the sequence of the closure. If you get it right we should be able to evaluate the following.
+
+```elixir
+seq = [{:match, {:var, :x}, {:atm, :a}},
+       {:match, {:var, :f}, 
+          {:lambda, [:y], [:x], [{:cons, {:var, :x}, {:var, :y}}]}},
+       {:apply, {:var, :f}, [{:atm, :b}]}
+      ]
+      
+Eager.eval_seq(seq, [])
+```
+
+### Named Functions
+
+You're now a small step from being able to handle named functions i.e. a program. What we need is a key-value store that given a function identifier \(an atom\), returns a structure that holds a list of parameters and a sequence. We store this in a list and can use the library function `List.keyfind/3` to retrieve the right function.
+
+Since we now have a program we need to give each function access to this data structure. This means that we need to change the `eval_expr/2` function to take a third argument, the program. This value must also be passed to `eval_seq/2` and `eval_cls/3`. If you think this is a tedious task you have just encountered the downside of not having global data structures.
+
+Change the program and add the following clause to handle named functions.
+
+```elixir
+def eval_expr({:call, id, args}, env, prg) when is_atom(id) do
+  case List.keyfind(prg, id, 0) do
+    ... ->
+      ...
+    {_, par, seq} ->
+      case eval_args(..., ..., prg) do
+        :error ->
+          :error
+
+        strs ->
+          env = Env.args(..., ..., ...)
+          eval_seq(..., ..., prg)
+      end
+  end
+end
+```
+
+If everything works you should now be able to run the following program:
+
+```elixir
+prgm = [{:append, [:x, :y],
+           [{:case, {:var, :x}, 
+               [{:clause, {:atm, []}, [{:var, :y}]},
+                {:clause, {:cons, {:var, :hd}, {:var, :tl}}, 
+                   [{:cons, 
+                      {:var, :hd}, 
+                      {:call, :append, [{:var, :tl}, {:var, :y}]}}]
+                }]
+            }]
+         }]
+         
+seq = [{:match, {:var, :x}, 
+       {:cons, {:atm, :a}, {:cons, {:atm, :b}, {:atm, []}}}},
+     {:match, {:var, :y}, 
+       {:cons, {:atm, :c}, {:cons, {:atm, :d}, {:atm, []}}}},
+     {:call, :append, [{:var, :x}, {:var, :y}]}
+    ]
+    
+Eager.eval_seq(seq, [], prgm)
+```
+
+
+
