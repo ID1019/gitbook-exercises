@@ -209,3 +209,67 @@ def eval_match({:cons, hp, tp}, ..., env) do
 end
 ```
 
+And last but not least, if we can not match the pattern to the data structure we fail.
+
+```elixir
+def eval_match(_, _, _) do
+  :fail
+end
+```
+
+Complete the implementation and try the examples give before.
+
+### Sequences
+
+We now have all the pieces of the puzzle to implement the evaluation of a sequence. We represent a sequence as list, the first elements will of course be pattern matching expressions but the last element is of course a regular expression. The evaluation starts with an empty environment that is extended as we proceed down the list.
+
+Each pattern matching expressions is evaluated in two steps, first the expression on the right hand side is evaluated returning a data structure. The pattern on the left hand side is then match to the data structure resulting in an extended environment.
+
+It is important to understand how the environment is extended. We first need to remove all bindings of variables that occur in the pattern. The evaluation of the following sequence should result in _{c, b}_.
+
+```elixir
+x = :a; y = :b; x = :c; {x, y}
+```
+
+Here is some skeleton code that Will get you started. You need to implement the function `extract_vars/1` that returns a list of all variables in the pattern.
+
+```elixir
+def eval_seq([exp], env) do
+  eval_expr(..., ...)
+end
+
+def eval_seq([{:match, ..., ...} | ...], ...) do
+  case eval_expr(..., ...) do
+    ... ->
+      ...
+    ... ->
+      vars = extract_vars(...)
+      env = Env.remove(vars, ...)
+
+      case eval_match(..., ..., ...) do
+        :fail ->
+          :error
+        {:ok, env} ->
+          eval_seq(..., ...)
+      end
+  end
+end
+```
+
+When you have everything in place you should define a function `eval/1`, that takes a sequence and returns either `{:ok, str}` or `:error`. You should then be able to run the following query:
+
+```elixir
+seq = [{:match, {:var, :x}, {:atm,:a}},
+        {:match, {:var, :y}, {:cons, {:var, :x}, {:atm, :b}}},
+        {:match, {:cons, :ignore, {:var, :z}}, {:var, :y}},
+        {:var, z}]
+
+Eager.eval(seq)
+```
+
+ The query is the representation of the following expression:
+
+```elixir
+x = :a; y = {x, :b}; {_, z} = y; z
+```
+
