@@ -1,15 +1,20 @@
-# Summary
+# Table of contents
 
-* [Introduction](README.md)
-* [Getting Started with Elixir](getting-started-with-elixir.md)
-* [Derivatives](derivatives.md)
-* [Recursion](recursion.md)
-* [Huffman Encoding](huffman-encoding.md)
-* [Morse Encoding](morse-encoding.md)
-* [LZW Encoding](lzw-encoding.md)
-* [2-3 Tree](2-3-tree.md)
-* [Mandelbrot Fractal](mandelbrot-fractal.md)
-* [Philosophers and Concurrency](philosophers-and-concurrency.md)
-* [Mutual Exclusion](mutual-exclusion.md)
-* [Small Web Server](small-web-server.md)
-* [Network Transport Layer](network-transport-layer.md)
+* [Functional and Concurrent Programming](README.md)
+* Introduction
+  * [Getting Started with Elixir](introduction/getting-started-with-elixir.md)
+  * [Derivatives](introduction/derivatives.md)
+  * [Recursion](introduction/recursion.md)
+* Data Structures
+  * [2-3 Tree](data-structures/2-3-tree.md)
+  * [Morse Encoding](data-structures/morse-encoding.md)
+  * [LZW Encoding](data-structures/lzw-encoding.md)
+* Concurrency
+  * [Mutual Exclusion](concurrency/mutual-exclusion.md)
+  * [Network Transport Layer](concurrency/network-transport-layer.md)
+* Seminars
+  * [Huffman Encoding](seminars/huffman-encoding.md)
+  * [Mandelbrot Fractal](seminars/mandelbrot-fractal.md)
+  * [Philosophers and Concurrency](seminars/philosophers-and-concurrency.md)
+  * [Small Web Server](seminars/small-web-server.md)
+

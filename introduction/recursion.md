@@ -1,10 +1,12 @@
+# Recursion
+
 ## Simple arithmetic functions
 
 Implement the following arithmetic functions and save them in a file `recursion.ex`. Start with simple recursive implementations that are not necessarily tail-recursive. In order not to create any conflicts with built-in function, you will have to call your functions something different i.e. `prod` instead of `product` etc.
 
 When you implement them write a small documentation. For more information regarding documenting Elixir check the the following [documentation](https://hexdocs.pm/elixir/writing-documentation.html).
 
-```Elixir
+```elixir
 defmodule Recursion do
 
   @doc """
@@ -35,17 +37,17 @@ end
 
 Implement a function `binary/1` that takes an integer and produces its binary encoding, represented ad a list of ones and zeros. Your first solution should look something like this:
 
-```Elixir
+```elixir
 def binary(0), do: []
 
 def binary(...), do: binary(...) ++ [...]
 ```
 
-What is the deficiency of this implementation. What is the runtime complexity? Hint: check [this page](https://hexdocs.pm/elixir/Kernel.html#++/2) about Elixir kernel. 
+What is the deficiency of this implementation. What is the runtime complexity? Hint: check [this page](https://hexdocs.pm/elixir/Kernel.html#++/2) about Elixir kernel.
 
-Change your implementation so that it has a $$O(n)$$ complexity. The solution will look something like this:
+Change your implementation so that it has a  complexity. The solution will look something like this:
 
-```Elixir
+```elixir
 def binary2(i), do: binary2(i, ...)
 
 def binary2(0, sofar), do: Enum.reverse(sofar)
@@ -59,40 +61,23 @@ We're using the [library function](https://hexdocs.pm/elixir/Enum.html#reverse/1
 
 Try some more complex functions, for example the Fibonacci function:
 
-{% math %}
-fib(n)=
-    \begin{cases}
-    0 & \text{if } n \text{ is }0\\
-    1 & \text{if } n \text{ is }1\\
-    fib(n-1)+fib(n-2) & \text{otherwise}
-    \end{cases}  
-{% endmath %}
-
 ## Ackermann
 
 You can also give the Ackermann function a try:
-
-{% math %}
-ackermann(m, n)=
-    \begin{cases}
-    n+1 & \text{if } m = 0\\
-    ackermann(m-1,1) & \text{if } m>0 \text{ and } n=0\\
-    ackermann(m-1,ackermann(m,n-1)) & \text{otherwise}
-    \end{cases}
-{% endmath %}
 
 This looks like an innocent little function but don't try too high numbers.
 
 ## List Processing
 
-Open up new module and implement the following list processing functions (again we will have to call them something not that obvious in order not to create a conflict with the built-in functions):
+Open up new module and implement the following list processing functions \(again we will have to call them something not that obvious in order not to create a conflict with the built-in functions\):
 
-* `drp`: drop the first $$n$$ elements of a list
-* `tak`: take the first $$n$$ elements of a list
+* `drp`: drop the first  elements of a list
+* `tak`: take the first  elements of a list
 * `append`: append two lists
 * `rev`: reverse a list
 * `palindrome`: return `true` if a list is a palindrome
 
 ## Sorting
 
-The final assignment will be to implement the *merge sort* algorithm. Open up a new file `sort.ex` and start with a new module.
+The final assignment will be to implement the _merge sort_ algorithm. Open up a new file `sort.ex` and start with a new module.
+

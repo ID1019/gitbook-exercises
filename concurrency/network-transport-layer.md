@@ -1,3 +1,5 @@
+# Network Transport Layer
+
 ## Introduction
 
 This exercise is partly about breaking up a problem in layers of abstractions and implement each layer as a process or a set of processes. We will model our solution as communicating finite state machines and each machine is of course implemented as an Elixir process.
@@ -6,22 +8,22 @@ The problem that we will look at is how to create a communication abstraction th
 
 ## A Transport Abstraction
 
-Assume that we want to create a *transport service*. The service should provide the following functionality:
+Assume that we want to create a _transport service_. The service should provide the following functionality:
 
-- **identity**: The service should provide addresses, we should be able to send and receive messages to other processes given an address.
-- **flow control**: The service should take care of flow control so we should not be able to send more messages than the receiver can consume.
-- **ordered delivery**: Packets should be delivered in order.
-- **reliable delivery**: Packets should be delivered even if the underlying communication channel is lossy.
+* **identity**: The service should provide addresses, we should be able to send and receive messages to other processes given an address.
+* **flow control**: The service should take care of flow control so we should not be able to send more messages than the receiver can consume.
+* **ordered delivery**: Packets should be delivered in order.
+* **reliable delivery**: Packets should be delivered even if the underlying communication channel is lossy.
 
-This is not that hard to achieve and the solution could easily be be described in a state diagram with 15 states and 123
+This is not that hard to achieve and the solution could easily be be described in a state diagram with 15 states and 123  
 transitions... The problem we would have is that, if we want to solve all these properties in one go, we would have so many things to keep track of that the solution would look like a bowl of spaghetti.
 
 Instead of solving all problems at once we divide the solution into layers, each layer providing a service that brings us closer to the final solution. The layers that we will implement have similarities with the ISO communication layers or the layers in the IP stack. The layers that we will work with are:
 
-- **link**: This layer is given, it will send a *frame* on a wire but does not know very much more. There are no guarantees that the frame will arrive nor that frames will arrive in order.
-- **network**: This layer will introduce *network addresses* so we can have several nodes connected together. It uses the link layer straight off so we do not add ordered delivery nor guarantees of message delivery.
-- **order**: This layer will add re-transmissions of missing messages and keep track of ordering of messages. 
-- **flow**: This layer will solve the flow-control problem.
+* **link**: This layer is given, it will send a _frame_ on a wire but does not know very much more. There are no guarantees that the frame will arrive nor that frames will arrive in order.
+* **network**: This layer will introduce _network addresses_ so we can have several nodes connected together. It uses the link layer straight off so we do not add ordered delivery nor guarantees of message delivery.
+* **order**: This layer will add re-transmissions of missing messages and keep track of ordering of messages. 
+* **flow**: This layer will solve the flow-control problem.
 
 The TCP protocol is similar to our order and flow layers but also implements congestion avoidance, process addressing, stream to datagram segmentation etc. In this implementation we only provide reliability and flow control to make things a bit easier. We will also implement them as separate layers to show how simple each layer can be implemented.
 
@@ -41,12 +43,12 @@ Note the order here; we can not provide the link layer process with its connecti
 
 The link layer should be able to handle the following messages:
 
-- `{:send, msg}`: A message from the master (the network layer process), telling the link process to send the message, `msg`, to the destination process. The message is wrapped in a `Frame` and sent using the regular Elixir send primitive.
-- `%Frame{data: msg}`: A frame from the peer link process. This message should be forwarded to the master process using the regular Elixir send primitive. The message is sent as is, `msg`, without being wrapped in any special data structure.
+* `{:send, msg}`: A message from the master \(the network layer process\), telling the link process to send the message, `msg`, to the destination process. The message is wrapped in a `Frame` and sent using the regular Elixir send primitive.
+* `%Frame{data: msg}`: A frame from the peer link process. This message should be forwarded to the master process using the regular Elixir send primitive. The message is sent as is, `msg`, without being wrapped in any special data structure.
 
 The Elixir implementation is given in Appendix A. Before we continue we write a small test program and connect two nodes together.
 
-``` elixir
+```elixir
 def test_link() do
   sender = spawn(fn() -> sender() end)
   receiver = spawn(fn() -> receiver() end)
@@ -64,7 +66,7 @@ This program will start two processes, the `sender` and the `receiver`;  note th
 
 The `link_sender` process could look like follows. Implement the corresponding receive process and see if your systems runs.
 
-``` elixir
+```elixir
 def sender() do
   receive do
     {:connect, lnk} ->
@@ -72,5 +74,6 @@ def sender() do
       :io.format("sending hello~n", [])
       send(lnk, {:send, :hello})
   end
-end            
+end
 ```
+
