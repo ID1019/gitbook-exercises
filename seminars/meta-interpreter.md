@@ -70,3 +70,26 @@ Before you proceed, you should think this problem through. What do sequences loo
 
 Read this section through one more time, then start to sketch on your representation. Write it down and then later compare it to the representation proposed in this exercise. 
 
+## Implementation
+
+We will build the interpreter starting with the environment, that will be implemented in a separate module. Then we will handle evaluation of expressions, pattern matching and finally a sequence of expressions.
+
+### The Environment
+
+Implementing an environment will be the simplest task that we have; an environment is simply a mapping from variables to data structures. If we assume that environments will be small, we can represent an environment as a list of key-value tuples. The environment _{x/foo, y/bar}_ could be represented as: `[{:x, :foo}, {:y, :bar}] `. The variables are represented by atoms, and we have here chosen to name them `:x` and `:y` but we could as well have chosen other atoms \(`x12`, `:variable_x`\) or integers \(`1` and `2`\), the important thing is that they all have unique names.
+
+In a module `Env`, you should now define the following functions:
+
+* `new()`: return an empty environment
+* `add(id, str, env)`: return an environment where the binding of the variable `id` to the structure `str` has been added to the environment `env`
+* `lookup(id, env)`: return either `{id, str}`, if the variable `id` was bound, or `nil`
+* `remove(ids, env)`: returns an environment where all bindings for variables in the list `ids` have been removed
+
+These are all operations we need from the environment module. Test the environment by calling the functions from the Elixir shell to see that it produces the expected results. The following call should return `{:foo,  42}`:
+
+```elixir
+Env.lookup(:foo, Env.add(:foo, 42, Env.new()))
+```
+
+
+
