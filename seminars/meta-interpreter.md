@@ -273,3 +273,13 @@ Eager.eval(seq)
 x = :a; y = {x, :b}; {_, z} = y; z
 ```
 
+## Extensions
+
+We now have an interpreter that can handle sequences of expressions but the expressions are rather simple. You should now extend the language and the interpreter to handle: **case expressions**, **lambda expressions** and **named functions**. In each case you need to think about how expressions are represented before thinking about how the `eval_expr/2` function is extended.
+
+### Case Expressions
+
+A case expression consists of an expression and a list of clauses where each clause is a pattern and a sequence. We of course need to be able to tell a case expression from any other expression so why not represent it as a tuple with a `:case` key word as the first element. A clause is simply a tuple with the key word `:clause`.
+
+Now we extend the evaluation with a clause that can handle the case expressions.
+
