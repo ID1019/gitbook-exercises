@@ -9,6 +9,7 @@
   * [2-3 Tree](data-structures/2-3-tree.md)
   * [Morse Encoding](data-structures/morse-encoding.md)
   * [LZW Encoding](data-structures/lzw-encoding.md)
+  * [Ray Tracer](data-structures/ray-tracer.md)
 * Concurrency
   * [Elixir Concurrency](concurrency/elixir-concurrency.md)
   * [Mutual Exclusion](concurrency/mutual-exclusion.md)
