@@ -10,6 +10,7 @@
   * [Morse Encoding](data-structures/morse-encoding.md)
   * [LZW Encoding](data-structures/lzw-encoding.md)
 * Concurrency
+  * [Elixir Concurrency](concurrency/elixir-concurrency.md)
   * [Mutual Exclusion](concurrency/mutual-exclusion.md)
   * [Network Transport Layer](concurrency/network-transport-layer.md)
 * Seminars
