@@ -231,5 +231,17 @@ def ray(camera, x, y) do
 end
 ```
 
+### The World
 
+The world is simply a list of objects. We will extend the world to also hold other things but for our first test this will be sufficient.
+
+```elixir
+defmodule World do
+
+  defstruct objects: []
+
+end
+```
+
+That completes all the modules that we need to represent the world, high time to generate some images.
 
