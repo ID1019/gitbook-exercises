@@ -365,3 +365,128 @@ Extend the `World` module and describe a world struct to also hold a list of lig
 defstruct objects: [], lights: [], background: @background
 ```
 
+The question is now what a light source looks like; we create a new module `Light` that will handle all aspects of it. The lights themselves are simple to model since we only give them a position and a colour.
+
+```elixir
+defmodule Light do
+
+  defstruct pos: nil, color: {1.0, 1.0, 1.0}
+
+end
+```
+
+The question now is how we are going to use the lights; we could probably have a whole course on how light sources are combined in a ray tracer but we will try to keep it simple. 
+
+Let's look at the trace function, it detects if a ray hits an object and then returns the object and the distance to this object. Since we know the direction of the ray we can easily describe the point in space where the ray hits the object.
+
+What if we ask if a ray starting in this point and in the direction of a light source, hits any object in the world. If it does not intersect with any object it should be illuminated by the light source. If we examine all light sources we could determine which sources that illuminates the point. Combined with the colour of the object we can determine the colour of the corresponding pixel. Note that you have all the pieces of this puzzle, it's just a matter of combining light sources and the colour of the object.
+
+```elixir
+defp trace(ray, world) do
+  objects = world.objects
+
+  case intersect(ray, objects) do
+    {:inf, _} ->
+      world.background
+    {dist, obj} ->
+      pos = ray.pos
+      dir = ray.direction
+      point = Vector.add(pos, Vector.smul(dir, dist - @delta))
+      normal = Sphere.normal(point, obj)
+      visible = visible(point, world.lights, objects)
+      illumination = Light.combine(point, normal, visible)
+      Light.illuminate(obj, illumination, world)
+  end
+end
+```
+
+In the code above there are two things that needs some explanation: the `@delta` and the use of the **normal vector**. The delta is a hack that we need to do since floating points are not exact, or rather since a point that is actually "in'' the surface of an object might be shadowed by the object itself. By raising the point a small distance from the surface we avoid being lured into thinking that we are in the surface or even worse below the surface; the delta that we use is 0.001 and it works fine.
+
+The second thing is the normal vector that we use when combining the light sources. A light that hits the surface at an angle will contribute to less illumination compared to a light that hits it straight from above. You can first try to combine the light sources without taking this into effect but you will see that the light is very sharp, either it illuminates the surface or it does not. Using the normal vector does require that you do some more vector arithmetic but it turns out to be quite simple.
+
+The normal vector $\vec{n}$ is easily calculate since we know the point of intersection $\vec{i}$ and the centre of the sphere $\vec{c}$. If we have other objects we would of course have to do something else.
+
+$$ \vec{n} = \|\vec{i} - \vec{c}\| $$
+
+The contribution $a$ of a light source at $\vec{s}$ to the point $\vec{i}$ on a surface with normal vector $\vec{n}$ is:
+
+$$a =  \|\vec{s} - \vec{i}\| \cdot \vec{n}$$
+
+What we are doing here is to first calculate the vector from $\vec{i}$ to $\vec{s}$ and then normalize this. Then we do the dot product with the normal vector to obtain a number between 0 and 1.  A light source that is orthogonal to the normal vector will not contribute at all while a light source in exactly the same direction will contribute with its full strength.
+
+All the light sources can be added together but we of course need to do the addition in a special way. When you add two probabilities $p$ and $q$ then you would write:
+
+$$ 1 - \(\(1-p\) \times \(1-q\)\)$$
+
+And we should do the same thing here \(do some thinking\). If you get it right your images will get a lot more live and will start to look like something that you could show to someone besides your mother.
+
+### Reflections
+
+The third extension that we will look at is reflections; sounds tricky but it turns out to be even simpler than adding lights. What we wan to do is to calculate a reflecting ray in the point of intersection and then calculate the contribution from this angle. The contribution can of course be calculated using a recursive step since this is exactly what the tracer module will do; given a origin and a normal vector calculate what is visible in this direction. 
+
+So if we do a recursive step and find that the reflection has a particular colour then we need to ask ourselves how much of this colour should be added to the point of intersection. This is where you will start to think about **brilliance** i.e. how much the surface acts as a mirror. Again, you could spend the rest of the week thinking about how a metal surface is different from wood but we might also just describe the level of reflection by a number from 0 to 1.
+
+Add a property to the sphere object that gives us the brilliance and then use this value when you calculate how much the reflection should be visible. You then modify the `tracer/2` function so it takes another argument which will be the depth, or number of reflections. If the depth is zero we're done and simply return the background colour, otherwise we calculate the intersection point, calculate the contribution from light sources and then also add the reflection that you obtain from a recursive call to the function \(remember to decrement the depth value\).
+
+Once we have the brilliance we might want to change the way we add light sources since a light source that is in the direction of the reflection would be visible in a sphere with high brilliance. If you start to dig into this you will find that you have enough to do for a day or two.
+
+### And More...
+
+Another thing that we might want to explore is of course to add more objects. A plane would be fairly easy to describe and the intersection can be found if you do some reading.
+
+We could also start to add texture or images to the surface of objects. An image could of course be mapped to a rectangular plane or cylinder and you would see the distorted photo in your rendered image.
+
+A tricky thing to add is transparency; an object can be made to look like coloured glass. To do this you would simply calculate two contributing rays at a point of intersection. One is in the direction of the reflection but the other one is continuing through the object, this is called the **refraction**. The refraction is of course, if you remember what you learned in secondary school, slightly bent depending on the index of the material. You would thus use the refraction index to calculate the direction of the ray and then take the transparency into account when you add the contribution of the refraction.
+
+This becomes tricky since you would have to keep track of if we enter of exit an object, the _current_ refraction index and the index of the material outside of an object. If we only consider air and solid spheres that do not overlap it's easier but the general case becomes problematic.
+
+## Summary
+
+This tutorial was not about ray tracing but about how you can work with tuples, structs and modules to build a larger program where try to hide the internal data representation as much as possible.
+
+If you have programmed in for example Java, which is a statically typed object orientated language, you have seen better ways of doing this. The dynamically typed languages have for good and worse less support to achieve this; the struct construct in Elixir is a addition to the language that gives you some support but it's only half way.
+
+If your familiar with object orientated languages you have probably thought about describing out objects in a hierarchical way; all object have a position and colour, spheres are object that have a radius etc. This would definitely make our life easier but again, the dynamic nature of Elixir makes it harder to provide.
+
+When looking at you program you could see the different modules as the building blocks of abstractions. If you have done it right only the vector module knows how vectors are handled \(all though we cheated and anyone that creates an object must also know how a vector is represented. Anything that is dealing with rays, objects and intersections should be in the objects module and everything that handles colours and lights should be in the light module. Dividing you program up in modules gives you a similar tool for abstractions as the classes in Java \(not exactly by similar\). Learning how to divide a program into different modules of abstraction is maybe the most important skill of a good programmer.
+
+Even if the tutorial was not about ray tracing, I hope that you have generated some nice images and have a better understanding of what your graphic card is doing when you spawn in BF.
+
+## The PPM Module
+
+```elixir
+defmodule PPM do
+
+  # write(name, image) The image is a list of rows, each row a list of
+  # tuples {r, g, b} where the values are floats from 0 to 1. The image
+  # is written using PPM format P6 and color depth 0-255. This means that
+  # each tuple is written as three bytes.
+
+  def write(name, image) do
+    height = length(image)
+    width = length(List.first(image))
+    {:ok, fd} = File.open(name, [:write])
+    IO.puts(fd, "P6")
+    IO.puts(fd, "#generated by ppm.ex")
+    IO.puts(fd, "#{width} #{height}")
+    IO.puts(fd, "255")
+    rows(image, fd)
+    File.close(fd)
+  end
+
+  defp rows(rows, fd) do
+    Enum.each(rows, fn r ->
+      colors = row(r)
+      IO.write(fd, colors)
+    end)
+  end
+
+  defp row(row) do
+    List.foldr(row, [], fn({r, g, b}, a) ->
+      [trunc(r * 255), trunc(g * 255), trunc(b * 255) | a]
+    end)
+  end
+
+end
+```
+
