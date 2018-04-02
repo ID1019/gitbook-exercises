@@ -245,3 +245,123 @@ end
 
 That completes all the modules that we need to represent the world, high time to generate some images.
 
+## The Tracer
+
+Open a module called `Tracer`; this will be the main module where the images are created. We will define a function that takes a camera and a description of the world and returns an image.
+
+An image will be represented by a list of rows where each row is a list of **RGB values**. The RGB values are tuples of three elements where each element is a floating point value between 0 and 1. A green-blue colour could thus be represented by the tuple `{0, 0.8, 0.3}` We will later use a procedure to print this image to a file that you hopefully can open in a viewer of your choice.
+
+We will start slowly and render a black and white image. This will not impress anyone but your mother, but it will be a start that we then will extend quite easily. We will build the tracer _bottom up_ which will give us the opportunity to test things as we implement it. 
+
+### Intersect
+
+The first thing we will do is to determine which object a ray intersects, if any, from a list of objects. We know that we can call `intersect/2` using the `Objects` protocol but now we have a list of objects and we want to find the closest point of intersection.
+
+The `intersect/2` function returns either `{:ok, d}` or `:no` so it should be an easy task to find the object with the closest point of intersection. We will here use the higher order construct `List.foldl/3` but you could implement it by hand in just as many lines.
+
+```elixir
+def intersect(ray, objects) do
+  List.foldl(objects, {:inf, nil}, fn(object, sofar) ->
+    {dist, _} = sofar
+
+    case Object.intersect(object, ray) do
+      {:ok, d} when d < dist ->
+        {d, object}
+      _ ->
+        sofar
+    end
+  end)
+end
+```
+
+The function `intersect/2` will tell us if a ray intersects an object and it will also tell us the distance to this object. If the ray does not intersect an object it will return `{:inf, nil}` \(using a value like this is called a sentinel, a value that we know will be higher than any other value\).
+
+The use of the `Object` protocol allows us to have objects of different kinds. We only have spheres now but can add any objects as long as they implement the `Object` protocol.
+
+### Tracing
+
+We now define a two functions: `trace/4` and `trace/2`. The latter will use `intersect/2`, check the outcome and then return either a black or white RGB value depending on if we intersected an object. The first will use the latter but here we give the x and y values of the pixel that we are looking for.
+
+```elixir
+def trace(x, y, camera, objects) do
+  ray = ...
+  trace(ray, objects)
+end
+
+def trace(ray, objects) do
+  case intersect(ray, objects) do
+    ... ->
+      @black
+    ... ->
+      @white
+  end
+end
+```
+
+Here we use Elixir module attributes to define the RGB values for black and white. You will have to add these in the beginning of the module.
+
+```elixir
+@black {0, 0, 0}
+@white {1, 1, 1}
+```
+
+The only thing that is left is to trace every possible ray of the camera; this is neatly done using list comprehension. The function `tracer/2` will return a list of rows where each row is a list of RGB values that describes the image.
+
+```elixir
+def tracer(camera, objects) do
+  {w, h} = camera.size
+  xs = Enum.to_list(1..w)
+  ys = Enum.to_list(1..h)
+  for y <- ys, do: for(x <- xs, do: trace(x, y, camera, objects))
+end
+```
+
+We of course want to look at the image we have created and to do this we somehow have to convert it into a image file. There are many image formats to choose from but most are compressed and it is not trivial to write a jpeg encoder. The file format that we will use is very inefficient but it is very easy to generate a file. In the appendix App~\ref{app:ppm} you will find a module that will take an image, as we generates it, and writes a **PPM file**. Not all image viewers can open a ppm file so you might have to try several before finding one that works.
+
+It is now quite easy to generate an image, all we have to do is to describe the world and then take a snap shot. Create a module called `Test` and describe your first image.
+
+```elixir
+defmodule Test do
+
+  def snap do
+    camera = Camera.normal({800, 600})
+
+    obj1 = %Sphere{pos: 140, pos: {0, 0, 700})
+    obj2 = %Sphere{radius: 50, pos: {200, 0, 600}}
+    obj3 = %Sphere{radius: 50, pos: {-80, 0, 400}}
+
+    image = Tracer.tracer(camera, [obj1, obj2, obj3])
+    PPM.write("test.ppm", image)
+  end
+
+end
+```
+
+If you look at your picture you will hopefully see three white circles on a black background. One circle \(the image of `obj3` in the description above\) is closer to the camera and is partly blocking the larger circle \(that is the image of `obj1`\). This is not very existing but you will see that it is very easy to extend this simple ray tracer.
+
+## Extensions
+
+We will do three extensions to the tracer: colours, lights and reflections. The first extension is quite simple while the last one requires that you repeat you knowledge i geometry. 
+
+### Adding Colours
+
+Turning the image into a colour image is two simple changes. First of all we extend the `Sphere` struct structure to also include a colour element. We can have a default colour if we want, so that all spheres have colours.
+
+```elixir
+@color {1.0, 0.4, 0.4}
+
+defstruct pos: {0, 0, 0}, radius: 2 , color: @color
+```
+
+Once we have spheres with colours, we simply change the `trace/3` function so that it will return the colour of the object rather than the default white. Describe a new snap-shot where you have some colourful spheres and see what the image looks like.
+
+### Lights
+
+Extend the `World` module and describe a world struct to also hold a list of lights and a background colour.
+
+```elixir
+@background {0, 0, 0}
+
+defstruct objects: [], lights: [], background: @background
+```
+
