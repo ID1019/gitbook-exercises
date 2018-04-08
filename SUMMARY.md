@@ -20,4 +20,6 @@
   * [Mandelbrot Fractal](seminars/mandelbrot-fractal.md)
   * [Philosophers and Concurrency](seminars/philosophers-and-concurrency.md)
   * [Small Web Server](seminars/small-web-server.md)
+* Problems
+  * [Data Structures](problems/data-structures-1.md)
 
