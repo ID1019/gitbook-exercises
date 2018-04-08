@@ -22,4 +22,5 @@
   * [Small Web Server](seminars/small-web-server.md)
 * Problems
   * [Data Structures](problems/data-structures-1.md)
+  * [Concurrency](problems/concurrency-1.md)
 
