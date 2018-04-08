@@ -57,3 +57,35 @@ Implement a function `add/2` that takes a structure of type `cheap()`, that call
 @spec add(cheap(), any()) :: cheap()
 ```
 
+## Mirror a Tree
+
+If we have the below definition of a function that mirrors a tree, what is the asymptotic time complexity of the function?
+
+```elixir
+def mirror(nil) do nil end
+
+def mirror({:node, left, right}) do
+  {:node, mirror(right), mirror(left)}
+end
+```
+
+## Complexity of a Queue
+
+Assume that we represent a queue with the help of two lists and have the below implementation of `enqueue/2` and `dequeue/1`. What is the amortised time complexity for **adding and then removing an element from a queue**?
+
+```elixir
+def enqueue({:queue, head, tail}, elem) do
+  {:queue, head, [elem|tail]}
+end
+
+def dequeue({:queue, [], []}) do :fail end
+
+def dequeue({:queue, [elem|head], tail}) do
+  {:ok, elem, {:queue, head, tail}
+end
+
+def dequeue({:queue, [], tail}) do
+  dequeue({:queue, reverse(tail), []})
+end
+```
+
