@@ -75,7 +75,7 @@ You can also compile and run the program from within the Elixir shell:
 
 Now in the same module define the following functions:
 
-* a function that converts from Fahrenheit to Celsius \(the function is as follows: \)
+* a function that converts from Fahrenheit to Celsius \(the function is as follows: $$C = (F-32)/1.8$$\)
 * a function that calculates the area of a rectangle give the length of the two sides
 * a function that calculates the area of a square, using the previous function
 * a function that calculates the area of a circle given the radius
@@ -86,8 +86,8 @@ Sooner or later you will have to think about which programming environment that 
 
 Assume that all we have is addition and subtraction but need to define multiplications. How would you do? You will have to use recursion and you solve it by first describing the multiplication functions by words.
 
-_The product of m and n is:  if  is equal to , otherwise the  
-product is  plus the product of  and ._
+_The product of $$m$$ and $$n$$ is: 0 if $$m$$ is equal to 0, otherwise the  
+product is $$n$$ plus the product of $$m-1$$ and $$n$$._
 
 Once you have written down the definition, the coding is simple.
 
@@ -136,7 +136,7 @@ This should be read: if we call product, and the first argument matches _0_, the
 
 Sometimes the code becomes easier to understand, especially if we have many conditions that should be tested. Remember though that the clauses of a function need to be after each other. You can not spread the clauses around in a program.
 
-Define a function, `exp/2`, that computes the exponentiation, . Use only the addition and subtraction and the function `product/2`, that you defined.
+Define a function, `exp/2`, that computes the exponentiation, $$x^2$$. Use only the addition and subtraction and the function `product/2`, that you defined.
 
 ```elixir
 def exp(x, n) do
@@ -146,12 +146,11 @@ def exp(x, n) do
 end
 ```
 
-Use the built-in arithmetic functions _rem_, _div_ and multiplication  to implement a much faster exponentiation using the following  
-definition:
+Use the built-in arithmetic functions _rem_, _div_ and multiplication _*_ to implement a much faster exponentiation using the following definition:
 
-*  raised to 1 is 
-*  raised to , if  is even, is  raised to  multiplied by itself
-*  raised to , if  is odd, is  raised to  multiplied by 
+*  $$x$$ raised to 1 is $$x$$
+*  $$x$$ raised to $$n$$, if $$n$$ is even, is $$x$$ raised to $$n/2$$ multiplied by itself
+*  $$x$$ raised to $$n$$, if $$n$$ is odd, is $$x$$ raised to $$(n-1)$$ multiplied by $$x$$
 
 ## List operations
 
@@ -205,7 +204,7 @@ There are several ways to sort a list and you should know them all. We will star
 
 In _insertion sort_, you sort a list of elements by taking them one at a time and _insert_ them into an already sorted list. The already sorted list will of course be empty when we start but will when we are done contain all the elements.
 
-Start by defining a function `insert(element, list)`, that inserts the element at the right place in the list. Think of the two mayor cases, what to do if the list is empty and what to do if the list contains at least one element. Assume that the elements are integers and can be compared using the regular  operator.
+Start by defining a function `insert(element, list)`, that inserts the element at the right place in the list. Think of the two mayor cases, what to do if the list is empty and what to do if the list contains at least one element. Assume that the elements are integers and can be compared using the regular $$<$$ operator.
 
 Once you have `insert/2` working, implement the sorting function `isort(list, sorted)`; again what should you do if the list is empty, what should you do if it contains at least one element?
 
@@ -420,7 +419,7 @@ end
 
 ### Fibonacci
 
-The Fibonacci sequence is the sequence _0, 1, 1, 2, 3, 5, 8, 13, 21, ..._. The two first numbers are  and  and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for , all you have to do is find the Fibonacci number for  and  and then add them together.
+The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are  and  and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for , all you have to do is find the Fibonacci number for  and  and then add them together.
 
 Write simple Fibonacci function fib/1 and do some performance measurements. Adapt the benchmark program above and run some tests.
 
@@ -438,7 +437,7 @@ def bench_fib() do
 end
 ```
 
-Find an arithmetic expression that almost describes the computation time for . Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run until the seminar? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
+Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run until the seminar? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
 
 Calculate a Fibonacci number as high as you possibly can.
 
