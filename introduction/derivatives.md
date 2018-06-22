@@ -26,7 +26,7 @@ In order to differentiate the function `f`, with respect to `x`, we need to know
 
 ## An Expression
 
-Let’s start by finding a representation for constants and variables. We can limit ourselves to the domain of reals and a real number could of course be represented by an Elixir number. This is of course trivial but remember to separate the real number 2.34 from the representation in Elixir by `2.34`. A variable could be represented as an atom so the variable is represented by the Elixir atom `:x`.
+Let’s start by finding a representation for constants and variables. We can limit ourselves to the domain of reals and a real number could of course be represented by an Elixir number. This is of course trivial but remember to separate the real number 2.34 from the representation in Elixir by `2.34`. A variable could be represented as an atom so the variable $$x$$ is represented by the Elixir atom `:x`.
 
 This simple mapping of elements in our domain to Elixir data structures is tempting to use but it has some disadvantages, we can not use pattern matching to determine if an element is a number or a variable. In our program we would have to use the built-in recognizers to separate the two cases; we would use code as the following:
 
@@ -36,7 +36,7 @@ def derivative(n) when is_number(n) do: ...
 def derivative(n) when is_atom(n) do: ...
 ```
 
-We would also have to think twice when we want to include constants such as pi, could we represent it using the atom `:pi`? Moreover, when we derive, is it important to separate the constant pi from the constant 2.34?
+We would also have to think twice when we want to include constants such as $$\pi$$, could we represent it using the atom `:pi`? Moreover, when we derive, is it important to separate the constant $$\pi$$ from the constant 2.34?
 
 A better approach \(all though it will turn our expressions into huge data structures\) is to be more explicit in our choice of representation. What if we choose to represent all constants using the tuple `{:const, c}` where `c` could be either an atom \(`:pi`\) or a number \(`2.34`\). Variables could, in the same way, be represented by tuples `{:var, v}` where `v` is a atom that identifies the variable.
 
@@ -58,7 +58,7 @@ Assume that we, for the time being, limit ourselves to the arithmetic operations
             | literal()
 ```
 
-This gives us everything we need to represent a limited sets of expressions. The expression `2 * x + 3` could for example be represented by the Elixir structure:
+This gives us everything we need to represent a limited sets of expressions. The expression $$2 \cdot x + 3$$ could for example be represented by the Elixir structure:
 
 ```elixir
 {:add, {:mul, {:const, 2}, {:var, :x}}, {:const, 3}}
@@ -68,18 +68,16 @@ As you see it is not a syntax we would like to use when we write expressions by 
 
 ## The Derivative Of
 
-What are the rules of derivation? You of course remember that derivative of `2x + 3` with respect to `x` is `2`, and that the derivative of `x^2` is `2x` but now we should define a program that does this automatically so we need to have very clear understanding if the rules. If you have not done so yet, this is the point where you should brush up on derivative rules so that you can follow the reasoning.
+What are the rules of derivation? You of course remember that derivative of $$2x + 3$$ with respect to $$x$$ is 2, and that the derivative of $$x^2$$ is $$2x$$ but now we should define a program that does this automatically so we need to have very clear understanding if the rules. If you have not done so yet, this is the point where you should brush up on derivative rules so that you can follow the reasoning.
 
 These are four rules that we will use:
 
-*  $$\frac{d}{dx} x \equiv 1$$
-*  $$\frac{d}{dx} c \equiv 0$$ for any literal different from 
-* * * d/dx x = 1
-* d/dx c = 0 for any literal different from x
-* d/dx f\(x\) + g\(x\) = f'\(x\) + g'\(x\)
-* d/dx f\(x\)  _g\(x\) = f'\(x\)_   g\(x\) + f\(x\) \* g'\(x\)
+* $$\frac{d}{dx} x \equiv 1$$
+* $$\frac{d}{dx} c \equiv 0$$ for any literal different from 
+* $$\frac{d}{dx} f(x) + g(x) \equiv  f'(x) + g'(x)$$
+* $$\frac{d}{dx} f(x) \cdot  g(x) \equiv  f'(x) \cdot  g(x) + f(x) \cdot  g'(x)$$
 
-The third rule is quite straight-forward; the derivative of an sum is the sum of the derivatives of the terms. The derivative of `4x^2 + 2x + 5` is `8x + 2` is since since the derivative of `4x^2` is `8x` etc.
+The third rule is quite straight-forward; the derivative of an sum is the sum of the derivatives of the terms. The derivative of $$4x^2 + 2x + 5$$ is $$8x + 2$$ is since since the derivative of $$4x^2$$ is $$8x$$ etc.
 
 The last rule, you might not even have learned as a rule but simply it's consequences in the most common cases. It is the rule that says that is and is . When learning using examples like these the general rule is quite simple: multiply the constant with the power and reduce the power by one. The general rule gives us the definition for any product, be it or .
 
