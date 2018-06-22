@@ -72,10 +72,10 @@ What are the rules of derivation? You of course remember that derivative of `2x 
 
 These are two rules that we will use:
 
-* * d/dx x = 1
-* * d/dx c = 0 for any literal different from x
-* * d/dx f(x) + g(x) = f'(x) + g'(x)
-* * d/dx f(x) * g(x) = f'(x) *  g(x) + f(x) * g'(x)
+* $$\frac{d}{dx} x \equiv 1$$
+* $$\frac{d}{dx} c \equiv 0$$  for any literal different from $$x$$
+* $$\frac{d}{dx} f(x) + g(x) \equiv  f'(x) + g'(x)$$
+* $$\frac{d}{dx} f(x) \cdot  g(x) \equiv  f'(x) \cdot  g(x) + f(x) \cdot  g'(x)$$
 
 The third rule is quite straight-forward; the derivative of an sum is the sum of the derivatives of the terms. The derivative of `4x^2 + 2x + 5` is `8x + 2` is  since since the derivative of `4x^2`  is `8x`  etc.
 
