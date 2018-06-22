@@ -76,7 +76,7 @@ We will build the interpreter starting with the environment, that will be implem
 
 ### The Environment
 
-Implementing an environment will be the simplest task that we have; an environment is simply a mapping from variables to data structures. If we assume that environments will be small, we can represent an environment as a list of key-value tuples. The environment _{x/foo, y/bar}_ could be represented as: `[{:x, :foo}, {:y, :bar}] `. The variables are represented by atoms, and we have here chosen to name them `:x` and `:y` but we could as well have chosen other atoms \(`x12`, `:variable_x`\) or integers \(`1` and `2`\), the important thing is that they all have unique names.
+Implementing an environment will be the simplest task that we have; an environment is simply a mapping from variables to data structures. If we assume that environments will be small, we can represent an environment as a list of key-value tuples. The environment _{x/foo, y/bar}_ could be represented as: `[{:x, :foo}, {:y, :bar}]` . The variables are represented by atoms, and we have here chosen to name them `:x` and `:y` but we could as well have chosen other atoms \(`x12`, `:variable_x`\) or integers \(`1` and `2`\), the important thing is that they all have unique names.
 
 In a module `Env`, you should now define the following functions:
 

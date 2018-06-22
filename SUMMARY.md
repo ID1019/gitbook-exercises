@@ -1,26 +1,26 @@
 # Table of contents
 
 * [Functional and Concurrent Programming](README.md)
-* Introduction
+* [Introduction](introduction/README.md)
   * [Getting Started with Elixir](introduction/getting-started-with-elixir.md)
   * [Derivatives](introduction/derivatives.md)
   * [Recursion](introduction/recursion.md)
-* Data Structures
+* [Data Structures](data-structures/README.md)
   * [2-3 Tree](data-structures/2-3-tree.md)
   * [Morse Encoding](data-structures/morse-encoding.md)
   * [LZW Encoding](data-structures/lzw-encoding.md)
   * [Ray Tracer](data-structures/ray-tracer.md)
-* Concurrency
+* [Concurrency](concurrency/README.md)
   * [Elixir Concurrency](concurrency/elixir-concurrency.md)
   * [Mutual Exclusion](concurrency/mutual-exclusion.md)
   * [Network Transport Layer](concurrency/network-transport-layer.md)
-* Seminars
+* [Seminars](seminars/README.md)
   * [Huffman Encoding](seminars/huffman-encoding.md)
   * [Meta-Interpreter](seminars/meta-interpreter.md)
   * [Mandelbrot Fractal](seminars/mandelbrot-fractal.md)
   * [Philosophers and Concurrency](seminars/philosophers-and-concurrency.md)
   * [Small Web Server](seminars/small-web-server.md)
-* Problems
-  * [Data Structures](problems/data-structures-1.md)
-  * [Concurrency](problems/concurrency-1.md)
+* [Problems](problems/README.md)
+  * [Data Structures](problems/data-structures.md)
+  * [Concurrency](problems/concurrency.md)
 
