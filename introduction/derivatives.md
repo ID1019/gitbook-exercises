@@ -97,13 +97,19 @@ def deriv({:mul, e1, e2}, v), do: ...
 def deriv({:add, e1, e2}, v), do: ...
 ```
 
-What is the derivative of with respect to ? How do we represent the expression in our system? Can you calculate the derivative using the `deriv/2` function?
+What is the derivative of $$2x^{2} + 3x + 5$$ with respect to $$x$$? How do we represent the expression in our system? Can you calculate the derivative using the `deriv/2` function?
 
-The answer that you get might not look like the answer you would have hoped for but it might be that what you see is an expression that can be simplified. The derivative of is of course but our function will return something that looks like , which of course is equal to .
+The answer that you get might not look like the answer you would have hoped for but it might be that what you see is an expression that can be simplified. The derivative of $$2x$$ is of course 2 but our function will return something that looks like $$0\cdot x + 2\cdot 1$$, which of course is equal to 2.
 
 ## Carrying On
 
 Add more rules to the `deriv/2` function. We should of course be able to take the derivative of the following expressions:
+
+*  $$x^n$$
+*  $$ln(x)$$
+*  $$\frac{1}{x}$$
+*  $$\sqrt{x}$$
+*  $$sin(x)$$
 
 To be able to handle these expressions you of course need to find a suitable representation. You then have to find the general rule for finding the derivative.
 
@@ -113,5 +119,5 @@ The results of our derivation might be correct but they are very hard to read. T
 
 Simplification could be tricky, You could start by transforming an expression so that all functions with constant arguments were actually evaluated. You could then remove expressions that are multiplied with zero etc. The problem is to know if there are any more things that could be done; how do we know that will not be able to do more.
 
-There will also be a discussion of what the simplest form would look like. Should we write or should we write .
+There will also be a discussion of what the simplest form would look like. Should we write $$x \cdot (y + 2)$$ or should we write $$xy + 2x$$?
 
