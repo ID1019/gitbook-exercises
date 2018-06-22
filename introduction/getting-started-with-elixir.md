@@ -86,8 +86,8 @@ Sooner or later you will have to think about which programming environment that 
 
 Assume that all we have is addition and subtraction but need to define multiplications. How would you do? You will have to use recursion and you solve it by first describing the multiplication functions by words.
 
-_The product of $$m$$ and $$n$$ is: 0 if $$m$$ is equal to 0, otherwise the  
-product is $$n$$ plus the product of $$m-1$$ and $$n$$._
+_The product of_ $$m$$ _and_ $$n$$ _is: 0 if_ $$m$$ _is equal to 0, otherwise the  
+product is_ $$n$$ _plus the product of_ $$m-1$$ _and_ $$n$$_._
 
 Once you have written down the definition, the coding is simple.
 
@@ -146,11 +146,11 @@ def exp(x, n) do
 end
 ```
 
-Use the built-in arithmetic functions _rem_, _div_ and multiplication _*_ to implement a much faster exponentiation using the following definition:
+Use the built-in arithmetic functions _rem_, _div_ and multiplication _\*_ to implement a much faster exponentiation using the following definition:
 
-*  $$x$$ raised to 1 is $$x$$
-*  $$x$$ raised to $$n$$, if $$n$$ is even, is $$x$$ raised to $$n/2$$ multiplied by itself
-*  $$x$$ raised to $$n$$, if $$n$$ is odd, is $$x$$ raised to $$(n-1)$$ multiplied by $$x$$
+* $$x$$ raised to 1 is $$x$$
+* $$x$$ raised to $$n$$, if $$n$$ is even, is $$x$$ raised to $$n/2$$ multiplied by itself
+* $$x$$ raised to $$n$$, if $$n$$ is odd, is $$x$$ raised to $$(n-1)$$ multiplied by $$x$$
 
 ## List operations
 
@@ -181,7 +181,7 @@ In the above examples, what is the value of the variables after the pattern matc
 These are some simple functions that you should implement. They will all use recursion so first try to formulate in words what the definition should look like, then implement it.
 
 * `len(l)`: return the number of elements in the list _l_
-* `sum(l)`: return the sum of all elements in the list _l_, assume that  
+* `sum(l)`: return the sum of all elements in the list _l_, assume that
 
   all elements are integers
 
@@ -373,7 +373,7 @@ You should now be up and running to take on some new challenges. When you try th
 
 ### Integer to binary
 
-Implement a function that takes an integer and return its binary representation coded as a list of ones and zeroes. The binary form of  is for example. Converting  should be trivial so the base case should be simple. In the recursive case we can calculate the binary representation of `div(n, 2)` and the append it to either a  or  depending on if the number is even or odd.
+Implement a function that takes an integer and return its binary representation coded as a list of ones and zeroes. The binary form of is for example. Converting should be trivial so the base case should be simple. In the recursive case we can calculate the binary representation of `div(n, 2)` and the append it to either a or depending on if the number is even or odd.
 
 ```elixir
 def to_binary(0) do ... end
@@ -419,7 +419,7 @@ end
 
 ### Fibonacci
 
-The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are  and  and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for , all you have to do is find the Fibonacci number for  and  and then add them together.
+The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are and and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for , all you have to do is find the Fibonacci number for and and then add them together.
 
 Write simple Fibonacci function fib/1 and do some performance measurements. Adapt the benchmark program above and run some tests.
 

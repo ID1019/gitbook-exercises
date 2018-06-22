@@ -105,11 +105,11 @@ The answer that you get might not look like the answer you would have hoped for 
 
 Add more rules to the `deriv/2` function. We should of course be able to take the derivative of the following expressions:
 
-*  $$x^n$$
-*  $$ln(x)$$
-*  $$\frac{1}{x}$$
-*  $$\sqrt{x}$$
-*  $$sin(x)$$
+* $$x^n$$
+* $$ln(x)$$
+* $$\frac{1}{x}$$
+* $$\sqrt{x}$$
+* $$sin(x)$$
 
 To be able to handle these expressions you of course need to find a suitable representation. You then have to find the general rule for finding the derivative.
 

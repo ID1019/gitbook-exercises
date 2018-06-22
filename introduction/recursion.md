@@ -61,9 +61,13 @@ We're using the [library function](https://hexdocs.pm/elixir/Enum.html#reverse/1
 
 Try some more complex functions, for example the Fibonacci function:
 
+$$fib(n) = \left\{   \begin{array}{l l}     0 & \quad \text{if $n$ is 0}\\     1 & \quad \text{if $n$ is 1}\\     fib(n-1)+fib(n-2) & \quad \text{otherwise}\\   \end{array} \right.$$ 
+
 ## Ackermann
 
 You can also give the Ackermann function a try:
+
+$$ackerman(m,n) = \left\{   \begin{array}{l l}     n+1 & \quad \text{if $m=0$}\\     ackerman(m-1,1) & \quad \text{if $m>0$ and $n=0$}\\     ackerman(m-1,ackerman(m,n-1)) & \quad \text{otherwise}\\   \end{array} \right.$$ 
 
 This looks like an innocent little function but don't try too high numbers.
 
