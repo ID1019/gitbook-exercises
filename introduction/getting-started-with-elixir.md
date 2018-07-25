@@ -146,7 +146,7 @@ def exp(x, n) do
 end
 ```
 
-Use the built-in arithmetic functions _rem_, _div_ and multiplication _\*_ to implement a much faster exponentiation using the following definition:
+Use the built-in arithmetic functions _rem_, _div_ and multiplication _\*_  to implement a much faster exponentiation using the following definition:
 
 * $$x$$ raised to 1 is $$x$$
 * $$x$$ raised to $$n$$, if $$n$$ is even, is $$x$$ raised to $$n/2$$ multiplied by itself

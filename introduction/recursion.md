@@ -81,7 +81,3 @@ Open up new module and implement the following list processing functions \(again
 * `rev`: reverse a list
 * `palindrome`: return `true` if a list is a palindrome
 
-## Sorting
-
-The final assignment will be to implement the _merge sort_ algorithm. Open up a new file `sort.ex` and start with a new module.
-

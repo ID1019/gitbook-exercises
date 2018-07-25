@@ -29,14 +29,14 @@ When we solve these problems we will try to separate them as much as possible fo
 
 The first task is to create a module that will handle all vector operations. We will need to represent vectors and be able to do the following operations.
 
-* $a\vec{x}$ : scalar multiplication
-* $\vec{x} - \vec{y}$ : subtraction
-* $\vec{x} + \vec{y}$ : addition
-* $\\|\vec{x}\\|$ : norm, or length, of a vector
-* $\vec{x} \cdot \vec{y}$ : scalar product \(dot product\)
-* $\|\vec{x}\|$ : normalised vector
+* $$a\vec{x}$$ : scalar multiplication
+* $$\vec{x} - \vec{y}$$ : subtraction
+* $$\vec{x} + \vec{y}$$ : addition
+* $$\|\vec{x}\|$$ : norm, or length, of a vector
+* $$\vec{x} \cdot \vec{y}$$ : scalar product \(dot product\)
+* $$|\vec{x}|$$ : normalised vector
 
-If we restrict the system to only work with three dimensional vectors we have a natural way of representation: a tuple with three elements, the $x$, $y$ and $z$ components i.e. `{x, y, z}`. 
+If we restrict the system to only work with three dimensional vectors we have a natural way of representation: a tuple with three elements, the $$x$$, $$y$$ and $$a = b$$ components i.e. `{x, y, z}`. 
 
 Create a new file `vector.ex` and declare a new module with the following exported functions.
 
@@ -130,15 +130,15 @@ The tricky part is of course to determine if a ray will intersect a sphere but t
 
 -&gt; Fig 2
 
-In Fig.~\ref{fig:intersection} we see a ray intersecting a circle. We want to find the intersection points $\vec{i\_1}$ and $\vec{i\_1}$. We can do this by first calculate the length $a$ and this is done by taking the dot product of $\vec{k}$ and $\vec{l}$. The dot product will project the vector $\vec{k}$ on $\vec{l}$ thus giving us the length $a$. The vector $\vec{k}$ is of course easily calculated since we know the origin of the ray $\vec{o}$ and the centre of the circle $\vec{c}$.
+In Fig.~\ref{fig:intersection} we see a ray intersecting a circle. We want to find the intersection points $$\vec{i_1}$$ and $$\vec{i_2} $$. We can do this by first calculate the length $$a$$ and this is done by taking the dot product of $$\vec{k}$$ and $$\vec{l}$$. The dot product will project the vector $$\vec{k}$$ on $$\vec{l}$$ thus giving us the length $$a$$. The vector $$\vec{k}$$ is of course easily calculated since we know the origin of the ray $$\vec{o}$$ and the centre of the circle $$\vec{c}$$.
 
 Note that we here talk about the circle while our real model would contain a sphere - this is fine, the operations are the same.
 
-The length of the vector $\vec{k}$ is of course $\\|\vec{k}\\|$ and if we know this we can calculate $h$ using Pythagoras' theorem. Since we know that the radius of the sphere is $r$ we can again rely on Pythagoras and calculate $t^2$.
+The length of the vector $$\vec{k}$$ is of course $$\|\vec{k}\|$$ and if we know this we can calculate $$h$$ using Pythagoras' theorem. Since we know that the radius of the sphere is $$r$$ we can again rely on Pythagoras and calculate $$t^2$$.
 
 $$ t^2 = r^2 - h^2 $$
 
-If it turns out that $t^2$ is a negative value, it means that the ray does not intersect the sphere. This is our criteria for answering if we intersect the object or not. If $t^2$ is positive we calculate $t$ and then of course obtain two alternatives $t$ and $-t$.  We now calculate two distances $d\_1 = a - t$ and $d\_2 = a + t$.  This is the distance to the points of intersections from the origin of the ray $\vec{o}$.  If either value is negative it means that the intersection point is behind us; if only one value is negative we are actually inside the sphere. If both values are positive we return the smallest value since this is the surface that we will actually see.
+If it turns out that $$t^2$$ is a negative value, it means that the ray does not intersect the sphere. This is our criteria for answering if we intersect the object or not. If $$t^2$$ is positive we calculate $$t$$ and then of course obtain two alternatives $$t$$ and $$-t$$ .  We now calculate two distances $$d_1 = a - t$$ and $$d_2 = a + t$$ .  This is the distance to the points of intersections from the origin of the ray $$\vec{o}$$ .  If either value is negative it means that the intersection point is behind us; if only one value is negative we are actually inside the sphere. If both values are positive we return the smallest value since this is the surface that we will actually see.
 
 ### Object Protocol
 
@@ -162,7 +162,7 @@ We have now done half of the job, you will soon create your first image but we f
 
 ### The Name of the Game
 
-In the end we would like to have a representation of a camera that will allow us to ask for a ray that starts in the focal point \(or origin\) of the camera and runs through a given $\langle x, y\rangle$ coordinate of the canvas. If we know that the canvas is of size $800 \times 600$ then we can ask for the ray that runs through $\langle 230, 170\rangle$ and be given a a ray. This ray will then be compared to all the objects in the world and the closest intersection point will determine the color of the $\langle 230, 170\rangle$ pixel.
+In the end we would like to have a representation of a camera that will allow us to ask for a ray that starts in the focal point \(or origin\) of the camera and runs through a given $$\langle x, y\rangle$$ coordinate of the canvas. If we know that the canvas is of size $$800 \times 600$$ then we can ask for the ray that runs through $$\langle 230, 170\rangle$$ and be given a a ray. This ray will then be compared to all the objects in the world and the closest intersection point will determine the colour of the $$\langle 230, 170\rangle$$ pixel.
 
 When you think about representation, then always think about what you're going to use the object for. This will allow you to represent the object in a way that makes the operations easier to perform. Also think about how you would like to talk about the object, the easiest way to describe an object might not be the best way to represent it.
 
@@ -170,7 +170,7 @@ When you think about representation, then always think about what you're going t
 
 If you have not used a large camera you might not have thought about how different lenses changes the picture but think about the difference between a "fish-eye'' and telephoto lens. The difference has to to with the **focal length**, the length from the lens to the focal point; the important factor is the ratio between the width of the **film** and the focal length. When using a 35mm film a focal length of 50mm gave a "normal'' lens i.e. a lens that gave images that looked normal.
 
-It is thus important that we can describe a **canvas**: its size, orientation and position in relation to the **origin** of the camera. In Fig.~\ref{fig:camera} we see the elements that we need to represent: the origin described by a vector $\vec{o}$, a vector $\vec{f}$ that give us the direction and distance to the centre of the canvas and two vectors that give us the vertical, $\vec{v}$, and horizontal, $\vec{h}$, direction of the canvas. 
+It is thus important that we can describe a **canvas**: its size, orientation and position in relation to the **origin** of the camera. In Fig.~\ref{fig:camera} we see the elements that we need to represent: the origin described by a vector $$\vec{o}$$, a vector $$\vec{f}$$ that give us the direction and distance to the centre of the canvas and two vectors that give us the vertical, $$\vec{v}$$, and horizontal, $$\vec{h}$$, direction of the canvas. 
 
 We might take for granted that the plane of the canvas is orthogonal to the direction; this is not strictly necessary but if it is not, we will have very strange projections of the image \(a technique that is actually used and if you want to know more you can search for the "Scheimpflug principle''\).
 
@@ -178,16 +178,16 @@ Note that the vertical and horizontal orientation are represented as two vectors
 
 -&gt; Fig camera
 
-A camera with a normal lens, positioned at $\langle 0,0,0\rangle$ and pointing straight into the picture, could be described as follows:
+A camera with a normal lens, positioned at $$\langle 0, 0, 0\rangle$$ and pointing straight into the picture, could be described as follows:
 
-* position: $\langle 0,0,0\rangle$
-* direction: $\langle 0,0,1200\rangle$
-* horizontal: $\langle 960,0,0\rangle$
-* vertical: $\langle 0,540,0\rangle$
+* position: $$\langle 0,0,0\rangle$$ 
+* direction: $$\langle 0,0,1200\rangle$$ 
+* horizontal: $$\langle 960,0,0\rangle$$ 
+* vertical: $$\langle 0,540,0\rangle$$ 
 
-This would give us a canvas of size $1920 \times 1080$ at a distance from the origin of $1600$ \(which will approximately give us a "normal'' lens\).
+This would give us a canvas of size $$1920 \times 1080$$ at a distance from the origin of $$1600$$ \(which will approximately give us a "normal'' lens\).
 
-To minimise the computation needed when calculating the rays we could represent the camera by a position and a vector to the upper left corner of the canvas $\vec{c}$. If we then have two vectors that represent the distance between pixels moving to the right $\vec{r}$ and moving down $\vec{d}$, we can easily calculate the normalised vector to any pixel in the canvas.
+To minimise the computation needed when calculating the rays we could represent the camera by a position and a vector to the upper left corner of the canvas $$\vec{c}$$. If we then have two vectors that represent the distance between pixels moving to the right $$\vec{r}$$ and moving down $$\vec{d}$$, we can easily calculate the normalised vector to any pixel in the canvas.
 
 $$pixel\(x,y\) = \|\vec{c} + x\*\vec{r} + y\*\vec{d}\|$$
 
@@ -203,7 +203,7 @@ defmodule Camera do
 end
 ```
 
-It will also be very handy to have a function that returns a default camera so that we don't have to think about the different parameters. This default camera can be positions at $\langle 0,0,0\rangle$ and point straight forward \(in the z direction\). We can give it a parameter that is the size of the image that we want to generate; you will have to calculate the rest of the parameters.
+It will also be very handy to have a function that returns a default camera so that we don't have to think about the different parameters. This default camera can be positions at $$\langle 0,0,0\rangle$$ and point straight forward \(in the $$z$$ direction\). We can give it a parameter that is the size of the image that we want to generate; you will have to calculate the rest of the parameters.
 
 ```elixir
 def normal(size) do
@@ -400,21 +400,21 @@ defp trace(ray, world) do
 end
 ```
 
-In the code above there are two things that needs some explanation: the `@delta` and the use of the **normal vector**. The delta is a hack that we need to do since floating points are not exact, or rather since a point that is actually "in'' the surface of an object might be shadowed by the object itself. By raising the point a small distance from the surface we avoid being lured into thinking that we are in the surface or even worse below the surface; the delta that we use is 0.001 and it works fine.
+In the code above there are two things that needs some explanation: the `@delta` and the use of the **normal vector**. The delta is a hack that we need to do since floating points are not exact, or rather since a point that is actually "in'' the surface of an object might be shadowed by the object itself. By raising the point a small distance from the surface we avoid being lured into thinking that we are in the surface or even worse below the surface; the delta that we use is $$0.001$$ and it works fine.
 
 The second thing is the normal vector that we use when combining the light sources. A light that hits the surface at an angle will contribute to less illumination compared to a light that hits it straight from above. You can first try to combine the light sources without taking this into effect but you will see that the light is very sharp, either it illuminates the surface or it does not. Using the normal vector does require that you do some more vector arithmetic but it turns out to be quite simple.
 
-The normal vector $\vec{n}$ is easily calculate since we know the point of intersection $\vec{i}$ and the centre of the sphere $\vec{c}$. If we have other objects we would of course have to do something else.
+The normal vector $$\vec{n}$$ is easily calculate since we know the point of intersection $$\vec{i}$$ and the centre of the sphere $$\vec{c}$$. If we have other objects we would of course have to do something else.
 
 $$ \vec{n} = \|\vec{i} - \vec{c}\| $$
 
-The contribution $a$ of a light source at $\vec{s}$ to the point $\vec{i}$ on a surface with normal vector $\vec{n}$ is:
+The contribution $$a$$ of a light source at $$\vec{s}$$ to the point $$\vec{i}$$ on a surface with normal vector $$\vec{n}$$ is:
 
 $$a =  \|\vec{s} - \vec{i}\| \cdot \vec{n}$$
 
-What we are doing here is to first calculate the vector from $\vec{i}$ to $\vec{s}$ and then normalize this. Then we do the dot product with the normal vector to obtain a number between 0 and 1.  A light source that is orthogonal to the normal vector will not contribute at all while a light source in exactly the same direction will contribute with its full strength.
+What we are doing here is to first calculate the vector from $$\vec{i}$$ to $$\vec{s}$$ and then normalise this. Then we do the dot product with the normal vector to obtain a number between 0 and 1.  A light source that is orthogonal to the normal vector will not contribute at all while a light source in exactly the same direction will contribute with its full strength.
 
-All the light sources can be added together but we of course need to do the addition in a special way. When you add two probabilities $p$ and $q$ then you would write:
+All the light sources can be added together but we of course need to do the addition in a special way. When you add two probabilities $$p$$ and $$q$$ then you would write:
 
 $$ 1 - \(\(1-p\) \times \(1-q\)\)$$
 

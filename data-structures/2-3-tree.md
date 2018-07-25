@@ -19,8 +19,6 @@ A tree is either: empty, a leaf, a two-node or a _three-node_. The tree is balan
 * _a two-node_: `{:two, key, left, right}`
 * _a three-node_: `{:three, k1, k2, left, middle, right}`
 
-  \end{itemize}
-
 All keys in the left branch of a two-node are smaller or equal to the key of the node. In a three-node the keys of the left branch is smaller of equal to the first key and the keys of the middle branch are less than or equal to the second key.
 
 We will in our implementation also work with a third type of node, a node with four branches. The tree that we work with will never contain a _four-node_ but we will allow the insertion function to return this structure.
