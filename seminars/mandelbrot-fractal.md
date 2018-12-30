@@ -8,17 +8,11 @@ In this exercise you will implement a Mandelbrot set generator, or rather an ima
 
 The Mandelbrot set is defined as the set of complex numbers  for which the sequence  does not approach infinity. The value  is defined as follows:
 
-
-
 If you remember how to do the square of a complex numbers you know everything there is to know to start:
-
-
 
 How do we know if a complex number  belongs to the Mandelbrot set? We could of course start to compute  for higher values and see if we approach infinity but that would of course take a very long time \(to say the least\).
 
 An observation saves us from spending the rest of our lives computing : _if  then there is no turning back,  will only increase in size_. The absolute value of a complex number is of course:
-
-
 
 We still do not want to compute forever; if the number actually does belong to the Mandelbrot set we will of course never hit the threshold. Therefore, we set an upper limit  that will be the maximum _depth_ of our computation.
 
@@ -57,7 +51,7 @@ end
 
 The `test/4` function should of course test if we have reached the maximum iteration, in which case it returns zero, or if the absolute value of `z` is greater than 2, in which case it returns `i`. Make sure that you use the functions exported from the `Cmplx` module.
 
-Do some test to see that the function works \(here I'm writing the complex numbers directly knowing that we represent them as tuples, this is of course cheating but very convenient\).
+Do some test to see that the function works:
 
 * `Brot.mandelbrot(Cmplx.new(0.8, 0), 30)`
 * `Brot.mandelbrot(Cmplx.new(0.5, 0), 30)`
@@ -137,8 +131,6 @@ end
 ### Carrying On
 
 Generate a nice looking image, you will find the most interesting things close to the edge of the black set. This is where the fractals start to spin out of control and the beauty of the Mandelbrot set is found. It's amazing that so much information could be hidden in a function this simple.
-
-
 
 Could we speed up the calculations? Are there any operations that are of unnecessary complexity? Can you include an image in your report \(you would probably have to convert it to png\)?
 
