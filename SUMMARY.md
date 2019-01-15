@@ -2,6 +2,7 @@
 
 * [Functional and Concurrent Programming](README.md)
 * [Introduction](introduction/README.md)
+  * [Lambda Calculus](introduction/lambda-calculus.md)
   * [Getting Started with Elixir](introduction/getting-started-with-elixir.md)
   * [Derivatives](introduction/derivatives.md)
   * [Recursion](introduction/recursion.md)
