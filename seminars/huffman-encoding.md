@@ -106,7 +106,7 @@ Now once we have the frequencies we will create a Huffman tree. This is simpler 
 
 OK, so a Huffman tree is a tree with the characters in the leafs but the low frequency characters have long branches and high frequency characters have short branches. Assume we represent a leaf with a single character and a node as a simple tuple with two branches: `{left, right}`.
 
-If you turn your table into an ordered sequence of leafs where each leaf represents a character and its frequency. The “foo” example above would correspond to the sequence `[{'f', 1}, {'o', 2}]`. You could also view this as a frequency table where each entry is a tuple `{tree, freq}`, after all, a single character is a leaf.
+If you turn your table into an ordered sequence of leafs where each leaf represents a character and its frequency. The “foo” example above would correspond to the sequence `[{?f, 1}, {?f, 2}]`. You could also view this as a frequency table where each entry is a tuple `{tree, freq}`, after all, a single character is a leaf.
 
 Now, assuming we have such a sequence, what would happen if we took the two smallest elements \(lowest frequencies\) and combined them into a new node `{{c1, c2}, f1 + f2}` and added the node to the remaining sequence while keeping the sequence sorted? Can we repeat this process, what will the final result be?
 
@@ -116,13 +116,13 @@ How do we represent the sequence so that it is easy to find the two smallest ele
 
 I assume now that you have a Huffman tree and it is time to extract the codes. The codes are of course hidden in the tree in the branches and the code of a character is the path to the leaf holding the character \(_left_, _left_, _right_, _left_ or  _0, 0, 1, 0_\).
 
-Traverse the tree, and collect the characters in the leafs. Keep track of the path to the leaf and record this path as a sequence of zeros and ones. When you’re done you should have something like `[{'f', [1, 1, 0]}, {'o', [1, 0, 1, 0]}, ...]`, or whatever the tree looks like.
+Traverse the tree, and collect the characters in the leafs. Keep track of the path to the leaf and record this path as a sequence of zeros and ones. When you’re done you should have something like `[{?f, [1, 1, 0]}, {?f, [1, 0, 1, 0]}, ...]`, or whatever the tree looks like.
 
 Start by writing a function that only collects the characters, once this is mastered you can start to keep track of the path.
 
 ### Half Way
 
-Half-way there might be an exaggeration but at lest you’re now done with the first part, you have a mapping from characters to Huffman codes. It’s represented by a list of tuples `{'f', [1, 1, 0]}`, one for each characters. Time to use this table in the encoding and decoding.
+Half-way there might be an exaggeration but at lest you’re now done with the first part, you have a mapping from characters to Huffman codes. It’s represented by a list of tuples `{?f, [1, 1, 0]}`, one for each characters. Time to use this table in the encoding and decoding.
 
 ## Huffman encoding
 
