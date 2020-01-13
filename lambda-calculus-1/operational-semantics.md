@@ -6,7 +6,7 @@ The operational semantics of a language should answer the question what an expre
 
 The operational semantics should preferably be described in a way that it also captures the time and memory complexity of an execution. It does not have to be a detailed description of how things are actually implemented but it should give an understanding of the execution to allow a programmer to reason about the efficiency of a particular program. 
 
-The operational semantics of a language can also serve as a architecture for an abstract machine for the language or as the design criteria for a compiler. The observable properties of a program execution should conform to the properties one can derive from the description of the operational semantics.There are many ways to describe an operational semantics of a programming language and we will use a strategy called big-step semantics. We will describe the semantics as a set of rewrite rules or evaluation relations; givenan expression in the language, we will describe the rules of how to evaluatethe expression to obtain an answer.This description of an operational semantics for our small functionalprogramming language will serve our purposes in that we will be able totalk and reason about program execution. We will also be able to use itwhen we implement an interpreter for the language.
+The operational semantics of a language can also serve as a architecture for an abstract machine for the language or as the design criteria for a compiler. The observable properties of a program execution should conform to the properties one can derive from the description of the operational semantics.There are many ways to describe an operational semantics of a programming language and we will use a strategy called big-step semantics. We will describe the semantics as a set of rewrite rules or evaluation relations; givenan expression in the language, we will describe the rules of how to evaluatethe expression to obtain an answer.This description of an operational semantics for our small functional programming language will serve our purposes in that we will be able to talk and reason about program execution. We will also be able to use it when we implement an interpreter for the language.
 
 ## The language
 
@@ -48,15 +48,15 @@ In the description of the evaluation we will need an environment. This is a mapp
 
 ## The evaluation function
 
-So we’re now ready to describe the operational semantics of our programming language and we do this by describing how an expressions is ``evaluated.We will start with the simplest expressions and then work our way up to more complex expressions.The evaluation of an expression e is written Eσ\(e\), meaning that we evaluate the expression in the context of the environmentσ.When we describe our rules for evaluation we will use a notation that is:
+So we’re now ready to describe the operational semantics of our programming language and we do this by describing how an expressions is evaluated.We will start with the simplest expressions and then work our way up to more complex expressions.The evaluation of an expression e is written Eσ\(e\), meaning that we evaluate the expression in the context of the environment σ. When we describe our rules for evaluation we will use a notation that is:
 
 $$
 \frac{prerequisite}{ Eσ(expression) → result}
 $$
 
-In this description E is the evaluation function, and we will also have rules for other functions, and σ an environment. The result of applying the function is a data structure or ⊥. The symbol ⊥ represents the failed execution.
+In this description E is the evaluation function,  we will also have rules for other functions, and σ an environment. The result of applying the function is a data structure or ⊥. The symbol ⊥ represents the failed execution.
 
-In order to apply the rule the prerequisite must be met and this will inthe end guide us in how we can implement a recursive evaluator. The so called _big-step operational semantics_ is often used since it is easily turned into an implementation of the language.
+In order to apply the rule the prerequisite must be met and this will in the end guide us in how we can implement a recursive evaluator. The so called _big-step operational semantics_ is often used since it is easily turned into an implementation of the language.
 
 ### atoms, variables and tuples
 
@@ -70,7 +70,7 @@ This mean that if we have an atom, for example `:foo` then this is evaluated to 
 
 A variable is of course different since we then need to consult the environment for a binding of the variable.
 
-$$\frac{v/s \in \sigma}{E\sigma(v) \rightarrow s}$$
+$$ \frac{v/s \in \sigma}{E\sigma(v) \rightarrow s}$$
 
 We have one more situation, the case where we do not have a binding for our variable. This is the point where evaluation fails and we return $$\perp$$.
 
@@ -80,7 +80,7 @@ The rule for a compound expression  `{:foo, :bar}` is straight forward Given tha
 
 $$\frac{ E\sigma(e_1) \rightarrow s_1 \qquad E\sigma(e_2) \rightarrow s_2}{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow {s_1, s_2}}$$
 
-Note that we here implicitly require that $$s_1 $$and $$s_2 $$ are structures \( $$s\_i \in Structures$$\). If the evaluation of one of the expressions fail, the whole evaluation fails.
+Note that we here implicitly require that $$s_1 $$and $$s_2 $$ are structures \( $$s_i \in Structures$$\). If the evaluation of one of the expressions fail, the whole evaluation fails.
 
 $$\frac{ E\sigma(e_i) \rightarrow \perp }{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow \perp}$$
 
@@ -120,7 +120,7 @@ The same holds if the second matching fails.
 
 $$\frac{P\sigma(p_1, s_1) \rightarrow \sigma' \wedge P\sigma'(p_2, s_2) \rightarrow {\rm fail}}{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow {\rm fail}}$$
 
-As an exercise you should do the pattern matching of the expression {\tt {x, {x, :c}}} and the data structure {\em {a, {b, c}}}. Note how we first add {\em x/a} as a binding and then fail when we match {\tt {x, :c}} and {\em {b,c}}.
+As an exercise you should do the pattern matching of the expression  `{x, {x, :c}}` and the data structure {\em {a, {b, c}}}. Note how we first add {\em x/a} as a binding and then fail when we match `{x, :c}` and   `{b,c}`.
 
 The remaining alternative, the case where we have a cons expression and we try to match this to an data structure that is not a compound data structure, will of course lead to a failure.
 
@@ -128,12 +128,10 @@ $$\frac{s \not = \{s_1, s_2\}}{P\sigma(\lbrace p_1, p_2 \rbrace, s) \rightarrow 
 
 That it is as far as pattern matching goes. Try to do some matching by hand and explain which rules you apply. Try these:
 
-\begin{itemize}
-
-$P{}\(\lbrace :b, :a \rbrace, \lbrace a, b \rbrace\)$  
-$P{}\(\lbrace x, :b \rbrace, \lbrace a, b \rbrace\)$   
-$P{}\(\lbrace x, x \rbrace, \lbrace a, a \rbrace\)$   
-$P{}\(\lbrace x, x \rbrace, \lbrace a, b \rbrace\)$
+* $$P{}(\lbrace :b, :a \rbrace, \lbrace a, b \rbrace)$$
+* $$P{}(\lbrace x, :b \rbrace, \lbrace a, b \rbrace)$$ 
+* $$P{}(\lbrace x, x \rbrace, \lbrace a, a \rbrace)$$ 
+* $$P{}(\lbrace x, x \rbrace, \lbrace a, b \rbrace)$$
 
 ### a sequence
 
@@ -143,23 +141,23 @@ In order to describe this we introduce a new rule, a rule that describes how a n
 
 $$\frac{\sigma' = \sigma \setminus \lbrace v/t \quad | \quad v/t \in \sigma \quad \wedge \quad v \quad {\rm in} \quad p\rbrace}{S(\sigma, p) \rightarrow \sigma'}$$
 
-The new environment will not have any bindings for the variables that occur in the pattern. If we have a variable {\tt x} in $\sigma$ it will simply be {\em shadowed} by the pattern matching expression. This is quite differently from how things are handled in Erlang.
+The new environment will not have any bindings for the variables that occur in the pattern. If we have a variable  `x` in $$\sigma$$ it will simply be  _shadowed_  by the pattern matching expression. This is quite differently from how things are handled in Erlang.
 
-The rule that describes the evaluation of a sequence is now quite straight forward. We first evaluate the expression, $e$, of the pattern matching expression, then evaluate the matching giving us an updated environment, $\theta$, that is used to evaluate the remaining sequence.
+The rule that describes the evaluation of a sequence is now quite straight forward. We first evaluate the expression, $$e$$, of the pattern matching expression, then evaluate the matching giving us an updated environment, $$\theta$$, that is used to evaluate the remaining sequence.
 
 $$\frac{   E\sigma(e) \rightarrow t \qquad S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, t) \rightarrow \theta \qquad E\theta({\rm sequence}) \rightarrow s }{E\sigma(p = e, {\rm sequence}) \rightarrow s}$$
 
-A sequence consist of one or more patter matching expressions followed by an expression, so the rule will terminate once we reach the final expression. Note that we also here implicity require that the evaluation of $e$ succeeds i.e. $t \in Structs$. If the evaluation returns $\perp$ the whole evalation fails.
+A sequence consist of one or more patter matching expressions followed by an expression, so the rule will terminate once we reach the final expression. Note that we also here implicitly require that the evaluation of $$e $$succeeds i.e. $$t \in Structs$$. If the evaluation returns $$\perp$$the whole evaluation fails.
 
 $$\frac{   E\sigma(e) \rightarrow \perp }{E\sigma(p = e, {\rm sequence}) \rightarrow \perp}$$
 
 ### that's it
 
-That is it, we now have all the rules to evaluate a sequence on the form shown in fig:\ref{fig:seq1}. Make sure that you understand the rules and how they are applied by evaluating the sequence by hand. If you get it right the result will be {\em {foo, {bar, nil}}}. When you get it right you're ready to continue.
+That is it, we now have all the rules to evaluate a sequence on the form shown in the beginning. Make sure that you understand the rules and how they are applied by evaluating the sequence by hand. If you get it right the result will be  _{foo, {bar, nil}}_. When you get it right you're ready to continue.
 
 ## Adding a case expression
 
-The expressions that we have seen so far are rather boring. In order to write a program that is at lest marginally interesting we need a construct that evaluates to different data structures depending on the state of the execution. We could have introduced a {\em if-then-else} expression but we choose to introduce a so called {\em case expression}.
+The expressions that we have seen so far are rather boring. In order to write a program that is at lest marginally interesting we need a construct that evaluates to different data structures depending on the state of the execution. We could have introduced a  _if-then-else_ expression but we choose to introduce a so called  _case expression_.
 
 We first need to extend the grammar so that we have a syntax to express our new construct. We choose a syntax that is similar to the case expression in Erlang.
 
@@ -181,7 +179,7 @@ The right clause is selected by trying to match the pattern of the first clause 
 
 $$\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow \theta \qquad \theta \not = {\rm fail} \qquad E\theta({\rm sequence}) \rightarrow s}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence} ; {\rm clauses}) \rightarrow s}$$
 
-This rule could of course also be used even if {\em clauses} is empty i.e. we match the last or only clause in a sequence.
+This rule could of course also be used even if _clauses_ is empty i.e. we match the last or only clause in a sequence.
 
 If the pattern matching fails we will simply try the next clause in the sequence of clauses.
 
@@ -199,41 +197,39 @@ The real task is when we want to add lambda expressions, or unnamed functions. T
 
 ### free variables
 
-We want to know which variables in the function expression that are {\em free}. To see the problem let's look at the function expression that has a match expression in the sequence.
+We want to know which variables in the function expression that are _free_. To see the problem let's look at the function expression that has a match expression in the sequence.
 
 `fn (x) -> y = 5; x + y + z end` 
 
-Which variables are {\em free} in this expression? The variable {\tt x} is not free since it is in the {\em scope} of the function parameter. Nor is the local variable {\tt y} free since it is in the scope of the pattern matching expression. If you would translate this to lambda calculus the expression would look like follows:
+Which variables are free in this expression? The variable _`x`_ is not free since it is in the  _scope_ of the function parameter. Nor is the local variable `y` free since it is in the scope of the pattern matching expression. If you would translate this to lambda calculus the expression would look like follows:
 
 $$\lambda x \rightarrow {\rm let} \quad y = 5 \quad {\rm in} \quad x + y + z$$
 
-The variable {\tt z} is however free and in order to make use of this function expression one would have to do it in an environment where {\tt z} has a value. A function and the needed environment, i.e. values for all free variables, is called a {\em closure}. We need to introduce new constructs in our language to create closures and apply them to arguments.
+The variable  `z` is however free and in order to make use of this function expression one would have to do it in an environment where   `z`  has a value. A function and the needed environment, i.e. values for all free variables, is called a  _closure_. We need to introduce new constructs in our language to create closures and apply them to arguments.
 
 ### function expression and application
 
 So we introduce two new constructs in our language, one to express a function and one to apply a function to a sequence of arguments. Different from Elixir we don't allow patterns in function parameters; this is only to make the rules of the evaluation easier to describe.
 
-A function consist of the keyword {\tt fn} followed by a, possibly empty, sequence of parameters \(all unique variables\). After the arrow we have a regular sequence as we have defined before and everything is finished by the keyword {\tt end}.
+A function consist of the keyword  `fn` followed by a, possibly empty, sequence of parameters \(all unique variables\). After the arrow we have a regular sequence as we have defined before and everything is finished by the keyword   `end`.
 
-\begin{grammar}
 
- ::= 'fn' '\('  '\)' '-&gt;  'end'
 
- ::= ' ' \| 
+```text
+<function> ::= 'fn' '(' <paramters> ')' '->  'end'
+<parameters> ::= ' ' | <variables>
+<variables> ::= <variable>  |  <variab le> ',' <variables>
+```
 
- ::=  \|  ','  
+ A function application is simply any expression \(that hopefully will be evaluated to a {\em closure} and a sequence of arguments enclosed in parentheses. We here follow the Elixir syntax that requires a '.' between the name less function and the sequence of arguments. The arguments can of course be arbitrary expressions.
 
-A function application is simply any expression \(that hopefully will be evaluated to a {\em closure} and a sequence of arguments enclosed in parentheses. We here follow the Elixir syntax that requires a '.' between the name less function and the sequence of arguments. The arguments can of course be arbitrary expressions.
+```text
+〈expression〉::=〈expression〉’.(’〈arguments〉’)|. . .
+〈arguments〉::=  ’ ’| 〈expressions〉
+〈expressions〉::=〈expression〉 | 〈expression〉’,’〈expressions>
+```
 
-\begin{grammar}
-
- ::= '.\('  '\) \| \ldots
-
- ::= ' ' \| 
-
- ::=  \|  ','  \end{grammar}
-
-\subsection{closures}
+### closures
 
 The next thing we need to do is to extend our set of data structures. When we evaluate a function expression we will construct the closure. The closure is a triplet: the parameters of the function, the sequence to evaluate and an environment.
 
@@ -241,23 +237,25 @@ $${\rm Closures} = \{\langle p:s:e \rangle \quad | \quad p \in {\rm Par} \wedge 
 
 $${\rm Structures} = {\rm Closures} \cup ..$$
 
-We have not formally defined what the set of parameters, sequences nor environmens are but the informal description will work for our purposes.
+We have not formally defined what the set of parameters, sequences nor environments are but the informal description will work for our purposes.
 
 The environment of a closure is constructed by taking the bindings of all free variables in the sequence, not including the variables that are bound by the parameters.
 
 $$\frac{ \theta = \{ v/s \mid v/s \in \sigma \wedge v {\rm\ free\ in\ sequence}\}}{ E\sigma({\rm fn}({\rm parameters})\; {\rm ->}\; {\rm sequence}\; end )\rightarrow \quad \langle{\rm parameters}:{\rm sequence}:\theta\rangle}$$
 
-\subsection{applying a closure}
+### applying a closure
 
 So now to the interesting part where we apply a closure to a sequence of arguments. We first need to evaluate the arguments and then add a set of bindings to the environment of the closure. We then evaluate the sequence in the updated environment.
 
 $$\frac{E\sigma(e) \rightarrow \langle v_1, \ldots:{\rm seq}:\theta \rangle \qquad E\sigma(e_i) \rightarrow s_i \qquad E\{v_1/s_1, \ldots\}\cup\theta({\rm seq}) \rightarrow s}{E\sigma(e.(e_1, \ldots)) \rightarrow s}$$
 
-Note that the closure that we get, $\langle v\_1, \ldots:{\rm seq}:\theta \rangle$ consist of a sequence of variables $v\_1, \ldots$, that are all distinct. This is why we can simply add the bindings $v\_i/s\_i$ to $\theta$, there will not be any duplicate bindings.
+Note that the closure that we get, $$\langle v_1, \ldots:{\rm seq}:\theta \rangle$$ consist of a sequence of variables $v\_1, \ldots$, that are all distinct. This is why we can simply add the bindings $$v_i/s_i$$ to $$\theta$$, there will not be any duplicate bindings.
 
-Looks complicated but it's quite straight forward. Go through the evaluation of sequence \ref{fig:seq2}. If everything works out fine the result should be {\em {foo, bar}}.
+Looks complicated but it's quite straight forward. Go through the evaluation of sequence shown below. If everything works out fine the result should be  _{foo, bar}._
 
-\begin{figure}\[ht\] \center {\tt x = :foo; f = fn \(y\) -&gt; {x,y} end; f.\(:bar\)} \caption{a sequence with a function} \label{fig:seq2} \end{figure}
+```text
+x = :foo; f = fn (y) -> {x,y} end; f.(:bar)}
+```
 
 ## An interpreter
 
