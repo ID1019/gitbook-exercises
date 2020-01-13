@@ -30,7 +30,7 @@ A pattern matching expression consists of a pattern and an expressions,and the p
 
 An expression is just a syntactical construct, the grammar presented does not give any meaning to the expressions that we can write but it defines which sequences of characters are legal sequences, patterns and expressions.
 
-## The domain
+### the domain
 
 The domain is the set of data structures that will be the result of our computation. It is the set of all Atoms and compound data structures that we can generate from elements in the domain.
 
@@ -40,7 +40,7 @@ The domain is the set of data structures that will be the result of our computat
 
 We have a one-to-one mapping from our atoms in the language and the atoms in the domain. You might wonder if they are not the same but ``there is a difference between expressions in our language and elements in our domain. Think about the written number “12” or in Roman “XII” and the number twelve. We will have expression that look like `{:foo , {:bar , :zot}}` and data structures that we write _{foo, {bar, zot}}_. If everything works out fine, the evaluation of an expression will return the corresponding data structure.
 
-## An environment
+### an environment
 
 In the description of the evaluation we will need an environment. This is a mapping from variables in expressions to elements in the domain. We will start with an empty environment and gradually add more information as we evaluate a sequence of pattern matching expressions. An environment is represented as a set of bindings  v/s. Here v is a variable \(and we will typically use v or x, y etc when we talk about variables\) and s is a data structure. An environment that binds x to a and y to b would then be written.
 
@@ -48,7 +48,7 @@ In the description of the evaluation we will need an environment. This is a mapp
 
 ## The evaluation function
 
-So we’re now ready to describe the operational semantics of our programming language and we do this by describing how an expressions is ``evaluated.We will start with the simplest expressions and then work our way up tomore complex expressions.The evaluation of an expression e is written Eσ\(e\), meaning that we evaluate the expression in the context of the environmentσ.When we describe our rules for evaluation we will use a notation that is:
+So we’re now ready to describe the operational semantics of our programming language and we do this by describing how an expressions is ``evaluated.We will start with the simplest expressions and then work our way up to more complex expressions.The evaluation of an expression e is written Eσ\(e\), meaning that we evaluate the expression in the context of the environmentσ.When we describe our rules for evaluation we will use a notation that is:
 
 $$
 \frac{prerequisite}{ Eσ(expression) → result}
@@ -58,7 +58,7 @@ In this description E is the evaluation function, and we will also have rules fo
 
 In order to apply the rule the prerequisite must be met and this will inthe end guide us in how we can implement a recursive evaluator. The so called _big-step operational semantics_ is often used since it is easily turned into an implementation of the language.
 
-## atoms, variables and tuples
+### atoms, variables and tuples
 
 The simplest rule is the one that describes how we evaluate an expression consisting of a simple atom.
 
@@ -84,7 +84,7 @@ Note that we here implicitly require that $$s_1 $$and $$s_2 $$ are structures \(
 
 $$\frac{ E\sigma(e_i) \rightarrow \perp }{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow \perp}$$
 
-## a pattern matching expression
+### a pattern matching expression
 
 Slightly more complex is how to evaluate a pattern matching expression. What we need to do is to first evaluate the right hand side and then try to match the pattern of the left hand side to the data structure that we obtain. The result of a pattern matching is either an extended environment or a  _failure_. This failure is important since we will later use it in our case statement. The failure is not the same as $$\perp$$.
 
@@ -135,7 +135,7 @@ $P{}\(\lbrace x, :b \rbrace, \lbrace a, b \rbrace\)$
 $P{}\(\lbrace x, x \rbrace, \lbrace a, a \rbrace\)$   
 $P{}\(\lbrace x, x \rbrace, \lbrace a, b \rbrace\)$
 
-## a sequence
+### a sequence
 
 So now we're ready to evaluate a sequence; a sequence that always consist of zero or more pattern matching expressions followed by a single expression. The pattern matching expressions will, if they succeed, add more bindings to the environment as we proceed and the final expression is then evaluated given this environment.
 
@@ -153,7 +153,7 @@ A sequence consist of one or more patter matching expressions followed by an exp
 
 $$\frac{   E\sigma(e) \rightarrow \perp }{E\sigma(p = e, {\rm sequence}) \rightarrow \perp}$$
 
-## that's it
+### that's it
 
 That is it, we now have all the rules to evaluate a sequence on the form shown in fig:\ref{fig:seq1}. Make sure that you understand the rules and how they are applied by evaluating the sequence by hand. If you get it right the result will be {\em {foo, {bar, nil}}}. When you get it right you're ready to continue.
 
@@ -193,11 +193,11 @@ $$\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow {\rm
 
 We now have everything we need to handle case expressions in our language, this is starting to look like something.
 
-\section{Adding lambda expressions}
+## Adding lambda expressions
 
 The real task is when we want to add lambda expressions, or unnamed functions. To do this wee need to do several things. We need to extend the syntax to represent a function and to apply a function to a sequence of arguments. We also need to add a new data structure to represent a function and, extend the rules of evaluation to give everything a meaning.
 
-## free variables
+### free variables
 
 We want to know which variables in the function expression that are {\em free}. To see the problem let's look at the function expression that has a match expression in the sequence.
 
@@ -209,7 +209,7 @@ $$\lambda x \rightarrow {\rm let} \quad y = 5 \quad {\rm in} \quad x + y + z$$
 
 The variable {\tt z} is however free and in order to make use of this function expression one would have to do it in an environment where {\tt z} has a value. A function and the needed environment, i.e. values for all free variables, is called a {\em closure}. We need to introduce new constructs in our language to create closures and apply them to arguments.
 
-## function expression and application
+### function expression and application
 
 So we introduce two new constructs in our language, one to express a function and one to apply a function to a sequence of arguments. Different from Elixir we don't allow patterns in function parameters; this is only to make the rules of the evaluation easier to describe.
 
