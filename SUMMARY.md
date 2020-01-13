@@ -6,7 +6,7 @@
   * [Derivatives](introduction/derivatives.md)
   * [Recursion](introduction/recursion.md)
 * [Lambda Calculus](lambda-calculus-1/README.md)
-  * [Lambda Calculus](lambda-calculus-1/lambda-calculus.md)
+  * [Lambda Calculus](introduction/lambda-calculus.md)
   * [Operational Semantics](lambda-calculus-1/operational-semantics.md)
 * [Data Structures](data-structures/README.md)
   * [2-3 Tree](data-structures/2-3-tree.md)

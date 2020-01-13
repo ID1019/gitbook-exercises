@@ -50,7 +50,6 @@ iex(6)> send :foo, "hello"
 
 In the example above the only thing we sent was a string but we can send arbitrary complex data structures. The `receive` statement can have several clauses that try to match incoming messages. Only if a match is found will a clause be used. Try this:
 
-{% code title="" %}
 ```elixir
 defmodule Tic do
 
@@ -82,7 +81,6 @@ defmodule Tic do
 
 end
 ```
-{% endcode %}
 
 Then in the `iex` shell execute the following commands:
 
