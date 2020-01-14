@@ -7,6 +7,7 @@
   * [Lists](introduction/lists.md)
   * [Sorting](introduction/sorting.md)
   * [Binary encoding](introduction/binary-encoding.md)
+  * [Calculate](introduction/calculate.md)
   * [Derivatives](introduction/derivatives.md)
 * [Lambda Calculus](lambda-calculus-1/README.md)
   * [Lambda Calculus](introduction/lambda-calculus.md)
