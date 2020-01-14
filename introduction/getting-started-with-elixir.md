@@ -154,48 +154,6 @@ Use the built-in arithmetic functions _rem_, _div_ and multiplication _\*_  to i
 
 ### 
 
-```elixir
-def to_binary(0) do ... end
-
-def to_binary(n) do
-  append(..., ...)
-end
-```
-
-This could be written in a better way by using an accumulator. The accumulator will hold the binary sequence that we have determined so far. We start with a empty list, and add binary digits as we go.
-
-```elixir
-def to_better(n) do to_better(n, []) end
-
-def to_better(0, b) do b end
-
-def to_better(n, b) do
-  to_better(div(n, 2), [rem(n, 2) | b])
-end
-```
-
-Why is this better than the previous one? Can you notice the difference? Try the following:
-
-```elixir
-> Test.time(1000, fn -> Test.to_binary(123489879809809809887) end)
-```
-
-Now try the better version - any difference? Why?
-
-### Binary to integer
-
-Now try the revers and implement a function that takes a binary representation of a number and returns an integer. To solve this it is a lot easier to use an accumulator that holds the number of what we have seen so far.
-
-```elixir
-def to_integer(x) do to_integer(x, ...) end
-
-def to_integer([], n) do ... end
-
-def to_integer([x | r], n) do
-  to_integer(..., ...)
-end
-```
-
 ### Fibonacci
 
 The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are and and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for , all you have to do is find the Fibonacci number for and and then add them together.

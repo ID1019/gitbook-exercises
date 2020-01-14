@@ -71,5 +71,13 @@ $$ackerman(m,n) = \left\{   \begin{array}{l l}     n+1 & \quad \text{if $m=0$}\\
 
 This looks like an innocent little function but don't try too high numbers.
 
-## 
+## List Processing
+
+Open up new module and implement the following list processing functions \(again we will have to call them something not that obvious in order not to create a conflict with the built-in functions\):
+
+* `drp`: drop the first  elements of a list
+* `tak`: take the first  elements of a list
+* `append`: append two lists
+* `rev`: reverse a list
+* `palindrome`: return `true` if a list is a palindrome
 

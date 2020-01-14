@@ -32,3 +32,15 @@ Why is this better? Try the following \(`:timer` is a Erlang module anb `tc/1` w
 >:timer.tc(fn() -> Binary.to_binary(99999999999999999999999999999) end)
 ```
 
+Now try to implement the reversed function i.e. from a list of ones and zeros construct the integer. 
+
+```elixir
+def to_integer(x) do to_integer(x, ...) end
+
+def to_integer([], n) do ... end
+
+def to_integer([x | r], n) do
+  to_integer(..., ...)
+end
+```
+
