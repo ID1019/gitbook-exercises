@@ -30,5 +30,3 @@
   * [Data Structures](problems/data-structures.md)
   * [Concurrency](problems/concurrency.md)
 
-## Lambda Calculus
-
