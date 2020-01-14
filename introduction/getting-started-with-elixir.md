@@ -82,99 +82,9 @@ Now in the same module define the following functions:
 
 Sooner or later you will have to think about which programming environment that you are going to use. We will not write very large programs in the course, but you will need to be able to quickly re-compile programs and shift between the editor and the Elixir shell. There are many environments to choose from and you are of course free to use whichever you find best.
 
-## Recursive Definitions
 
-Assume that all we have is addition and subtraction but need to define multiplications. How would you do? You will have to use recursion and you solve it by first describing the multiplication functions by words.
-
-_The product of_ $$m$$ _and_ $$n$$ _is: 0 if_ $$m$$ _is equal to 0, otherwise the  
-product is_ $$n$$ _plus the product of_ $$m-1$$ _and_ $$n$$_._
-
-Once you have written down the definition, the coding is simple.
-
-```elixir
-def product(m, n) do
-  if m == 0 do
-    ...
-  else
-    ...
-  end
-end
-```
-
-There are alternative ways of writing this, we could use a _case_ expression or the _cond-do_ expression. These techniques are often preferred over _if-else_ in Elixir.
-
-```elixir
-def product_case(m, n) do
-  case m do
-    0 ->
-      ...
-    _ ->
-      ...
-  end
-end
-
-def product_cond(m, n) do
-  cond do
-    m == 0 ->
-      ...
-    true ->
-      ...
-  end
-end
-```
-
-We could also have used the a style that sometimes is very handy. Here we break the definition up into two _clauses_ that are tried one after the other.
-
-```elixir
-def product_clauses(0, _) do 0 end
-def product_clauses(m, n) do
-  product_clauses(..., ...) + ...
-end
-```
-
-This should be read: if we call product, and the first argument matches _0_, then the result is _0_. If we can not use the first clause then we try the second.
-
-Sometimes the code becomes easier to understand, especially if we have many conditions that should be tested. Remember though that the clauses of a function need to be after each other. You can not spread the clauses around in a program.
-
-Define a function, `exp/2`, that computes the exponentiation, $$x^2$$. Use only the addition and subtraction and the function `product/2`, that you defined.
-
-```elixir
-def exp(x, n) do
-  case ... do
-    ...
-  end
-end
-```
-
-Use the built-in arithmetic functions _rem_, _div_ and multiplication _\*_  to implement a much faster exponentiation using the following definition:
-
-* $$x$$ raised to 1 is $$x$$
-* $$x$$ raised to $$n$$, if $$n$$ is even, is $$x$$ raised to $$n/2$$ multiplied by itself
-* $$x$$ raised to $$n$$, if $$n$$ is odd, is $$x$$ raised to $$(n-1)$$ multiplied by $$x$$
 
 ### 
 
-### Fibonacci
 
-The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are and and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for , all you have to do is find the Fibonacci number for and and then add them together.
-
-Write simple Fibonacci function fib/1 and do some performance measurements. Adapt the benchmark program above and run some tests.
-
-```elixir
-def bench_fib() do
-  ls = [8,10,12,14,16,18,20,22,24,26,28,30,32]
-  n = 10
-
-  bench = fn(l) ->
-    t = time(n, fn() -> fib(l) end)
-    :io.format("n: ~4w  fib(n) calculated in: ~8w us~n", [l, t])
-  end
-
-  Enum.each(ls, bench)
-end
-```
-
-Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run until the seminar? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
-
-Calculate a Fibonacci number as high as you possibly can.
 

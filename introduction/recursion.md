@@ -1,8 +1,15 @@
 # Recursion
 
+Assume that all we have is addition and subtraction but need to define multiplications. How would you do? You will have to use recursion and you solve it by first describing the multiplication functions by words.
+
+_The product of_ $$m$$ _and_ $$n$$ _is: 0 if_ $$m$$ _is equal to 0, otherwise the  
+product is_ $$n$$ _plus the product of_ $$m-1$$ _and_ $$n$$_._
+
+Once you have written down the definition, the coding is simple.
+
 ## Simple arithmetic functions
 
-Implement the following arithmetic functions and save them in a file `recursion.ex`. Start with simple recursive implementations that are not necessarily tail-recursive. In order not to create any conflicts with built-in function, you will have to call your functions something different i.e. `prod` instead of `product` etc.
+Implement the following arithmetic functions and save them in a file `recursion.ex`.  In order not to create any conflicts with built-in function, you will have to call your functions something different i.e. `prod` instead of `product` etc.
 
 When you implement them write a small documentation. For more information regarding documenting Elixir check the the following [documentation](https://hexdocs.pm/elixir/writing-documentation.html).
 
@@ -18,9 +25,9 @@ defmodule Recursion do
     otherwise
       the result ...
   """
-  def prod(..., ...) do
-    case ... do
-      ... -> ...
+  def prod(m, n) do
+    case m do
+      0 -> ...
       ... -> ...
     end
   end
@@ -33,35 +40,59 @@ end
 * `power`: implement the power function for non-negative exponents
 * `qpower`: use the two functions _div_ and _rem_ to implement a faster version of the power function by dividing the exponent by two in each recursive step \(what must be done if the exponent is odd?\)
 
-## Binary
+### alternative syntax
 
-Implement a function `binary/1` that takes an integer and produces its binary encoding, represented ad a list of ones and zeros. Your first solution should look something like this:
-
-```elixir
-def binary(0), do: []
-
-def binary(...), do: binary(...) ++ [...]
-```
-
-What is the deficiency of this implementation. What is the runtime complexity? Hint: check [this page](https://hexdocs.pm/elixir/Kernel.html#++/2) about Elixir kernel.
-
-Change your implementation so that it has a  complexity. The solution will look something like this:
+There are several ways of expressing the same thing in Elixir . The function product could be writen using the _cond-expression_ below. We would then use arithmetic comparisions that would evaluate to `true` or `false`.  
 
 ```elixir
-def binary2(i), do: binary2(i, ...)
-
-def binary2(0, sofar), do: Enum.reverse(sofar)
-
-def binary2(..., ...), do: binary2(..., ...)
+def product(m, n) do
+  cond do
+    m == 0 ->
+      ...
+    true ->
+      ...
+  end
+end
 ```
 
-We're using the [library function](https://hexdocs.pm/elixir/Enum.html#reverse/1) `Enum.reverse/1` to reverse the accumulated value.
+We could also divide the alternatives into different clauses as in the code below.
+
+```elixir
+def product(0, n) do .. end
+def product(m, n) do 
+    :
+end 
+```
+
+This should be read: if we call product, and the first argument matches _0_, then the result is .... If we can not use the first clause then we try the second clause.
+
+Sometimes the code becomes easier to understand, especially if we have many conditions that should be tested. Remember though that the clauses of a function need to be after each other. You can not spread the clauses around in a program.
 
 ## Fibonacci
 
 Try some more complex functions, for example the Fibonacci function:
 
 $$fib(n) = \left\{   \begin{array}{l l}     0 & \quad \text{if $n$ is 0}\\     1 & \quad \text{if $n$ is 1}\\     fib(n-1)+fib(n-2) & \quad \text{otherwise}\\   \end{array} \right.$$ 
+
+The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are 0 and 1 and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for n , all you have to do is find the Fibonacci number for n-1 and n-2 and then add them together.
+
+Write simple Fibonacci function fib/1 and do some performance measurements. 
+
+```elixir
+def bench_fib() do
+  ls = [8,10,12,14,16,18,20,22,24,26,28,30,32]
+  n = 10
+
+  bench = fn(l) ->
+    t = time(n, fn() -> fib(l) end)
+    :io.format("n: ~4w  fib(n) calculated in: ~8w us~n", [l, t])
+  end
+
+  Enum.each(ls, bench)
+end
+```
+
+Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run tomorrow? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
 
 ## Ackermann
 
@@ -71,13 +102,5 @@ $$ackerman(m,n) = \left\{   \begin{array}{l l}     n+1 & \quad \text{if $m=0$}\\
 
 This looks like an innocent little function but don't try too high numbers.
 
-## List Processing
-
-Open up new module and implement the following list processing functions \(again we will have to call them something not that obvious in order not to create a conflict with the built-in functions\):
-
-* `drp`: drop the first  elements of a list
-* `tak`: take the first  elements of a list
-* `append`: append two lists
-* `rev`: reverse a list
-* `palindrome`: return `true` if a list is a palindrome
+## 
 
