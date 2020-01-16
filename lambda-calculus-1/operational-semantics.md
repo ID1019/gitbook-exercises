@@ -70,19 +70,27 @@ This mean that if we have an atom, for example `:foo` then this is evaluated to 
 
 A variable is of course different since we then need to consult the environment for a binding of the variable.
 
-$$ \frac{v/s \in \sigma}{E\sigma(v) \rightarrow s}$$
+$$
+\frac{v/s \in \sigma}{E\sigma(v) \rightarrow s}
+$$
 
 We have one more situation, the case where we do not have a binding for our variable. This is the point where evaluation fails and we return $$\perp$$.
 
-$$\frac{v/s \not\in \sigma}{E\sigma(v) \rightarrow \perp}$$
+$$
+\frac{v/s \not\in \sigma}{E\sigma(v) \rightarrow \perp}
+$$
 
 The rule for a compound expression  `{:foo, :bar}` is straight forward Given that we can evaluate its two components we will of course be able to evaluate the compound expression.
 
-$$\frac{ E\sigma(e_1) \rightarrow s_1 \qquad E\sigma(e_2) \rightarrow s_2}{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow {s_1, s_2}}$$
+$$
+\frac{ E\sigma(e_1) \rightarrow s_1 \qquad E\sigma(e_2) \rightarrow s_2}{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow {s_1, s_2}}
+$$
 
 Note that we here implicitly require that $$s_1 $$and $$s_2 $$ are structures \( $$s_i \in Structures$$\). If the evaluation of one of the expressions fail, the whole evaluation fails.
 
-$$\frac{ E\sigma(e_i) \rightarrow \perp }{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow \perp}$$
+$$
+\frac{ E\sigma(e_i) \rightarrow \perp }{E\sigma(\lbrace e_1 , e_2\rbrace) \rightarrow \perp}
+$$
 
 ### a pattern matching expression
 
@@ -90,41 +98,61 @@ Slightly more complex is how to evaluate a pattern matching expression. What we 
 
 The first two rules are simple; an atom will of course match its corresponding data structure and the don't care symbol will match anything.
 
-$$\frac{a \equiv s}{P\sigma(a, s) \rightarrow \sigma}$$
+$$
+\frac{a \equiv s}{P\sigma(a, s) \rightarrow \sigma}
+$$
 
-$$\frac{}{P\sigma(\_,s) \rightarrow \sigma}$$
+$$
+\frac{}{P\sigma(\_,s) \rightarrow \sigma}
+$$
 
 If we try to match an atom to a data structure that is not the corresponding data structure then we fail.
 
-$$\frac{a \not\equiv s}{P\sigma(a, s) \rightarrow {\rm fail}}$$
+$$
+\frac{a \not\equiv s}{P\sigma(a, s) \rightarrow {\rm fail}}
+$$
 
 If we have a unbound variable as a pattern then the variable is bound to a structure in the environment.
 
-$$\frac{v/t \not\in \sigma}{P\sigma(v, s) \rightarrow \lbrace v/s \rbrace \cup \sigma }$$
+$$
+\frac{v/t \not\in \sigma}{P\sigma(v, s) \rightarrow \lbrace v/s \rbrace \cup \sigma }
+$$
 
 If the variable is bound to the equivalent structure we proceed without extending the environment but if it is bound to something else we fail.
 
-$$\frac{v/s \in \sigma}{P\sigma(v, s) \rightarrow \sigma }$$
+$$
+\frac{v/s \in \sigma}{P\sigma(v, s) \rightarrow \sigma }
+$$
 
-$$\frac{v/t \in \sigma \wedge t \not\equiv s}{P\sigma(v, s) \rightarrow {\rm fail} }$$
+$$
+\frac{v/t \in \sigma \wedge t \not\equiv s}{P\sigma(v, s) \rightarrow {\rm fail} }
+$$
 
 Matching a cons expression is quite simple but note what the rules says about the environment. We need to do the pattern matching of the expression $$e_1$$and the data structure $$s_1$$ in $$\sigma$$ but the matching of $$e_2 $$ and $$s_2$$in $$\sigma'$$. We thus gain information in the first matching that must be consisting with the second matching.
 
-$$\frac{P\sigma(p_1, s_1) \rightarrow \sigma' \wedge P\sigma'(p_2, s_2) \rightarrow \theta}{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow \theta}$$
+$$
+\frac{P\sigma(p_1, s_1) \rightarrow \sigma' \wedge P\sigma'(p_2, s_2) \rightarrow \theta}{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow \theta}
+$$
 
 We here implicitly state that the pattern matching succeeds. If the first matching fails the matching of the whole structure fails.
 
-$$\frac{P\sigma(p_1, s_1) \rightarrow {\rm fail} }{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow {\rm fail}}$$
+$$
+\frac{P\sigma(p_1, s_1) \rightarrow {\rm fail} }{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow {\rm fail}}
+$$
 
 The same holds if the second matching fails.
 
-$$\frac{P\sigma(p_1, s_1) \rightarrow \sigma' \wedge P\sigma'(p_2, s_2) \rightarrow {\rm fail}}{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow {\rm fail}}$$
+$$
+\frac{P\sigma(p_1, s_1) \rightarrow \sigma' \wedge P\sigma'(p_2, s_2) \rightarrow {\rm fail}}{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow {\rm fail}}
+$$
 
 As an exercise you should do the pattern matching of the expression  `{x, {x, :c}}` and the data structure {\em {a, {b, c}}}. Note how we first add {\em x/a} as a binding and then fail when we match `{x, :c}` and   `{b,c}`.
 
 The remaining alternative, the case where we have a cons expression and we try to match this to an data structure that is not a compound data structure, will of course lead to a failure.
 
-$$\frac{s \not = \{s_1, s_2\}}{P\sigma(\lbrace p_1, p_2 \rbrace, s) \rightarrow {\rm fail}}$$
+$$
+\frac{s \not = \{s_1, s_2\}}{P\sigma(\lbrace p_1, p_2 \rbrace, s) \rightarrow {\rm fail}}
+$$
 
 That it is as far as pattern matching goes. Try to do some matching by hand and explain which rules you apply. Try these:
 
@@ -139,17 +167,23 @@ So now we're ready to evaluate a sequence; a sequence that always consist of zer
 
 In order to describe this we introduce a new rule, a rule that describes how a new scope is created.
 
-$$\frac{\sigma' = \sigma \setminus \lbrace v/t \quad | \quad v/t \in \sigma \quad \wedge \quad v \quad {\rm in} \quad p\rbrace}{S(\sigma, p) \rightarrow \sigma'}$$
+$$
+\frac{\sigma' = \sigma \setminus \lbrace v/t \quad | \quad v/t \in \sigma \quad \wedge \quad v \quad {\rm in} \quad p\rbrace}{S(\sigma, p) \rightarrow \sigma'}
+$$
 
 The new environment will not have any bindings for the variables that occur in the pattern. If we have a variable  `x` in $$\sigma$$ it will simply be  _shadowed_  by the pattern matching expression. This is quite differently from how things are handled in Erlang.
 
 The rule that describes the evaluation of a sequence is now quite straight forward. We first evaluate the expression, $$e$$, of the pattern matching expression, then evaluate the matching giving us an updated environment, $$\theta$$, that is used to evaluate the remaining sequence.
 
-$$\frac{   E\sigma(e) \rightarrow t \qquad S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, t) \rightarrow \theta \qquad E\theta({\rm sequence}) \rightarrow s }{E\sigma(p = e, {\rm sequence}) \rightarrow s}$$
+$$
+\frac{   E\sigma(e) \rightarrow t \qquad S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, t) \rightarrow \theta \qquad E\theta({\rm sequence}) \rightarrow s }{E\sigma(p = e, {\rm sequence}) \rightarrow s}
+$$
 
 A sequence consist of one or more patter matching expressions followed by an expression, so the rule will terminate once we reach the final expression. Note that we also here implicitly require that the evaluation of $$e $$succeeds i.e. $$t \in Structs$$. If the evaluation returns $$\perp$$the whole evaluation fails.
 
-$$\frac{   E\sigma(e) \rightarrow \perp }{E\sigma(p = e, {\rm sequence}) \rightarrow \perp}$$
+$$
+\frac{   E\sigma(e) \rightarrow \perp }{E\sigma(p = e, {\rm sequence}) \rightarrow \perp}
+$$
 
 ### that's it
 
@@ -173,21 +207,29 @@ We first need to extend the grammar so that we have a syntax to express our new 
 
 We then extend the rules for evaluation an expression, hopefully capturing our intended meaning. We will use a new set of rules, $$C$$, that will describe how the right clause is selected.
 
-$$\frac{E\sigma(e) \rightarrow t \qquad C\sigma(t, {\rm clauses}) \rightarrow s }{E\sigma({\tt case}\ e \ {\tt do}\ {\rm clauses} \ {\tt end}) \rightarrow s}$$
+$$
+\frac{E\sigma(e) \rightarrow t \qquad C\sigma(t, {\rm clauses}) \rightarrow s }{E\sigma({\tt case}\ e \ {\tt do}\ {\rm clauses} \ {\tt end}) \rightarrow s}
+$$
 
 The right clause is selected by trying to match the pattern of the first clause with the data structure obtained by evaluating the expression. If the pattern matching succeeds we will continue to evaluate the sequence of the clause, in the extended environment. Note that we also here create new scopes for the variables in the pattern.
 
-$$\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow \theta \qquad \theta \not = {\rm fail} \qquad E\theta({\rm sequence}) \rightarrow s}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence} ; {\rm clauses}) \rightarrow s}$$
+$$
+\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow \theta \qquad \theta \not = {\rm fail} \qquad E\theta({\rm sequence}) \rightarrow s}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence} ; {\rm clauses}) \rightarrow s}
+$$
 
 This rule could of course also be used even if _clauses_ is empty i.e. we match the last or only clause in a sequence.
 
 If the pattern matching fails we will simply try the next clause in the sequence of clauses.
 
-$$\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow {\rm fail} \qquad C\sigma(s, {\rm clauses}) \rightarrow s}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence} ; {\rm clauses}) \rightarrow s}$$
+$$
+\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow {\rm fail} \qquad C\sigma(s, {\rm clauses}) \rightarrow s}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence} ; {\rm clauses}) \rightarrow s}
+$$
 
 If the last clause fails, the evaluation will simply terminate unsuccessfully i.e. $$\perp$$. In real life this would mean that we receive a _Case Clause Error_ or similarly.
 
-$$\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow {\rm fail}}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence}) \rightarrow \perp}$$
+$$
+\frac{ S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, s) \rightarrow {\rm fail}}{ C\sigma(s, p \;{\rm ->}\; {\rm sequence}) \rightarrow \perp}
+$$
 
 We now have everything we need to handle case expressions in our language, this is starting to look like something.
 
@@ -233,21 +275,29 @@ A function consist of the keyword  `fn` followed by a, possibly empty, sequence 
 
 The next thing we need to do is to extend our set of data structures. When we evaluate a function expression we will construct the closure. The closure is a triplet: the parameters of the function, the sequence to evaluate and an environment.
 
-$${\rm Closures} = \{\langle p:s:e \rangle \quad | \quad p \in {\rm Par} \wedge s \in {\rm Seq} \wedge e \in {\rm Env}\}$$
+$$
+{\rm Closures} = \{\langle p:s:e \rangle \quad | \quad p \in {\rm Par} \wedge s \in {\rm Seq} \wedge e \in {\rm Env}\}
+$$
 
-$${\rm Structures} = {\rm Closures} \cup ..$$
+$$
+{\rm Structures} = {\rm Closures} \cup ..
+$$
 
 We have not formally defined what the set of parameters, sequences nor environments are but the informal description will work for our purposes.
 
 The environment of a closure is constructed by taking the bindings of all free variables in the sequence, not including the variables that are bound by the parameters.
 
-$$\frac{ \theta = \{ v/s \mid v/s \in \sigma \wedge v {\rm\ free\ in\ sequence}\}}{ E\sigma({\rm fn}({\rm parameters})\; {\rm ->}\; {\rm sequence}\; end )\rightarrow \quad \langle{\rm parameters}:{\rm sequence}:\theta\rangle}$$
+$$
+\frac{ \theta = \{ v/s \mid v/s \in \sigma \wedge v {\rm\ free\ in\ sequence}\}}{ E\sigma({\rm fn}({\rm parameters})\; {\rm ->}\; {\rm sequence}\; end )\rightarrow \quad \langle{\rm parameters}:{\rm sequence}:\theta\rangle}
+$$
 
 ### applying a closure
 
 So now to the interesting part where we apply a closure to a sequence of arguments. We first need to evaluate the arguments and then add a set of bindings to the environment of the closure. We then evaluate the sequence in the updated environment.
 
-$$\frac{E\sigma(e) \rightarrow \langle v_1, \ldots:{\rm seq}:\theta \rangle \qquad E\sigma(e_i) \rightarrow s_i \qquad E\{v_1/s_1, \ldots\}\cup\theta({\rm seq}) \rightarrow s}{E\sigma(e.(e_1, \ldots)) \rightarrow s}$$
+$$
+\frac{E\sigma(e) \rightarrow \langle v_1, \ldots:{\rm seq}:\theta \rangle \qquad E\sigma(e_i) \rightarrow s_i \qquad E\{v_1/s_1, \ldots\}\cup\theta({\rm seq}) \rightarrow s}{E\sigma(e.(e_1, \ldots)) \rightarrow s}
+$$
 
 Note that the closure that we get, $$\langle v_1, \ldots:{\rm seq}:\theta \rangle$$ consist of a sequence of variables $v\_1, \ldots$, that are all distinct. This is why we can simply add the bindings $$v_i/s_i$$ to $$\theta$$, there will not be any duplicate bindings.
 
