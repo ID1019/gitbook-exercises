@@ -17,6 +17,7 @@
   * [2-3 Tree](data-structures/2-3-tree.md)
   * [Morse Encoding](data-structures/morse-encoding.md)
   * [LZW Encoding](data-structures/lzw-encoding.md)
+  * [AVL Tree](data-structures/avl.md)
   * [Ray Tracer](data-structures/ray-tracer.md)
 * [Concurrency](concurrency/README.md)
   * [Elixir Concurrency](concurrency/elixir-concurrency.md)
