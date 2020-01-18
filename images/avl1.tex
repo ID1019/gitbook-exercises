@@ -1,11 +1,10 @@
-\documentclass[preview]{standalone}
-
+\documentclass[tikz]{standalone}
 
 \usepackage{tikz}
+
 \usetikzlibrary{arrows, automata, topaths, calc, shapes.geometric}
 
 \begin{document}
-\begin{figure}[h!]
 
 \begin{tikzpicture}[
     inner/.style={circle,draw,minimum width=12mm,inner sep=1pt},
@@ -31,6 +30,5 @@
         child {node[leaf] {B}}
         child {node[leaf] {C}}};
 \end{tikzpicture}
-\end{figure}
 
 \end{document}
