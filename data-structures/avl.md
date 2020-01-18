@@ -12,7 +12,7 @@ explain if you leave out the details; the devil is of course in the
 details.
 
 
-##AVL trees##
+##AVL trees
 
 AVL trees are named after two Russian mathematicians, Georgy
 Adelson-Velsky and Evgenii Landis, who first described how we could
@@ -229,10 +229,6 @@ of describing the rotations but this is more of a pattern matching
 exercise if you have drawn all the graphs.
 
 
-% ================================================== %
-% == Rotation  == %
-% ================================================== %
-
 ###Rotation
 
 Can you provide a better strategy for the philosophers so that they
@@ -243,9 +239,6 @@ philosophers can try to eat without ending up in a deadlock? How
 smart does the waiter need to be?
 
 
-% ================================================== %
-% == Single rotation  == %
-% ================================================== %
 
 ###Single rotation
 
