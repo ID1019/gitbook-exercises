@@ -202,7 +202,7 @@ This would give us a canvas of size $$1920 \times 1080$$ at a distance from the 
 To minimise the computation needed when calculating the rays we could represent the camera by a position and a vector to the upper left corner of the canvas $$\vec{c}$$. If we then have two vectors that represent the distance between pixels moving to the right $$\vec{r}$$ and moving down $$\vec{d}$$, we can easily calculate the normalised vector to any pixel in the canvas.
 
 $$
-pixel(x,y) = \widehat{\vec{c} + x * \vec{r} + y * \vec{d}}
+pixel(x,y) = \widehat{\vec{c} + x \vec{r} + y \vec{d}}
 $$
 
 We therefore represent the camera by position, direction to the upper left corner and the two vectors that describes the distance to the first pixel to the right and the first pixel down. Why the upper corner, why move down, why not lower left corner? Turns out that when we talk about images we often count the rows going down so this will makes things easier. We also keep the size of the canvas so we know which rays that we should produce.
