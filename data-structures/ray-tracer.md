@@ -34,7 +34,7 @@ The first task is to create a module that will handle all vector operations. We 
 * $$\vec{x} + \vec{y}$$ : addition
 * $$\|\vec{x}\|$$ : norm, or length, of a vector
 * $$\vec{x} \cdot \vec{y}$$ : scalar product \(dot product\)
-* $$\{x}$$ : normalised vector
+* $$\hat{x}$$ : normalised vector
 
 If we restrict the system to only work with three dimensional vectors we have a natural way of representation: a tuple with three elements, the $$x$$, $$y$$ and $$a = b$$ components i.e. `{x, y, z}`. 
 
