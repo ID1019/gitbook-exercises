@@ -2,7 +2,7 @@ LATEXMK = latexmk
 PDFLATEX = pdflatex
 
 
-all : avl1.png avl2.png
+all : avl1.png avl2.png splay1.png splay2.png splay3.png splay4.png
 
 
 %.pdf : %.tex 
