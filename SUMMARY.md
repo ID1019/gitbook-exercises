@@ -32,6 +32,6 @@
   * [Philosophers and Concurrency](seminars/philosophers-and-concurrency.md)
   * [Small Web Server](seminars/small-web-server.md)
 * [Problems](problems/README.md)
-  * [Data Structures](problems/data-structures.md)
+  * [Functional Programming](problems/functional.md)
   * [Concurrency](problems/concurrency.md)
 

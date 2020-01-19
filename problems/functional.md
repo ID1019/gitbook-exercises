@@ -1,4 +1,4 @@
-# Data Structures
+# Functional Programming
 
 ## A Heap
 
