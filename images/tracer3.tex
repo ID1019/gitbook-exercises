@@ -1,0 +1,22 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{tikz}
+
+\usetikzlibrary{arrows, automata, topaths, calc, shapes.geometric}
+
+\begin{document}
+
+\begin{tikzpicture}
+\draw[fill] (0,0,0) node()[left]{$\vec{o}$} circle (2pt);
+
+\draw[->] (0,0,0) -- (4,4,4) node()[below, near start]{$\vec{f}$};
+
+\draw[->] (4,4,4) -- ++(0,2,0) node()[right, midway]{$\vec{v}$};
+
+\draw[->] (4,4,4) -- ++(3,0,3) node()[below, midway]{$\vec{h}$};
+
+\draw[dashed] (7,6,7) -- (7,2,7) -- (1,2,1) -- (1,6,1) -- cycle;
+
+\end{tikzpicture}
+
+\end{document}

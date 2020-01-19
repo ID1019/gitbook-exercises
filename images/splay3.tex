@@ -1,0 +1,31 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{tikz}
+
+\usetikzlibrary{arrows, automata, topaths, calc, shapes.geometric}
+
+\begin{document}
+
+
+\begin{tikzpicture}[every node/.style = {shape=rectangle, rounded corners, draw, align=center},
+level 1/.style={sibling distance=30mm},level 2/.style={sibling distance=10mm}]]
+
+  \node at (2,4) {G} 
+    child { node {P} 
+      child { node {A}}
+      child { node {K} 
+         child { node {B} }
+         child { node {C} } }}
+    child { node {D}};
+
+  \draw[thick, ->] (5,2) -- (7,2);
+
+  \node at (10,4) {K} 
+    child { node {P} 
+        child { node {A} }
+        child { node {B} }}
+    child { node {G}
+          child { node {C}}
+          child { node {D}}};
+\end{tikzpicture}
+\end{document}
