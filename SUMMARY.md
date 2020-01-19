@@ -14,6 +14,7 @@
   * [Operational Semantics](lambda-calculus-1/operational-semantics.md)
   * [Semantics](lambda-calculus-1/semantics.md)
 * [Trees](trees/README.md)
+  * [Binary tree](trees/binary-tree.md)
   * [2-3 Tree](trees/2-3-tree.md)
   * [AVL Tree](trees/avl.md)
 * [Data Structures](data-structures/README.md)
