@@ -14,19 +14,17 @@ We will first look at the two basic rotations that we will do and then dig deepe
 
 ### Single rotate
 
-The single rotate operation is performed when the left-left branch or right-right branched has increased with one step and causes an imbalance. The left-left station is shown in the figure below. The depth of the sub-tree A is one greater than the sub-tree of B and also two greater than the sub-tree of C. In the rearranged tree, the branches are balanced and the total depth of the tree is one less than the imbalanced tree.
+The single rotate operation is performed when the left-left branch or right-right branched has increased with one step and causes an imbalance. The left-left situation is shown in the figure below. The depth of the sub-tree A is one greater than the sub-tree of B and also two greater than the sub-tree of C. In the rearranged tree, the branches are balanced and the total depth of the tree is one less than the imbalanced tree.
 
-![](../images/avl1.png)
+![Single rotation: the left-left branch has grown and caused an imbalance.](../.gitbook/assets/avl1%20%281%29.png)
 
 The left-left single rotation has its mirror in the right-right single rotation used when the root has a difference of $$+2$$ and the right sub-tree a difference of $$+1$$.
-
-Single rotation: the left-left branch has grown and caused an imbalance.
 
 ### Double rotate
 
 In the double rotate we have added an element in the left-right branch \(or the right-left branch\). There are three different flavors of this rule depending on what the left-right branch looks like. The first rule is shown in the image below, it shows the situation where the left-right branch is marked with $$-1$$. This is the case where the left-right-left branch \(B\) has been extended. Note the difference in depth of the sub-trees, A has to be of the same depth as B and D and C must be one level shorter.
 
-![](../images/avl2.png)
+![](../.gitbook/assets/avl2.png)
 
 The second version of this rule covers the situation where the left-right-left branch is marked with $$+1$$ i.e. the sub-tree C is deeper than the sub-tree B. The same transformation is done but the resulting depth differences are of course different. You're encouraged to write this rule down since you will use it in the implementation.
 
