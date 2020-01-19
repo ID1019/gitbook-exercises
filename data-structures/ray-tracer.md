@@ -10,9 +10,9 @@ This is also an exercise in how to model a complex system and refresh your knowl
 
 In order to explain a ray tracer in a three dimensional world, we will describe all necessary steps using a two dimensional model. Since we will describe everything using vector arithmetic it can easily be extended to a three dimensional model. Images generated in a two dimensional world will of course not be very thrilling but we will be able to describe the necessary steps.
 
-In Fig.~\ref{fig:world} we see a sphere in a two dimensional Cartesian coordinate system. A **camera** is also positioned in the room consisting of a **canvas** and an **eye**. When generating an image we need to trace as many rays as possible starting in the eye of the camera and passing through the **pixels** of the canvas. If we can determine that a ray intersect with an object we can colour the pixel thus generating an image on the canvas.
+In the image below we see a sphere in a two dimensional Cartesian coordinate system. A **camera** is also positioned in the room consisting of a **canvas** and an **eye**. When generating an image we need to trace as many rays as possible starting in the eye of the camera and passing through the **pixels** of the canvas. If we can determine that a ray intersect with an object we can colour the pixel thus generating an image on the canvas.
 
--&gt; Camera image
+![Camera image](../images/tracer1.png)
 
 The beauty of vector arithmetic is that if we understand how to do the necessary calculations in a two dimensional space then we also know how to do it in a three dimensional space. If we extend this model to a three dimensional world, we would have a sphere instead of a circle and the canvas would be a rectangular plane. The eye would still be a point in this space and we would track rays from the eye through each _x-y pixel_ of the canvas.
 
@@ -62,17 +62,27 @@ end
 
 The first functions, scalar multiplication, addition and subtraction should be quite easy to implement.
 
-$$\langle x\_1, x\_2, x\_3 \rangle  s =  \langle x\_1s, x\_2s, x\_3s \rangle$$
+$$
+\langle x\_1, x\_2, x\_3 \rangle  s =  \langle x\_1s, x\_2s, x\_3s \rangle
+$$
 
-$$\langle x\_1, x\_2, x\_3 \rangle + \langle y\_1, y\_2, y\_3\rangle = \langle x\_1+y\_1, x\_x+y\_2, x\_3+y\_3 \rangle$$
+$$
+\langle x\_1, x\_2, x\_3 \rangle + \langle y\_1, y\_2, y\_3\rangle = \langle x\_1+y\_1, x\_x+y\_2, x\_3+y\_3 \rangle
+$$
 
 To implement the norm, dot product and normalisation of a vector you might have to go through your book in linear algebra but you should have it up and running quite quickly.
 
-$$\\|\vec{x}\\| = \sqrt{x\_1^2 + x\_2^2 + x\_3^2}$$
+$$
+\\|\vec{x}\\| = \sqrt{x\_1^2 + x\_2^2 + x\_3^2}
+$$
 
-$$ \vec{x} \cdot \vec{y} = \langle x\_1\cdot y\_1 + x\_2\cdot y\_2 + x\_3\cdot y\_3\rangle $$ 
+$$
+\vec{x} \cdot \vec{y} = \langle x\_1\cdot y\_1 + x\_2\cdot y\_2 + x\_3\cdot y\_3\rangle
+$$ 
 
-$$ \|\vec{x}\| = \vec{x}/\\|\vec{x}\\|$$
+$$
+\|\vec{x}\| = \vec{x}/\\|\vec{x}\\|
+$$
 
 In this implementation we actually expose the representation of a vector i.e. the users of this module will know that vectors are represented by tuples with three elements. This is not the best solution but unfortunately a very convenient solution.
 
@@ -128,15 +138,17 @@ end
 
 The tricky part is of course to determine if a ray will intersect a sphere but this is actually easily determined if we remember our linear algebra.
 
--&gt; Fig 2
+![Intersection of ray and circle](../images/tracer2.png)
 
-In Fig.~\ref{fig:intersection} we see a ray intersecting a circle. We want to find the intersection points $$\vec{i_1}$$ and $$\vec{i_2} $$. We can do this by first calculate the length $$a$$ and this is done by taking the dot product of $$\vec{k}$$ and $$\vec{l}$$. The dot product will project the vector $$\vec{k}$$ on $$\vec{l}$$ thus giving us the length $$a$$. The vector $$\vec{k}$$ is of course easily calculated since we know the origin of the ray $$\vec{o}$$ and the centre of the circle $$\vec{c}$$.
+In the image above, we see a ray intersecting a circle. We want to find the intersection points $$\vec{i_1}$$ and $$\vec{i_2} $$. We can do this by first calculate the length $$a$$ and this is done by taking the dot product of $$\vec{k}$$ and $$\vec{l}$$. The dot product will project the vector $$\vec{k}$$ on $$\vec{l}$$ thus giving us the length $$a$$. The vector $$\vec{k}$$ is of course easily calculated since we know the origin of the ray $$\vec{o}$$ and the centre of the circle $$\vec{c}$$.
 
 Note that we here talk about the circle while our real model would contain a sphere - this is fine, the operations are the same.
 
 The length of the vector $$\vec{k}$$ is of course $$\|\vec{k}\|$$ and if we know this we can calculate $$h$$ using Pythagoras' theorem. Since we know that the radius of the sphere is $$r$$ we can again rely on Pythagoras and calculate $$t^2$$.
 
-$$ t^2 = r^2 - h^2 $$
+$$
+t^2 = r^2 - h^2
+$$
 
 If it turns out that $$t^2$$ is a negative value, it means that the ray does not intersect the sphere. This is our criteria for answering if we intersect the object or not. If $$t^2$$ is positive we calculate $$t$$ and then of course obtain two alternatives $$t$$ and $$-t$$ .  We now calculate two distances $$d_1 = a - t$$ and $$d_2 = a + t$$ .  This is the distance to the points of intersections from the origin of the ray $$\vec{o}$$ .  If either value is negative it means that the intersection point is behind us; if only one value is negative we are actually inside the sphere. If both values are positive we return the smallest value since this is the surface that we will actually see.
 
@@ -176,7 +188,7 @@ We might take for granted that the plane of the canvas is orthogonal to the dire
 
 Note that the vertical and horizontal orientation are represented as two vectors. This will allow us to create a ray from the origin through any coordinate of the canvas. 
 
--&gt; Fig camera
+![Camera view](../images/tracer3.png)
 
 A camera with a normal lens, positioned at $$\langle 0, 0, 0\rangle$$ and pointing straight into the picture, could be described as follows:
 
