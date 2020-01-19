@@ -34,7 +34,7 @@ The first task is to create a module that will handle all vector operations. We 
 * $$\vec{x} + \vec{y}$$ : addition
 * $$\|\vec{x}\|$$ : norm, or length, of a vector
 * $$\vec{x} \cdot \vec{y}$$ : scalar product \(dot product\)
-* $$|\vec{x}|$$ : normalised vector
+* $$\{x}$$ : normalised vector
 
 If we restrict the system to only work with three dimensional vectors we have a natural way of representation: a tuple with three elements, the $$x$$, $$y$$ and $$a = b$$ components i.e. `{x, y, z}`. 
 
@@ -49,11 +49,11 @@ defmodule Vector do
 
   def add({x1, x2, x3}, {y1, y2, y3}) do ... end
 
+  def norm({x1, x2, x3}) do ... end
+
   def dot({x1, x2, x3}, {y1, y2, y3}) do ... end  
 
   def normalize(x) do ... end
-
-  def norm({x1, x2, x3}) do ... end
 
 end
 ```
@@ -73,7 +73,7 @@ $$
 To implement the norm, dot product and normalisation of a vector you might have to go through your book in linear algebra but you should have it up and running quite quickly.
 
 $$
-\\|\vec{x}\\| = \sqrt{x\_1^2 + x\_2^2 + x\_3^2}
+\|\vec{x}\| = \sqrt{x\_1^2 + x\_2^2 + x\_3^2}
 $$
 
 $$
@@ -81,7 +81,7 @@ $$
 $$ 
 
 $$
-\|\vec{x}\| = \vec{x}/\\|\vec{x}\\|
+\hat{x} = \vec{x}/\|\vec{x}\|
 $$
 
 In this implementation we actually expose the representation of a vector i.e. the users of this module will know that vectors are represented by tuples with three elements. This is not the best solution but unfortunately a very convenient solution.
