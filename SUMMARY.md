@@ -26,6 +26,7 @@
   * [Elixir Concurrency](concurrency/elixir-concurrency.md)
   * [Mutual Exclusion](concurrency/mutual-exclusion.md)
   * [Network Transport Layer](concurrency/network-transport-layer.md)
+  * [Bitonic sorter](concurrency/bitonic.md)
 * [Seminars](seminars/README.md)
   * [Huffman Encoding](seminars/huffman-encoding.md)
   * [Meta-Interpreter](seminars/meta-interpreter.md)
