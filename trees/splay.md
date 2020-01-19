@@ -61,12 +61,12 @@ branches. We should then rearrange the tree in a way that moves the key
 to root of the tree. The operation is quite straight forward as seen
 in the graph shown in figure~\ref{fig:root}. 
 
-Note that the lefter-most sub-tree, {\em A}, of course contains keys
-that are less than the key ({\em K}) that we're looking for and it is safe to
-have it as the left branch of the new tree. The sub-tree {\em B}
+Note that the lefter-most sub-tree,  A, of course contains keys
+that are less than the key (K) that we're looking for and it is safe to
+have it as the left branch of the new tree. The sub-tree B
 contains keys that are greater than the key we are looking for but
-smaller than the key of the root ({\em R}) . Its position in the transformed tree
-is therefore sound. The same thing goes for the sub-tree {\em C} that
+smaller than the key of the root (R) . Its position in the transformed tree
+is therefore sound. The same thing goes for the sub-tree C that
 must contain keys that are greater than the key of the root.
 
 There is s corresponding splay operations when we find the key in the
@@ -101,13 +101,13 @@ variables in our implementation so let's try to be consistent.
 
 The zig-zig rule is used if we find the key in the lefter-left node. In
 the figure below we see how we move the node holding the key we're
-looking for ({\em K}) to the root and rearrange the parent
-({\em P}), and grandparent ({\em G}), to form the new tree. Note
-the order of the sub-trees {\em A}, {\em B}, {\em C} and
-{\em D}.  Make sure that you understand why it is safe to do the
+looking for (K) to the root and rearrange the parent
+(P), and grandparent (G), to form the new tree. Note
+the order of the sub-trees A, B, C and
+D.  Make sure that you understand why it is safe to do the
 transformation of the tree and why the tree is still ordered.
 
-![Zig-Zig: splay operation when key is found in left-left branch.](../images/splay2.png))
+![Zig-Zig: splay operation when key is found in left-left branch.](../images/splay2.png)
 
 ###Zig-zag
 
@@ -128,9 +128,9 @@ down. The grandparent node becomes the child of either the parent node
 or the key node.
 
 You're strongly advised to draw the graphs that describes these
-zag-zig and zag-zag rules. Keep the naming of nodes: {\em G} for
-grandparent, {\em P} for parent and {\em K} for the node where we find
-the key. Sub-trees are called: {\em A}, {\em B } etc and are named in
+zag-zig and zag-zag rules. Keep the naming of nodes: G for
+grandparent, P for parent and K for the node where we find
+the key. Sub-trees are called: A, B  etc and are named in
 order.
 
 These are the complicated rules, what we have left are the very
@@ -199,8 +199,8 @@ end
 
 ###Zig and Zag
 
-The two general cases, {\em Zig} and  {\em Zag} are where we will do a
-call to  a general {\em  splay} operation. The function  `splay/2'
+The two general cases, Zig and  Zag are where we will do a
+call to  a general  splay operation. The function  `splay/2'
 takes a  tree and a key  and will return  a tuple `{:splay,  kv, a,
   b}` where `kv`  is the value of the key (`:na`  if the key is
 not found) and `a` and `b` the left and right sub-trees. When
@@ -281,7 +281,7 @@ end
 When this is done we are ready for the general zig-zag rules. We here
 list the complete coding of the zig-zig rule and you should complete
 the remaining rules. The zig-zig rule applies the splay operation on
-the left-left sub-tree and obtains the sub-trees {\tt a} and {\tt b}
+the left-left sub-tree and obtains the sub-trees `a` and `b`
 that can then be used to rearrange the tree. Note that the splay
 operation also provides the found value, `kv`, and this value is
 returned in the splay tuple.
@@ -368,7 +368,7 @@ If you implement the update procedure and change the structure of the
 tree, you will most likely work with a linked tree where all nodes
 know their immediate parent. The algorithm would then first traverse
 down the tree to find the node with the given key, or construct one in
-a leaf if it is not present, and then {\em splay} this node towards
+a leaf if it is not present, and then splay this node towards
 the root using the parent pointers. 
 
 You can probably work out what the algorithm looks like: if my parent
@@ -435,7 +435,7 @@ instead of explicitly writing down a whole tuple in a pattern.
 
 Assume that we have a struct definition for a node with the fields:
 `key`, `value`, `left` and `right`. We could then
-rewrite {\tt update/3} in the following way (we here also combine the
+rewrite `update/3` in the following way (we here also combine the
 three alternatives in one clause).
 
 ```elixir
