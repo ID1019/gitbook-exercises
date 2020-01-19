@@ -328,4 +328,3 @@ Now it is time to extend `setup/2` to handle arbitrary values of $$n$$
 ```
 
 
-\end{document}
