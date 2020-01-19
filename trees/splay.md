@@ -107,7 +107,7 @@ the order of the sub-trees {\em A}, {\em B}, {\em C} and
 {\em D}.  Make sure that you understand why it is safe to do the
 transformation of the tree and why the tree is still ordered.
 
-![Zig-Zig: splay operation when key is found in left-left branch.](../images/splay2.png)) 
+![Zig-Zig: splay operation when key is found in left-left branch.](../images/splay2.png))
 
 ###Zig-zag
 
@@ -117,9 +117,7 @@ is the same; move the key to the root and rearrange the sub-trees to
 keep the tree ordered. In the figure below we see how the
 transformation is done.
 
-\begin{figure}
 ![Zig-Zag: splay operation when the key (K) is found in left-right branch.](../images/splay3.png)
-\end{figure}
 
 ##Zag-zig and zag-zag
 
