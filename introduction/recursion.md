@@ -90,6 +90,17 @@ def bench_fib() do
 
   Enum.each(ls, bench)
 end
+
+def time(n, call) do
+   {t, _} = :timer.tc(fn -> loop(n, call) end)
+   trunc(t/n)
+end
+   
+def loop(0, _ ) do :ok end
+def loop(n, call) do 
+   call.()
+   loop(n-1, call)
+end   
 ```
 
 Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run tomorrow? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
