@@ -63,10 +63,10 @@ In order to apply the rule the prerequisite must be met and this will in the end
 The simplest rule is the one that describes how we evaluate an expression consisting of a simple atom.
 
 $$
-\frac{a \equiv s}{E\sigma(a) \rightarrow s}
+\frac{a \mapsto s}{E\sigma(a) \rightarrow s}  
 $$
 
-This mean that if we have an atom, for example `:foo` then this is evaluated to the corresponding data structure _foo_ \(since `:foo` $$\equiv$$ _foo_\). The environment, $$\sigma$$, is in this case not relevant.
+This mean that if we have an atom, for example `:foo` then this is evaluated to the corresponding data structure _foo_ \(since `:foo` $$\mapsto$$ _foo_\). The environment, $$\sigma$$, is in this case not relevant.
 
 A variable is of course different since we then need to consult the environment for a binding of the variable.
 
@@ -99,7 +99,7 @@ Slightly more complex is how to evaluate a pattern matching expression. What we 
 The first two rules are simple; an atom will of course match its corresponding data structure and the don't care symbol will match anything.
 
 $$
-\frac{a \equiv s}{P\sigma(a, s) \rightarrow \sigma}
+\frac{a \mapsto s}{P\sigma(a, s) \rightarrow \sigma}
 $$
 
 $$
@@ -109,7 +109,7 @@ $$
 If we try to match an atom to a data structure that is not the corresponding data structure then we fail.
 
 $$
-\frac{a \not\equiv s}{P\sigma(a, s) \rightarrow {\rm fail}}
+\frac{a \not\mapsto s}{P\sigma(a, s) \rightarrow {\rm fail}}
 $$
 
 If we have a unbound variable as a pattern then the variable is bound to a structure in the environment.
@@ -125,7 +125,7 @@ $$
 $$
 
 $$
-\frac{v/t \in \sigma \wedge t \not\equiv s}{P\sigma(v, s) \rightarrow {\rm fail} }
+\frac{v/t \in \sigma \wedge t \not\mapsto s}{P\sigma(v, s) \rightarrow {\rm fail} }
 $$
 
 Matching a cons expression is quite simple but note what the rules says about the environment. We need to do the pattern matching of the expression $$e_1$$and the data structure $$s_1$$ in $$\sigma$$ but the matching of $$e_2$$ and $$s_2$$in $$\sigma'$$. We thus gain information in the first matching that must be consisting with the second matching.
