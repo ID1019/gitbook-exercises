@@ -12,7 +12,7 @@ In order to explain a ray tracer in a three dimensional world, we will describe 
 
 In the image below we see a sphere in a two dimensional Cartesian coordinate system. A **camera** is also positioned in the room consisting of a **canvas** and an **eye**. When generating an image we need to trace as many rays as possible starting in the eye of the camera and passing through the **pixels** of the canvas. If we can determine that a ray intersect with an object we can colour the pixel thus generating an image on the canvas.
 
-![Camera image](../images/tracer1.png)
+![Camera image](../.gitbook/assets/tracer1.png)
 
 The beauty of vector arithmetic is that if we understand how to do the necessary calculations in a two dimensional space then we also know how to do it in a three dimensional space. If we extend this model to a three dimensional world, we would have a sphere instead of a circle and the canvas would be a rectangular plane. The eye would still be a point in this space and we would track rays from the eye through each _x-y pixel_ of the canvas.
 
@@ -36,7 +36,7 @@ The first task is to create a module that will handle all vector operations. We 
 * $$\vec{x} \cdot \vec{y}$$ : scalar product \(dot product\)
 * $$\hat{x}$$ : normalised vector
 
-If we restrict the system to only work with three dimensional vectors we have a natural way of representation: a tuple with three elements, the $$x$$, $$y$$ and $$a = b$$ components i.e. `{x, y, z}`. 
+If we restrict the system to only work with three dimensional vectors we have a natural way of representation: a tuple with three elements, the $$x$$, $$y$$ and $$a = b$$ components i.e. `{x, y, z}`.
 
 Create a new file `vector.ex` and declare a new module with the following exported functions.
 
@@ -78,7 +78,7 @@ $$
 
 $$
 \vec{x} \cdot \vec{y} = \langle x\_1\cdot y\_1 + x\_2\cdot y\_2 + x\_3\cdot y\_3\rangle
-$$ 
+$$
 
 $$
 \hat{x} = \vec{x}/\|\vec{x}\|
@@ -88,7 +88,7 @@ In this implementation we actually expose the representation of a vector i.e. th
 
 ### Rays
 
-We will however create a more proper data structure to represent a **ray**. A ray has an origin, represented by a vector, and a direction, represented by a normalised vector. When we implement rays we will use Elixir structs. A struct is always associated with a module and gives us a convenient way of referencing elements of a data structure. Instead of having to remember which element of a tuple a particular element is we can refer to them by name. 
+We will however create a more proper data structure to represent a **ray**. A ray has an origin, represented by a vector, and a direction, represented by a normalised vector. When we implement rays we will use Elixir structs. A struct is always associated with a module and gives us a convenient way of referencing elements of a data structure. Instead of having to remember which element of a tuple a particular element is we can refer to them by name.
 
 Create a module `Ray` and define the following struct. We provide a default position `{0, 0, 0}` and direction `{1, 1, 1}`. If none is given when we create a ray the default values will be used.
 
@@ -96,7 +96,7 @@ Create a module `Ray` and define the following struct. We provide a default posi
 defmodule Ray do
 
   defstruct pos: {0, 0, 0}, dir: {1, 1, 1}
-  
+
 end
 ```
 
@@ -112,11 +112,11 @@ We will use Elixir **protocols** to define a common interface that all objects s
 defprotocol Object do
 
   def intersect(object, ray)
-  
+
 end
 ```
 
-As we define different object we will instantiate the `Object` protocol by defining the `intersect/2` function. 
+As we define different object we will instantiate the `Object` protocol by defining the `intersect/2` function.
 
 ### Spheres
 
@@ -138,9 +138,9 @@ end
 
 The tricky part is of course to determine if a ray will intersect a sphere but this is actually easily determined if we remember our linear algebra.
 
-![Intersection of ray and circle](../images/tracer2.png)
+![Intersection of ray and circle](../.gitbook/assets/tracer2.png)
 
-In the image above, we see a ray intersecting a circle. We want to find the intersection points $$\vec{i_1}$$ and $$\vec{i_2} $$. We can do this by first calculate the length $$a$$ and this is done by taking the dot product of $$\vec{k}$$ and $$\hat{l}$$. The dot product will project the vector $$\vec{k}$$ on $$\hat{l}$$ thus giving us the length $$a$$. The vector $$\vec{k}$$ is of course easily calculated since we know the origin of the ray $$\vec{o}$$ and the centre of the circle $$\vec{c}$$.
+In the image above, we see a ray intersecting a circle. We want to find the intersection points $$\vec{i_1}$$ and $$\vec{i_2}$$. We can do this by first calculate the length $$a$$ and this is done by taking the dot product of $$\vec{k}$$ and $$\hat{l}$$. The dot product will project the vector $$\vec{k}$$ on $$\hat{l}$$ thus giving us the length $$a$$. The vector $$\vec{k}$$ is of course easily calculated since we know the origin of the ray $$\vec{o}$$ and the center of the circle $$\vec{c}$$.
 
 Note that we here talk about the circle while our real model would contain a sphere - this is fine, the operations are the same.
 
@@ -150,7 +150,7 @@ $$
 t^2 = r^2 - h^2
 $$
 
-If it turns out that $$t^2$$ is a negative value, it means that the ray does not intersect the sphere. This is our criteria for answering if we intersect the object or not. If $$t^2$$ is positive we calculate $$t$$ and then of course obtain two alternatives $$t$$ and $$-t$$ .  We now calculate two distances $$d_1 = a - t$$ and $$d_2 = a + t$$ .  This is the distance to the points of intersections from the origin of the ray $$\vec{o}$$ .  If either value is negative it means that the intersection point is behind us; if only one value is negative we are actually inside the sphere. If both values are positive we return the smallest value since this is the surface that we will actually see.
+If it turns out that $$t^2$$ is a negative value, it means that the ray does not intersect the sphere. This is our criteria for answering if we intersect the object or not. If $$t^2$$ is positive we calculate $$t$$ and then of course obtain two alternatives $$t$$ and $$-t$$ . We now calculate two distances $$d_1 = a - t$$ and $$d_2 = a + t$$ . This is the distance to the points of intersections from the origin of the ray $$\vec{o}$$ . If either value is negative it means that the intersection point is behind us; if only one value is negative we are actually inside the sphere. If both values are positive we return the smallest value since this is the surface that we will actually see.
 
 ### Object Protocol
 
@@ -166,7 +166,7 @@ defimpl Object do
 end
 ```
 
- The function `intersect/2` is now reached using the call `Object.intersect/2` since it is defined as an `Object` protocol.
+The function `intersect/2` is now reached using the call `Object.intersect/2` since it is defined as an `Object` protocol.
 
 ## The Camera
 
@@ -182,13 +182,13 @@ When you think about representation, then always think about what you're going t
 
 If you have not used a large camera you might not have thought about how different lenses changes the picture but think about the difference between a "fish-eye'' and telephoto lens. The difference has to to with the **focal length**, the length from the lens to the focal point; the important factor is the ratio between the width of the **film** and the focal length. When using a 35mm film a focal length of 50mm gave a "normal'' lens i.e. a lens that gave images that looked normal.
 
-It is thus important that we can describe a **canvas**: its size, orientation and position in relation to the **origin** of the camera. In Fig.~\ref{fig:camera} we see the elements that we need to represent: the origin described by a vector $$\vec{o}$$, a vector $$\vec{f}$$ that give us the direction and distance to the centre of the canvas and two vectors that give us the vertical, $$\vec{v}$$, and horizontal, $$\vec{h}$$, direction of the canvas. 
+It is thus important that we can describe a **canvas**: its size, orientation and position in relation to the **origin** of the camera. In the figure below we see the elements that we need to represent: the origin described by a vector $$\vec{o}$$, a vector $$\vec{f}$$ that give us the direction and distance to the center of the canvas and two vectors that give us the vertical, $$\vec{v}$$, and horizontal, $$\vec{h}$$, direction of the canvas.
 
 We might take for granted that the plane of the canvas is orthogonal to the direction; this is not strictly necessary but if it is not, we will have very strange projections of the image \(a technique that is actually used and if you want to know more you can search for the "Scheimpflug principle''\).
 
-Note that the vertical and horizontal orientation are represented as two vectors. This will allow us to create a ray from the origin through any coordinate of the canvas. 
+Note that the vertical and horizontal orientation are represented as two vectors. This will allow us to create a ray from the origin through any coordinate of the canvas.
 
-![Camera view](../images/tracer3.png)
+![Camera view](../.gitbook/assets/tracer3.png)
 
 A camera with a normal lens, positioned at $$\langle 0, 0, 0\rangle$$ and pointing straight into the picture, could be described as follows:
 
@@ -213,7 +213,7 @@ Open up a module `Camera` and defined the following struct.
 defmodule Camera do
 
   defstruct pos: nil, corner: nil, right: nil, down: nil, size: nil
-  
+
 end
 ```
 
@@ -265,7 +265,7 @@ Open a module called `Tracer`; this will be the main module where the images are
 
 An image will be represented by a list of rows where each row is a list of **RGB values**. The RGB values are tuples of three elements where each element is a floating point value between 0 and 1. A green-blue colour could thus be represented by the tuple `{0, 0.8, 0.3}` We will later use a procedure to print this image to a file that you hopefully can open in a viewer of your choice.
 
-We will start slowly and render a black and white image. This will not impress anyone but your mother, but it will be a start that we then will extend quite easily. We will build the tracer _bottom up_ which will give us the opportunity to test things as we implement it. 
+We will start slowly and render a black and white image. This will not impress anyone but your mother, but it will be a start that we then will extend quite easily. We will build the tracer _bottom up_ which will give us the opportunity to test things as we implement it.
 
 ### Intersect
 
@@ -330,7 +330,7 @@ def tracer(camera, objects) do
 end
 ```
 
-We of course want to look at the image we have created and to do this we somehow have to convert it into a image file. There are many image formats to choose from but most are compressed and it is not trivial to write a jpeg encoder. The file format that we will use is very inefficient but it is very easy to generate a file. In the appendix App~\ref{app:ppm} you will find a module that will take an image, as we generates it, and writes a **PPM file**. Not all image viewers can open a ppm file so you might have to try several before finding one that works.
+We of course want to look at the image we have created and to do this we somehow have to convert it into a image file. There are many image formats to choose from but most are compressed and it is not trivial to write a jpeg encoder. The file format that we will use is very inefficient but it is very easy to generate a file. In the appendix you will find a module that will take an image, as we generates it, and writes a **PPM file**. Not all image viewers can open a ppm file so you might have to try several before finding one that works.
 
 It is now quite easy to generate an image, all we have to do is to describe the world and then take a snap shot. Create a module called `Test` and describe your first image.
 
@@ -355,7 +355,7 @@ If you look at your picture you will hopefully see three white circles on a blac
 
 ## Extensions
 
-We will do three extensions to the tracer: colours, lights and reflections. The first extension is quite simple while the last one requires that you repeat you knowledge i geometry. 
+We will do three extensions to the tracer: colours, lights and reflections. The first extension is quite simple while the last one requires that you repeat you knowledge i geometry.
 
 ### Adding Colours
 
@@ -389,7 +389,7 @@ defmodule Light do
 end
 ```
 
-The question now is how we are going to use the lights; we could probably have a whole course on how light sources are combined in a ray tracer but we will try to keep it simple. 
+The question now is how we are going to use the lights; we could probably have a whole course on how light sources are combined in a ray tracer but we will try to keep it simple.
 
 Let's look at the trace function, it detects if a ray hits an object and then returns the object and the distance to this object. Since we know the direction of the ray we can easily describe the point in space where the ray hits the object.
 
@@ -420,23 +420,23 @@ The second thing is the normal vector that we use when combining the light sourc
 
 The normal vector $$\vec{n}$$ is easily calculate since we know the point of intersection $$\vec{i}$$ and the centre of the sphere $$\vec{c}$$. If we have other objects we would of course have to do something else.
 
-$$ \vec{n} = \|\vec{i} - \vec{c}\| $$
+$$\vec{n} = \|\vec{i} - \vec{c}\|$$
 
 The contribution $$a$$ of a light source at $$\vec{s}$$ to the point $$\vec{i}$$ on a surface with normal vector $$\vec{n}$$ is:
 
-$$a =  \|\vec{s} - \vec{i}\| \cdot \vec{n}$$
+$$a = \|\vec{s} - \vec{i}\| \cdot \vec{n}$$
 
-What we are doing here is to first calculate the vector from $$\vec{i}$$ to $$\vec{s}$$ and then normalise this. Then we do the dot product with the normal vector to obtain a number between 0 and 1.  A light source that is orthogonal to the normal vector will not contribute at all while a light source in exactly the same direction will contribute with its full strength.
+What we are doing here is to first calculate the vector from $$\vec{i}$$ to $$\vec{s}$$ and then normalise this. Then we do the dot product with the normal vector to obtain a number between 0 and 1. A light source that is orthogonal to the normal vector will not contribute at all while a light source in exactly the same direction will contribute with its full strength.
 
 All the light sources can be added together but we of course need to do the addition in a special way. When you add two probabilities $$p$$ and $$q$$ then you would write:
 
-$$ 1 - \(\(1-p\) \times \(1-q\)\)$$
+$$1 - ((1-p) \times (1-q))$$
 
 And we should do the same thing here \(do some thinking\). If you get it right your images will get a lot more live and will start to look like something that you could show to someone besides your mother.
 
 ### Reflections
 
-The third extension that we will look at is reflections; sounds tricky but it turns out to be even simpler than adding lights. What we wan to do is to calculate a reflecting ray in the point of intersection and then calculate the contribution from this angle. The contribution can of course be calculated using a recursive step since this is exactly what the tracer module will do; given a origin and a normal vector calculate what is visible in this direction. 
+The third extension that we will look at is reflections; sounds tricky but it turns out to be even simpler than adding lights. What we wan to do is to calculate a reflecting ray in the point of intersection and then calculate the contribution from this angle. The contribution can of course be calculated using a recursive step since this is exactly what the tracer module will do; given a origin and a normal vector calculate what is visible in this direction.
 
 So if we do a recursive step and find that the reflection has a particular colour then we need to ask ourselves how much of this colour should be added to the point of intersection. This is where you will start to think about **brilliance** i.e. how much the surface acts as a mirror. Again, you could spend the rest of the week thinking about how a metal surface is different from wood but we might also just describe the level of reflection by a number from 0 to 1.
 
