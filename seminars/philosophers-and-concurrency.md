@@ -25,7 +25,7 @@ Implement this process in a module `Chopstick` with a function `start/0` that sp
 
 ```elixir
 def start do
-  stick = spawn_link(fn -> ... end)
+  spawn_link(fn -> ... end)
 end
 
 def available() do
@@ -70,7 +70,7 @@ end
 
 Implement the philosopher in a module called `Philosopher` and provide a function `start/7` that spawns a philosopher process \(use `spawn_link/1`\). The procedure should take the following arguments.
 
-* **hunger**: the number of times the Philosopher should eat before it sends a `:done` message to the controller process.
+* **hunger**: the number of times the philosopher should eat before it sends a `:done` message to the controller process.
 * **strength**: the strength, when down to zero the philosopher dies.
 * **right** and **left**: the process identifiers of the two chopsticks.
 * **name**: a string that is the name of the philosopher, used for nice logging.
