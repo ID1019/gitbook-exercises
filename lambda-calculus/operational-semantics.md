@@ -6,7 +6,7 @@ The operational semantics of a language should answer the question what an expre
 
 The operational semantics should preferably be described in a way that it also captures the time and memory complexity of an execution. It does not have to be a detailed description of how things are actually implemented but it should give an understanding of the execution to allow a programmer to reason about the efficiency of a particular program.
 
-The operational semantics of a language can also serve as a architecture for an abstract machine for the language or as the design criteria for a compiler. The observable properties of a program execution should conform to the properties one can derive from the description of the operational semantics.There are many ways to describe an operational semantics of a programming language and we will use a strategy called big-step semantics. We will describe the semantics as a set of rewrite rules or evaluation relations; givenan expression in the language, we will describe the rules of how to evaluatethe expression to obtain an answer.This description of an operational semantics for our small functional programming language will serve our purposes in that we will be able to talk and reason about program execution. We will also be able to use it when we implement an interpreter for the language.
+The operational semantics of a language can also serve as a architecture for an abstract machine for the language or as the design criteria for a compiler. The observable properties of a program execution should conform to the properties one can derive from the description of the operational semantics.There are many ways to describe an operational semantics of a programming language and we will use a strategy called big-step semantics. We will describe the semantics as a set of rewrite rules or evaluation relations; given an expression in the language, we will describe the rules of how to evaluatethe expression to obtain an answer.This description of an operational semantics for our small functional programming language will serve our purposes in that we will be able to talk and reason about program execution. We will also be able to use it when we implement an interpreter for the language.
 
 ## The language
 
@@ -63,7 +63,7 @@ In order to apply the rule the prerequisite must be met and this will in the end
 The simplest rule is the one that describes how we evaluate an expression consisting of a simple atom.
 
 $$
-\frac{a \mapsto s}{E\sigma(a) \rightarrow s}  
+\frac{a \mapsto s}{E\sigma(a) \rightarrow s}
 $$
 
 This mean that if we have an atom, for example `:foo` then this is evaluated to the corresponding data structure _foo_ \(since `:foo` $$\mapsto$$ _foo_\). The environment, $$\sigma$$, is in this case not relevant.
@@ -125,7 +125,7 @@ $$
 $$
 
 $$
-\frac{v/t \in \sigma \wedge t \not\mapsto s}{P\sigma(v, s) \rightarrow {\rm fail} }
+\frac{v/t \in \sigma \wedge t \not\equiv s}{P\sigma(v, s) \rightarrow {\rm fail} }
 $$
 
 Matching a cons expression is quite simple but note what the rules says about the environment. We need to do the pattern matching of the expression $$e_1$$and the data structure $$s_1$$ in $$\sigma$$ but the matching of $$e_2$$ and $$s_2$$in $$\sigma'$$. We thus gain information in the first matching that must be consisting with the second matching.
@@ -151,7 +151,7 @@ As an exercise you should do the pattern matching of the expression `{x, {x, :c}
 The remaining alternative, the case where we have a cons expression and we try to match this to an data structure that is not a compound data structure, will of course lead to a failure.
 
 $$
-\frac{s \not = \{s_1, s_2\}}{P\sigma(\lbrace p_1, p_2 \rbrace, s) \rightarrow {\rm fail}}
+\frac{s \not \equiv \{s_1, s_2\}}{P\sigma(\lbrace p_1, p_2 \rbrace, s) \rightarrow {\rm fail}}
 $$
 
 That it is as far as pattern matching goes. Try to do some matching by hand and explain which rules you apply. Try these:
@@ -168,7 +168,7 @@ So now we're ready to evaluate a sequence; a sequence that always consist of zer
 In order to describe this we introduce a new rule, a rule that describes how a new scope is created.
 
 $$
-\frac{\sigma' = \sigma \setminus \lbrace v/t \quad | \quad v/t \in \sigma \quad \wedge \quad v \quad {\rm in} \quad p\rbrace}{S(\sigma, p) \rightarrow \sigma'}
+\frac{\sigma' = \sigma \setminus \lbrace v/t \quad | \quad v/t \in \sigma \quad \wedge \quad v \quad {\rm in} \quad p\rbrace}{S\sigma( p) \rightarrow \sigma'}
 $$
 
 The new environment will not have any bindings for the variables that occur in the pattern. If we have a variable `x` in $$\sigma$$ it will simply be _shadowed_ by the pattern matching expression. This is quite differently from how things are handled in Erlang.
@@ -176,7 +176,7 @@ The new environment will not have any bindings for the variables that occur in t
 The rule that describes the evaluation of a sequence is now quite straight forward. We first evaluate the expression, $$e$$, of the pattern matching expression, then evaluate the matching giving us an updated environment, $$\theta$$, that is used to evaluate the remaining sequence.
 
 $$
-\frac{   E\sigma(e) \rightarrow t \qquad S(\sigma, p) \rightarrow \sigma' \qquad P\sigma'(p, t) \rightarrow \theta \qquad E\theta({\rm sequence}) \rightarrow s }{E\sigma(p = e, {\rm sequence}) \rightarrow s}
+\frac{   E\sigma(e) \rightarrow t \qquad S\sigma(p) \rightarrow \sigma' \qquad P\sigma'(p, t) \rightarrow \theta \qquad E\theta({\rm sequence}) \rightarrow s }{E\sigma(p = e, {\rm sequence}) \rightarrow s}
 $$
 
 A sequence consist of one or more patter matching expressions followed by an expression, so the rule will terminate once we reach the final expression. Note that we also here implicitly require that the evaluation of $$e$$succeeds i.e. $$t \in Structs$$. If the evaluation returns $$\perp$$the whole evaluation fails.

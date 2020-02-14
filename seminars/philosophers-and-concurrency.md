@@ -25,7 +25,7 @@ Implement this process in a module `Chopstick` with a function `start/0` that sp
 
 ```elixir
 def start do
-  stick = spawn_link(fn -> ... end)
+  spawn_link(fn -> ... end)
 end
 
 def available() do
@@ -68,12 +68,14 @@ def sleep(t) do
 end
 ```
 
-Implement the philosopher in a module called `Philosopher` and provide a function `start/5` that spawns a philosopher process \(use `spawn_link/1`\). The procedure should take the following arguments.
+Implement the philosopher in a module called `Philosopher` and provide a function `start/7` that spawns a philosopher process \(use `spawn_link/1`\). The procedure should take the following arguments.
 
-* **hunger**: the number of times the Philosopher should eat before it sends a `:done` message to the controller process.
+* **hunger**: the number of times the philosopher should eat before it sends a `:done` message to the controller process.
+* **strength**: the strength, when down to zero the philosopher dies.
 * **right** and **left**: the process identifiers of the two chopsticks.
 * **name**: a string that is the name of the philosopher, used for nice logging.
 * **ctrl**: a controller process that should be informed when the philosopher is done.
+* **seed**: a unique number to initiate a random sequence
 
 Add some nice logging information to your process so that you can track what is happening. A philosopher could for example print a message when it receives a chopstick:
 
@@ -88,9 +90,9 @@ Elixir also supports string interpolation; in the code fragment above the conten
 If you have the two modules working we can seat the philosophers around the table. We first create the locations and then start the philosophers. In a module called `Dinner`, define the following function:
 
 ```elixir
-def start(), do: spawn(fn -> init() end)
+def start(n, seed), do: spawn(fn -> init(n, seed) end)
 
-def init() do
+def init(n, seed) do
   c1 = Chopstick.start()
   c2 = Chopstick.start()
   c3 = Chopstick.start()
