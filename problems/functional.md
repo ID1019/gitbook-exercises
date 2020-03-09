@@ -22,7 +22,7 @@ To keep the heap balanced you should switch the left and right branches that is,
 
 ### Pop
 
-Implement the function `pop/1` that removes the highest element in an heap and returns either `:fail`, if the heap is empty or `{:ok, integer(), heap()}` 
+Implement the function `pop/1` that removes the highest element in an heap and returns either `:fail`, if the heap is empty or `{:ok, integer(), heap()}`
 
 ```elixir
 @spec pop(heap()) :fail | {:ok, integer(), heap()}
@@ -45,7 +45,7 @@ The heap we now have will have the largest element in the root and be limited to
 @spec add(heap(), any(), cmp()) :: heap()
 ```
 
-Specify a type `cheap()` that holds a function for comparison and a heap. Implement a function `new/1` that takes a function and returns a structure of the type `cheap()`. 
+Specify a type `cheap()` that holds a function for comparison and a heap. Implement a function `new/1` that takes a function and returns a structure of the type `cheap()`.
 
 ```elixir
 @spec new(cmp()) :: cheap()

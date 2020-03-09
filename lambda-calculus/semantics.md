@@ -27,3 +27,4 @@ Since we are interested in not only the final result of a computation but also t
 The rules of our operational semantics leaves less doubt about what will actually happen during execution. The lambda calculus simply describe what is allowed but not i what order things should be done. The beauty of the lambda calculus is that if one evaluation strategy results in an answer so will any evaluation strategy \ldots if it terminates.
 
 The operational semantics should be precise enough for a programmer to control the execution in order to avoid inifinte computations and estimate time and memory complexity. We could still allow alternative execution orders but it should be clear to the programmer when these alternatives exist.
+
