@@ -2,25 +2,25 @@
 
 ## Introduction
 
-In this tutorial you’re going to explore lambda calculus and how it relates to functional programming. We’re going to look at some examples using Elixir to see how a functional programming language can be expresses in lambda calculus but before we begin, you need a bit of historical background. 
+In this tutorial you’re going to explore lambda calculus and how it relates to functional programming. We’re going to look at some examples using Elixir to see how a functional programming language can be expresses in lambda calculus but before we begin, you need a bit of historical background.
 
-Lambda calculus, or λ-calculus, was introduced by Alonzo Church in 1932. It was a formal description of mathematics and used function abstractions and function applications as the basis. The calculus was used in mathematics to study computability and can be shown to be Turing complete i.e. anything computable can be computed using λ-calculus. 
+Lambda calculus, or λ-calculus, was introduced by Alonzo Church in 1932. It was a formal description of mathematics and used function abstractions and function applications as the basis. The calculus was used in mathematics to study computability and can be shown to be Turing complete i.e. anything computable can be computed using λ-calculus.
 
-The beauty of λ-calculus is that it is so simple, it consist of very few constructs and rules, yet it is as powerful as the most powerful programming language. No one in their right mind would program anything in λ-calculus, but it has served as the inspiration of a whole family of languages. 
+The beauty of λ-calculus is that it is so simple, it consist of very few constructs and rules, yet it is as powerful as the most powerful programming language. No one in their right mind would program anything in λ-calculus, but it has served as the inspiration of a whole family of languages.
 
-In the dawn of computers the only programming language was the language of the hardware i.e. assembler. In the late fifties computers were however powerful enough to allow programs, written in high-level languages, to be compiled to machine code. One of the first high-level languages that were defined was Lisp. It was developed by John McCarthy in 1958 and was directly based on λ-calculus. It introduced many features of programming languages that we now take for granted. 
+In the dawn of computers the only programming language was the language of the hardware i.e. assembler. In the late fifties computers were however powerful enough to allow programs, written in high-level languages, to be compiled to machine code. One of the first high-level languages that were defined was Lisp. It was developed by John McCarthy in 1958 and was directly based on λ-calculus. It introduced many features of programming languages that we now take for granted.
 
-Lisp has been followed by a number of functional programming languages: ML, Scheme, Clojure, F\#, Haskell, Scala and many more. The functional programming paradigm has also influenced traditional imperative languages so we now have so called lambda expressions even in C++. 
+Lisp has been followed by a number of functional programming languages: ML, Scheme, Clojure, F\#, Haskell, Scala and many more. The functional programming paradigm has also influenced traditional imperative languages so we now have so called lambda expressions even in C++.
 
 Since the λ-calculus has been so influential in the development of programming languages it fun to know what it is all about.
 
-## λ-calculus 
+## λ-calculus
 
 We will start by explaining the rules of λ-calculus by using the basic arithmetic operations as an example. This is a bit of cheating since we then don’t really explain how the basic arithmetic operations are defined but it’s a good start in understanding λ-calculus.
 
 ### λ-abstraction
 
-You all understand what I mean if I write a mathematical expression like the following: 
+You all understand what I mean if I write a mathematical expression like the following:
 
 $$f(x) = 2x + 5$$
 
@@ -40,27 +40,27 @@ We have here used parentheses to make it clear that the abstraction is one expre
 
 When we reason about λ-calculus we will often refer to the free variables of an expression. Free variables are variables that are not bound by a λ-abstraction. In the expression $$2x + y$$, $$x$$ and $$y$$ are free variables but in the expression $$λx → 2x + y$$ only $$y$$ is free. The variable $$x$$ is then said to be bound. A λ-abstraction can be rewritten by what is called α-conversion. We will then simply rename a variable that is bound in an abstraction, but the meaning will remain the same. The abstraction $$λx → x + 2$$ is of course identical to $$λz → z+ 2$$ - the name of the variable does not matter. However, when we do this conversion we have to be careful if we replace $$x$$ for $$z$$ in the abstraction below, the result is not the same \(try\):
 
-$$λx → x + z$$ 
+$$λx → x + z$$
 
-The rules for α-conversion are not trivial since we can easily do the wrong thing. For example, what would it mean to replace $$x$$ for $$z$$ in the abstraction below? 
+The rules for α-conversion are not trivial since we can easily do the wrong thing. For example, what would it mean to replace $$x$$ for $$z$$ in the abstraction below?
 
-$$λx → (λz → x + z)$$ 
+$$λx → (λz → x + z)$$
 
- In general we are not allowed to do a conversion that binds an otherwise free variable. We can define this in a more formal way but this is just an overview of λ-calculus.
+In general we are not allowed to do a conversion that binds an otherwise free variable. We can define this in a more formal way but this is just an overview of λ-calculus.
 
 ### β-reduction
 
-A β-reduction is what we do when we apply a λ-abstraction to an argument. We will substitute the variable of the abstraction for the parameter. We write substitution using the following notation 
+A β-reduction is what we do when we apply a λ-abstraction to an argument. We will substitute the variable of the abstraction for the parameter. We write substitution using the following notation
 
-$$(2x + 5)[x/3]$$ 
+$$(2x + 5)[x/3]$$
 
-We can write down some formal rules for what it means to do substitution but it is all quite simple. The only thing we have to be careful about is when we want to substitute one variable by another. This could of course lead to very strange situations. 
+We can write down some formal rules for what it means to do substitution but it is all quite simple. The only thing we have to be careful about is when we want to substitute one variable by another. This could of course lead to very strange situations.
 
 If we have the abstraction $$λx → (λy → y + x)$$ we can substitute $$[x/3]$$ and receive $$λy → y+ 3$$ but what happens if we substitute $$[x/y]$$? This would give us $$λy → y+y$$ which is probably not what we mean. This is were we use α-conversion to first transform the expression to avoid name clashes. If we first transform the abstraction to $$λx → (λz → z + x)$$ we have no problem substituting $$[x/y]$$.
 
 ### η-conversion
 
-There is only one more rule that we need and this is η-conversion \(eta-conversion\). This rules states that if we have an abstraction, $$ λx → fx$$, where $$f$$ is an expression in which $$x$$ does not occur free, then we can convert this to simply $$f$$. This is a quite simple rule that allows us to reduce something that is not needed. If we have the abstraction $$λx → (λy → y + 3)x$$ this is of course the same thing as $$λy → y + 3$$. Applying the first abstraction to 5 will result in the expression $$(λy → y + 3)5$$ so we might as well apply $$λy → y + 3$$ to 5 in the first place.
+There is only one more rule that we need and this is η-conversion \(eta-conversion\). This rules states that if we have an abstraction, $$λx → fx$$, where $$f$$ is an expression in which $$x$$ does not occur free, then we can convert this to simply $$f$$. This is a quite simple rule that allows us to reduce something that is not needed. If we have the abstraction $$λx → (λy → y + 3)x$$ this is of course the same thing as $$λy → y + 3$$. Applying the first abstraction to 5 will result in the expression $$(λy → y + 3)5$$ so we might as well apply $$λy → y + 3$$ to 5 in the first place.
 
 ### That’s all
 
@@ -97,21 +97,21 @@ There is however more to it than just different syntax. The most important diffe
 
 ### Order of evaluation
 
-The λ-calculus does not define in what order the rules should be applied. The interesting thing is that it, with some exceptions, does not matter. If we have the expression 
+The λ-calculus does not define in what order the rules should be applied. The interesting thing is that it, with some exceptions, does not matter. If we have the expression
 
 $$(λx → (λy → x + y)2)3$$
 
-it does not matter if we do the innermost reduction first $$(λx → x + 2)3$$ or the outermost $$(λy → 3 + y)2$$ in the end the result will be the same, 5. 
+it does not matter if we do the innermost reduction first $$(λx → x + 2)3$$ or the outermost $$(λy → 3 + y)2$$ in the end the result will be the same, 5.
 
 Is this always the case you might wonder and unfortunately it is not. Sometimes the order of evaluation matters. Look a the mysterious looking expression below:
 
-$$(λr → rr)(λr → rr)$$ 
+$$(λr → rr)(λr → rr)$$
 
-If we apply the leftmost abstraction to the argument we will duplicate this and apply it to itself. The result is $$(λr → rr)(λr → rr)$$ but this has led us nowhere, we’re stuck in an infinite loop. Make a note of this: it is possible that an evaluation will never return an answer. 
+If we apply the leftmost abstraction to the argument we will duplicate this and apply it to itself. The result is $$(λr → rr)(λr → rr)$$ but this has led us nowhere, we’re stuck in an infinite loop. Make a note of this: it is possible that an evaluation will never return an answer.
 
 Now take a look at the abstraction below:
 
-$$λx → (λy → x)$$ 
+$$λx → (λy → x)$$
 
 This is an abstraction that when applied to an argument would give us an abstraction. This abstraction takes an argument but simply returns the original argument. If you carry out the required β-reduction for the expression below, I think the result will be 3. It does not really matter what we have instead of 2, the result will always be 3.
 
@@ -119,11 +119,11 @@ $$(λx → (λy → x)2)3$$
 
 The problem is if we instead of 2 write the abstraction that will only result in a looping computation.
 
-$$(λx → (λy → x)((λr → rr)(λr → rr)))3$$ 
+$$(λx → (λy → x)((λr → rr)(λr → rr)))3$$
 
 If we’re smart we will of course apply $$(λy → x)$$ first and get away with the looping expression and then apply the abstraction $$(λx → x)$$ to 3. If we’re not so smart we will spend the rest of our lives evaluating the loop.
 
-Any programming language would have to define the order of evaluation so that a programmer could avoid infinite loops and be able to estimate the run-time complexity of a program. In Elixir, as in most languages, the rule is that the that the arguments are evaluated first, before the function is applied. This is called _eager evaluation_, _applicative_ order or _call-by-value_. Some languages, most noticeably Haskell, take the opposite approach and applies the function first and evaluate the arguments only if needed. This is called _lazy evaluation_, _normal order_ or _call-by-name_. 
+Any programming language would have to define the order of evaluation so that a programmer could avoid infinite loops and be able to estimate the run-time complexity of a program. In Elixir, as in most languages, the rule is that the that the arguments are evaluated first, before the function is applied. This is called _eager evaluation_, _applicative_ order or _call-by-value_. Some languages, most noticeably Haskell, take the opposite approach and applies the function first and evaluate the arguments only if needed. This is called _lazy evaluation_, _normal order_ or _call-by-name_.
 
 There are pros and cons with either strategy so one should not take one for granted. This small tutorial on the subject is too short to look at the different strategies. The important thing is that different strategies exist and that they are equal modulo infinite computations \(and exceptions\).
 
@@ -131,9 +131,9 @@ There are pros and cons with either strategy so one should not take one for gran
 
 This property is something that a compiler or run-time system can make use of. Without fear of doing the **wrong** thing, it can choose to modify the evaluation order or do evaluation for example in parallel. The behaviour must of course be predictable in time and space requirements. Changes made by the system should only improve things i.e. never go into an infinite loop if the evaluation order of the programming language would not go into a loop.
 
- More than one argument One limitation with the λ-calculus syntax is that it only allows one parameter to a function. This might seem like a serious deficiency but computation-wise it does not make a difference. If we extended the syntax of the language we could of course write something like this: 
+More than one argument One limitation with the λ-calculus syntax is that it only allows one parameter to a function. This might seem like a serious deficiency but computation-wise it does not make a difference. If we extended the syntax of the language we could of course write something like this:
 
-$$λxy → x + y$$ 
+$$λxy → x + y$$
 
 This is a harmless extension to the language since we can always rewrite it in terms of λ-abstraction that only take one argument. The above expression would be written:
 
@@ -141,7 +141,7 @@ $$λx → (λy → x + y)$$
 
 Applying one argument after the other is rather complicated and therefor any functional programming language have a syntax that allows more arguments. The important thing to note is, that we do not have to change or add any rules to the calculus. It is all just syntactic sugar that is it makes things easier to read and write.
 
-While using several arguments to a function make life easier the we sometimes want to do the opposite. We want to turn a function of several parameters to a sequence of functions of one parameter each. This is so important that it has been given a name, currying, after the mathematician Haskell B. Curry \(who also gave name to the language Haskell\). 
+While using several arguments to a function make life easier the we sometimes want to do the opposite. We want to turn a function of several parameters to a sequence of functions of one parameter each. This is so important that it has been given a name, currying, after the mathematician Haskell B. Curry \(who also gave name to the language Haskell\).
 
 In languages where currying is provided by the compiler, one can define a function with for example two arguments and then apply it to its first argument to get a specialised function in return. This is not possible in Elixir, but if it was, one would be able to write something like the following:
 
@@ -171,7 +171,7 @@ fn(x) -> (fn(y) -> y + y end).(x+4) end
 
 We now have a function of one argument that will apply the function `fn(y) -> y + y` end to the argument `x + 4`. We now have a form that correspond to the regular λ-calculus syntax.
 
-$$λx → (λy → y + y)x + 4$$ 
+$$λx → (λy → y + y)x + 4$$
 
 The shorter form is often referred to as a **let-expression** and is read as _let the variable . . . hold the value . . . in the expression . . ._ . We find this construct in many functional programming languages, this is for example how it is written in Lisp:
 
@@ -266,11 +266,11 @@ Even though we have named functions the ability to use nameless functions and pa
 
 If we only have λ-expressions we could not express very much but we could express something. We could express the following interesting function, a function that ignores its argument and simply returns a function that will return its argument.
 
-$$λf → λx → x$$ 
+$$λf → λx → x$$
 
 Another function is a function that returns a function that applies the argument to the argument of that function:
 
-$$λf → λx → fx$$ 
+$$λf → λx → fx$$
 
 We could then describe functions that applies the argument twice or three times and this is the trick used by Church numerals. We represent the natural numbers by functions on the above form. The number 0 does not use the argument at all while 4 applies the argument four times. This is how we would write the number 4:
 
@@ -278,7 +278,7 @@ $$λf → λx → f(f(f(fx)))$$
 
 If this is how we represent numbers the question is if we can use them and for example express addition. Addition is a function that takes two arguments, both encoded as above, and returns a function that represents the addition of the two arguments. How about this \(we allow the λ-abstractions to take two arguments\):
 
-$$λab → λfx → af(bfx)$$ 
+$$λab → λfx → af(bfx)$$
 
 Since this becomes quite messy to write, and since you should learn some Elixir programming in the course, we could try to implement this in Elixir. We first write two functions, one that will generate a Church numeral from an integer and one that will turn a Church numeral into an integer. Create a file `church.ex` and get your Elixir system ready, you will have to do a lot of experimenting to understand what is going on.
 
@@ -291,11 +291,11 @@ defmodule Church do
   def to_church(n) do
     fn(f, x) -> f.(to_church(n - 1).(f, x)) end
   end
-  
+
   def to_integer(church) do
     church.(fn(x) -> 1 + x end, 0)
   end
-  
+
 end
 ```
 
@@ -332,7 +332,7 @@ end
 
 If you think this was easy you can try to figure out how to write the _predecessor_ function. The predecessor should of course do the opposite of the successor function and the only question is what the predecessor of zero should be. Since we do not have any representation of negative numbers we simply state that the predecessor of zero is zero.
 
-If you give this challenge some thought it will turn out to be a quite tricky problem. If you don’t Google it, or continue to read this assignment, it will probably take you three years to figure out how to do it. Even if you read the following and realise that it works, it is very likely that you will not be able to recreate it tomorrow. OK, you’re warned - here we go. 
+If you give this challenge some thought it will turn out to be a quite tricky problem. If you don’t Google it, or continue to read this assignment, it will probably take you three years to figure out how to do it. Even if you read the following and realise that it works, it is very likely that you will not be able to recreate it tomorrow. OK, you’re warned - here we go.
 
 When defining `pred(n)` we must of course make use of `n` somehow. The trick is to apply `n` to two functions where the first function is a function that returns a function. When we are done with `n` we will take the result, which is a function, and apply it to the identity function; I know this does not make sense.
 
@@ -412,7 +412,7 @@ This is of course exactly what we would like to see from `pred(four).(i,0)`. You
   ...
 ```
 
-I you think this was complicated you are right! Church never figured out how to express the predecessor function. It one of his students, Stephen Kleene, that four years later showed his professor that the λ-calculus could express something as simple as the predecessor function. 
+I you think this was complicated you are right! Church never figured out how to express the predecessor function. It one of his students, Stephen Kleene, that four years later showed his professor that the λ-calculus could express something as simple as the predecessor function.
 
 Now that we have the predecessor function we can implement a function `minus/2` that does subtraction. The implementation is simpler than what you might first think. Here are some hints to get you starting:
 
@@ -456,6 +456,4 @@ As you see, a simple thing as _if-then-else_ is quite tricky. You now also know 
 If you have implemented the Church numerals I think that you have a better understanding of what the λ-calculus is. I also hope that you’re a little bit better in working with functions as arguments and return values. This is something that you will not use very much in the beginning but once you get use to it you will realise how powerful it is.
 
 You do not need to understand all the details of λ-calculus, and no one will probably never ask you to implement the Church numerals again, but having a basic understanding of λ-calculus will give you a better understanding of how different functional programming languages are related. The syntax may differ and they have adopted different strategies for order of evaluation but they are all rooted in the same paradigm. Learn the paradigm and you will easily learn any functional programming language.
-
-
 

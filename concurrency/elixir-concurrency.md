@@ -75,8 +75,12 @@ defmodule Tic do
 
   defp last do
     receive do
-      x ->
-        IO.puts(("end: #{x}")
+      {:tic, x} ->
+        IO.puts("tic: #{x}")
+      {:tac, x} ->
+        IO.puts("tac: #{x}")
+      {:toe, x} ->
+        IO.puts("toe: #{x}")
     end
   end
 
