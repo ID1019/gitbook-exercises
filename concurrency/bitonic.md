@@ -6,7 +6,7 @@ In this task we should build a network for sorting. You use similar networks whe
 
 ## A bitonic sorting network
 
-![A bitonic sort network of size 16.](../.gitbook/assets/bitonicsort.png)
+![A bitonic sort network of size 16.](../.gitbook/assets/BitonicSort.png)
 
 Above you see a sorting network of size 16, it has 16 in-going streams to the left and 16 outgoing streams to the right. The idea is that 16 numbers go through the network so that the smallest number always exits at the uppermost stream and the largest number on the lowermost stream.
 

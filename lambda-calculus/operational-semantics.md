@@ -146,7 +146,7 @@ $$
 \frac{P\sigma(p_1, s_1) \rightarrow \sigma' \wedge P\sigma'(p_2, s_2) \rightarrow {\rm fail}}{P\sigma(\lbrace p_1, p_2 \rbrace , \lbrace s_1, s_2 \rbrace) \rightarrow {\rm fail}}
 $$
 
-As an exercise you should do the pattern matching of the expression `{x, {x, :c}}` and the data structure {\em {a, {b, c}}}. Note how we first add {\em x/a} as a binding and then fail when we match `{x, :c}` and `{b,c}`.
+As an exercise you should do the pattern matching of the expression `{x, {x, :c}}` and the data structure  {a, {b, c}}. Note how we first add x/a as a binding and then fail when we match `{x, :c}` and {b,c}.
 
 The remaining alternative, the case where we have a cons expression and we try to match this to an data structure that is not a compound data structure, will of course lead to a failure.
 

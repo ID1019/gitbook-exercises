@@ -16,7 +16,7 @@ We will first look at the two basic rotations that we will do and then dig deepe
 
 The single rotate operation is performed when the left-left branch or right-right branched has increased with one step and causes an imbalance. The left-left situation is shown in the figure below. The depth of the sub-tree A is one greater than the sub-tree of B and also two greater than the sub-tree of C. In the rearranged tree, the branches are balanced and the total depth of the tree is one less than the imbalanced tree.
 
-![Single rotation: the left-left branch has grown and caused an imbalance.](../.gitbook/assets/avl1.png)
+![Single rotation: the left-left branch has grown and caused an imbalance.](../.gitbook/assets/avl1%20%281%29.png)
 
 The left-left single rotation has its mirror in the right-right single rotation used when the root has a difference of $$+2$$ and the right sub-tree a difference of $$+1$$.
 
