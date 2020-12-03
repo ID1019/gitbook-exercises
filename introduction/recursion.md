@@ -79,16 +79,22 @@ The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two f
 Write simple Fibonacci function fib/1 and do some performance measurements. 
 
 ```elixir
-def bench_fib() do
+defmodule Fib do
+
+def fib(0) do ...  end
+def fib(1) do ...  end
+def fib(n) do ...  end
+
+def bench() do
   ls = [8,10,12,14,16,18,20,22,24,26,28,30,32]
   n = 10
 
-  bench = fn(l) ->
+  run = fn(l) ->
     t = time(n, fn() -> fib(l) end)
     :io.format("n: ~4w  fib(n) calculated in: ~8w us~n", [l, t])
   end
 
-  Enum.each(ls, bench)
+  Enum.each(ls, run)
 end
 
 def time(n, call) do
@@ -103,11 +109,11 @@ def loop(n, call) do
 end   
 ```
 
-Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run tomorrow? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
+Find an arithmetic expression that almost describes the computation time for $$fib(n)$$. Can you justify this arithmetic expression by looking at the definition of the function? How large Fibonacci number do you think you can compute if you start now and let your machine run until tomorrow? First make a guess, don't try to do the calculation in your head just make a wild guess, then try to estimate how long time that would take using your arithmetic function, would you be able to make it?
 
 ## Ackermann
 
-You can also give the Ackermann function a try:
+You can also give the [Ackermann function](https://en.wikipedia.org/wiki/Ackermann_function) a try:
 
 $$ackerman(m,n) = \left\{   \begin{array}{l l}     n+1 & \quad \text{if $m=0$}\\     ackerman(m-1,1) & \quad \text{if $m>0$ and $n=0$}\\     ackerman(m-1,ackerman(m,n-1)) & \quad \text{otherwise}\\   \end{array} \right.$$ 
 
