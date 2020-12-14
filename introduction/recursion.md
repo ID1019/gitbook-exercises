@@ -72,7 +72,9 @@ Sometimes the code becomes easier to understand, especially if we have many cond
 
 Try some more complex functions, for example the Fibonacci function:
 
-$$fib(n) = \left\{   \begin{array}{l l}     0 & \quad \text{if $n$ is 0}\\     1 & \quad \text{if $n$ is 1}\\     fib(n-1)+fib(n-2) & \quad \text{otherwise}\\   \end{array} \right.$$ 
+$$
+fib(n) = \left\{   \begin{array}{l l}     0 & \quad \text{if $n$ is 0}\\     1 & \quad \text{if $n$ is 1}\\     fib(n-1)+fib(n-2) & \quad \text{otherwise}\\   \end{array} \right.
+$$ 
 
 The Fibonacci sequence is the sequence $$0,1,1,2,3,5,8,13,21,\ldots$$. The two first numbers are 0 and 1 and the following numbers are calculated by adding the two previous number. To calculate the Fibonacci value for n , all you have to do is find the Fibonacci number for n-1 and n-2 and then add them together.
 
@@ -115,7 +117,9 @@ Find an arithmetic expression that almost describes the computation time for $$f
 
 You can also give the [Ackermann function](https://en.wikipedia.org/wiki/Ackermann_function) a try:
 
-$$ackerman(m,n) = \left\{   \begin{array}{l l}     n+1 & \quad \text{if $m=0$}\\     ackerman(m-1,1) & \quad \text{if $m>0$ and $n=0$}\\     ackerman(m-1,ackerman(m,n-1)) & \quad \text{otherwise}\\   \end{array} \right.$$ 
+$$
+ackerman(m,n) = \left\{   \begin{array}{l l}     n+1 & \quad \text{if $m=0$}\\     ackerman(m-1,1) & \quad \text{if $m>0$ and $n=0$}\\     ackerman(m-1,ackerman(m,n-1)) & \quad \text{otherwise}\\   \end{array} \right.
+$$ 
 
 This looks like an innocent little function but don't try too high numbers.
 
