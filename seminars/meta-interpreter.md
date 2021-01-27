@@ -148,10 +148,12 @@ end
 
 Here are some examples that you should be able to handle.
 
+
 * `eval_expr({:atm, :a}, [])` returns `{:ok, :a}`
 * `eval_expr({:var, :x},  [{:x, :a}])` returns `{:ok, :a}`
 * `eval_expr({:var, :x},  [])` returns `:error`
 * `eval_expr({:cons, {:var, :x}, {:atm, :b}},  [{:x, :a}])` returns `{:ok, {:a, :b}}`
+
 
 Note that `eval`_expr/2 returns a data structure if successful i.e. :a, :foo_ or _{:a, :b}_.  The last test is an effect of representing the binary tuples in our source program `{a, b}`, with the internal representation `{:cons, {:atm, :a}, {:atm, :b}}` that when evaluated will return the data structure _{:a, :b}_.
 
