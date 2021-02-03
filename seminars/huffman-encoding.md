@@ -183,9 +183,9 @@ If you have time try to do some experiments where you change the size of the alp
 To read a file you can use the following code:
 
 ```elixir
-def read(file, n) do
-  {:ok, file} = File.open(file, [:read])
-  binary = IO.read(file, n)
+def read(file) do
+  {:ok, file} = File.open(file, [:read, :utf8])
+  binary = IO.read(file, :all)
   File.close(file)
 
   case :unicode.characters_to_list(binary, :utf8) do
