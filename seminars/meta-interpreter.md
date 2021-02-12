@@ -395,52 +395,55 @@ Eager.eval_seq(seq, [])
 
 ### Named Functions
 
-You're now a small step from being able to handle named functions i.e. a program. What we need is a key-value store that given a function identifier \(an atom\), returns a structure that holds a list of parameters and a sequence. We store this in a list and can use the library function `List.keyfind/3` to retrieve the right function.
+You're now a small step from being able to handle named functions i.e. a program. 
 
-Since we now have a program we need to give each function access to this data structure. This means that we need to change the `eval_expr/2` function to take a third argument, the program. This value must also be passed to `eval_seq/2` and `eval_cls/3`. If you think this is a tedious task you have just encountered the downside of not having global data structures.
+We will add these in a very simple way. For each named
+function we will have a Elixir function that returns our
+representation of the parameters and its sequence. We add one new
+term, `{:fun, id}`, to our languge that indicate that the
+identifier is a name of a function. We can then lookup the definition
+by making a fucntion call to the `Prgm` module as shown in the code below:
 
-Change the program and add the following clause to handle named functions.
 
 ```elixir
-def eval_expr({:call, id, args}, env, prg) when is_atom(id) do
-  case List.keyfind(prg, id, 0) do
-    ... ->
-      ...
-    {_, par, seq} ->
-      case eval_args(..., ..., prg) do
-        :error ->
-          :error
-
-        strs ->
-          env = Env.args(..., ..., ...)
-          eval_seq(..., ..., prg)
-      end
-  end
+def eval_expr({:fun id}, env)  do
+   {par, seq} = apply(Prgm, id, [])
+   {:ok,  {:closure, par, [], seq}}
 end
 ```
 
-If everything works you should now be able to run the following program:
+Now we can define our wersion of `append/2` in a module `Prgm`:
+
 
 ```elixir
-prgm = [{:append, [:x, :y],
-           [{:case, {:var, :x}, 
-               [{:clause, {:atm, []}, [{:var, :y}]},
-                {:clause, {:cons, {:var, :hd}, {:var, :tl}}, 
-                   [{:cons, 
-                      {:var, :hd}, 
-                      {:call, :append, [{:var, :tl}, {:var, :y}]}}]
-                }]
-            }]
-         }]
-         
+  defmodule Prgm do
+
+  def append() do
+    {[:x, :y],
+      [{:case, {:var, :x}, 
+        [{:clause, {:atm, []}, [{:var, :y}]},
+         {:clause, {:cons, {:var, :hd}, {:var, :tl}}, 
+          [{:cons, 
+            {:var, :hd}, 
+            {:call, :append, [{:var, :tl}, {:var, :y}]}}]
+        }]
+      }]
+    }
+  end
+```
+
+If everything works you should now be able to evaluate the following:
+
+
+```elixir
 seq = [{:match, {:var, :x}, 
        {:cons, {:atm, :a}, {:cons, {:atm, :b}, {:atm, []}}}},
      {:match, {:var, :y}, 
        {:cons, {:atm, :c}, {:cons, {:atm, :d}, {:atm, []}}}},
-     {:call, :append, [{:var, :x}, {:var, :y}]}
+     {:apply, {:fun, :append}, [{:var, :x}, {:var, :y}]}
     ]
     
-Eager.eval_seq(seq, [], prgm)
+Eager.eval_seq(seq, [])
 ```
 
 
