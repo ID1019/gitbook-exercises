@@ -420,11 +420,11 @@ The second thing is the normal vector that we use when combining the light sourc
 
 The normal vector $$\vec{n}$$ is easily calculate since we know the point of intersection $$\vec{i}$$ and the centre of the sphere $$\vec{c}$$. If we have other objects we would of course have to do something else.
 
-$$\vec{n} = \|\vec{i} - \vec{c}\|$$
+$$\vec{n} = \widehat{\vec{i} - \vec{c}}$$
 
 The contribution $$a$$ of a light source at $$\vec{s}$$ to the point $$\vec{i}$$ on a surface with normal vector $$\vec{n}$$ is:
 
-$$a = \|\vec{s} - \vec{i}\| \cdot \vec{n}$$
+$$a = \widehat{\vec{s} - \vec{i} }\cdot \vec{n}$$
 
 What we are doing here is to first calculate the vector from $$\vec{i}$$ to $$\vec{s}$$ and then normalise this. Then we do the dot product with the normal vector to obtain a number between 0 and 1. A light source that is orthogonal to the normal vector will not contribute at all while a light source in exactly the same direction will contribute with its full strength.
 
