@@ -124,9 +124,9 @@ end
 
 # Time the execution time of the a function.
 def time(n, fun) do
-  start = System.monotonic_time(:milliseconds)
+  start = System.monotonic_time(:microsecond)
   loop(n, fun)
-  stop = System.monotonic_time(:milliseconds)
+  stop = System.monotonic_time(:microsecond)
   stop - start
 end
 
